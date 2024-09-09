@@ -4,7 +4,7 @@ cd "$(dirname "$0")"
 
 set -euo pipefail
 
-if [[ $DEBUG ]]; then
+if [[ "${DEBUG:-}" ]]; then
   set -x
 fi
 

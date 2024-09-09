@@ -53,7 +53,7 @@ def fetch_commit(owner: str, repo: str, branch: str, output: str):
 
     with open(output, "w") as file:
         json.dump(commit_data, file)
-    typer.echo("Commit data saved to {output}")
+    typer.echo(f"Commit data saved to {output}")
 
 
 @app.command()
