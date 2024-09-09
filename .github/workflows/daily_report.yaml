@@ -30,6 +30,7 @@ jobs:
         run: ./generate-report.sh
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
           LANG: ja_JP.UTF-8
           TZ: "Asia/Tokyo"
       - name: Commit and push changes
