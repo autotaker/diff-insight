@@ -1,0 +1,19 @@
+---
+title: Diff Insight Report Index
+---
+
+# New Reports
+
+{% for article in articles[:5] %}
+
+## [{{ article.title }}]({{ article.url }})
+
+{{ article.description }}
+
+{% endfor %}
+
+# All Reports
+
+{% for article in articles %}
+- [{{ article.title }}]({{ article.url }})
+{% endfor %}

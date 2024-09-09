@@ -107,6 +107,51 @@ class LLMAPI:
         """
         self.client = OpenAI(api_key=api_key)
 
+    def generate_summary(self, explanation: str) -> str:
+        """
+        Generate a summary from the provided explanation.
+
+        :param explanation: The explanation as a string
+        :return: A string containing the generated summary
+        """
+        style = "summary"
+        system = textwrap.dedent(
+            f"""\
+            You are technical writer. 
+            You are multilingual. Your report must be written the language according to user's locale.
+
+            ## Styles
+            - Summary: Provide a brief summary of the modification.
+            - Overview: Provide an overview of the modification.
+            - Detailed: Provide a detailed explanation of the modification.
+            """
+        )
+        loc = locale.getlocale()[0]
+
+        prompt = textwrap.dedent("""\
+            Locale: {loc}
+            Explain the following report in a {style} manner:
+            <document>
+            {explanation}
+            </document>
+            """
+            ).format(style=style, explanation=explanation, loc=loc)
+
+        logger.info(f"Generating summary for explanation")
+        response = self.client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": prompt},
+            ],
+            max_tokens=1000,
+        )
+        summary = response.choices[0].message.content or ""
+        usage = response.usage
+        logger.info(f"Completed generating summary for explanation. Usage: {usage}")
+
+        return summary
+
     def generate_diff_explanation_item(
         self, diff_data: dict[str, Any], history: Optional[list[Any]] = None
     ) -> tuple[str, dict[str,str], list[Any]]:
@@ -191,13 +236,13 @@ class LLMAPI:
 
     def generate_diff_explanation(
         self, diff_data: list[dict[str, Any]], style: str = "detailed"
-    ) -> str:
+    ) -> tuple[str, str]:
         """
         Generate a natural language explanation for the provided diff data.
 
         :param diff_data: The diff data as a string
         :param style: The style of explanation (e.g., "summary", "detailed")
-        :return: A string containing the generated explanation
+        :return: A tuple containing the generated explanation and short summary
         """
 
         explanation = ""
@@ -284,12 +329,14 @@ class LLMAPI:
             ],
             max_tokens=1000,
         )
-        assistant_response = response.choices[0].message.content
+        assistant_response = response.choices[0].message.content or ""
         usage = response.usage
         logging.debug(f"Assistant response: {assistant_response}")
         logging.info(f"Completed generating explanation for diff data. Usage: {usage}")
 
-        return textwrap.dedent(
+        summary = self.generate_summary(assistant_response)
+
+        report = textwrap.dedent(
             """
             {assistant_response}
 
@@ -300,3 +347,5 @@ class LLMAPI:
             {explanation}
             """
         ).format(assistant_response=assistant_response, explanation=explanation_report, summary_table=render_summary_table(summary_table))
+
+        return report, summary

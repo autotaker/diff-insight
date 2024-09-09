@@ -7,6 +7,7 @@ import os
 import typer
 from cache import Cache
 from github_api import GitHubAPI
+from index_generator import IndexGenerator
 from llm_api import LLMAPI
 from report_generator import ReportGenerator
 import logging
@@ -84,7 +85,7 @@ def generate_report(owner: str, repo: str, base: str, head: str, output: str):
     permalink = diff_data.get("permalink_url", "")
 
     llm_api = LLMAPI(api_key)
-    explanation = cache.with_cache(
+    explanation, summary = cache.with_cache(
         f"{base_key}_explanation",
         llm_api.generate_diff_explanation,
         diff_data.get("files", ""),
@@ -95,10 +96,29 @@ def generate_report(owner: str, repo: str, base: str, head: str, output: str):
     title = "Diff Insight Report"
     date = datetime.today().date()
     report = report_generator.generate_markdown_report(
-        title, date, permalink, explanation
+        title, date, permalink, summary, explanation
     )
     report_generator.save_report_to_file(report, output)
     typer.echo(f"Report saved to {output}")
+
+
+@app.command()
+def generate_index(doc_root: str):
+    """
+    Generate an index page for the documentation.
+
+    :param doc_root: Root directory of the documentation
+    """
+    cache = Cache()
+    cache_dir = "cache"
+    cache.cache_dir = cache_dir
+
+    index_generator = IndexGenerator(doc_root)
+
+    index_page = index_generator.generate_index()
+
+    index_generator.save_index(index_page)
+    typer.echo(f"Index page saved to {doc_root}/index.md")
 
 
 if __name__ == "__main__":

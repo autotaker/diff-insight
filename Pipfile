@@ -10,6 +10,7 @@ openai = "*"
 pydriller = "*"
 python-dotenv = "*"
 pyyaml = "*"
+jinja2 = "*"
 
 [dev-packages]
 black = "*"

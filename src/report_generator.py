@@ -2,6 +2,7 @@
 
 from datetime import date
 from typing import Any, List, Dict
+import yaml
 
 
 class ReportGenerator:
@@ -12,7 +13,7 @@ class ReportGenerator:
         pass
 
     def generate_markdown_report(
-        self, title: str, date: date, permalink: str, explanation: str
+        self, title: str, date: date, permalink: str, summary: str, explanation: str
     ) -> str:
         """
         Generate a Markdown report from the diff data and its explanation.
@@ -22,10 +23,16 @@ class ReportGenerator:
         :return: A string containing the generated Markdown report
         """
 
+        metadata = {
+            "title": title,
+            "date": date.strftime("%Y-%m-%d"),
+            "permalink": permalink,
+            "summary": summary,
+        }
+
         report_lines = [
             "---",
-            f"title: {title}",
-            f"date: {date.strftime('%Y-%m-%d')}",
+            yaml.dump(metadata, allow_unicode=True, default_flow_style=False),
             "---",
             "",
             f'[View Diff on GitHub]({permalink}){{target="_blank"}}',
