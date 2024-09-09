@@ -36,7 +36,7 @@ jobs:
       - name: Run Pandoc
         uses: docker://pandoc/core
         with:
-          args: -f markdown+hard_line_breaks -t html5 -o work/report.html --template template.html work/report.md
+          args: -i work/report.md -o docs/report-20240910.html -f markdown+hard_line_breaks -t html5 --template template.html
       - name: Move report
         run: |
           TODAY=$(date "+%Y%m%d")
