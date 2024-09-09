@@ -20,8 +20,6 @@ jobs:
           python-version: "3.12"
       - name: Install pipenv
         run: pip install pipenv
-      - name: Install pandoc
-        run: sudo apt-get update && sudo apt-get install pandoc
       - name: Install dependencies
         run: pipenv sync
       - name: set locale to ja_JP.UTF-8
@@ -34,6 +32,16 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ github.token }}
           LANG: ja_JP.UTF-8
+          TZ: "Asia/Tokyo"
+      - name: Run Pandoc
+        uses: docker://pandoc/core
+        with:
+          args: -f markdown+hard_line_breaks -t html5 -o work/report.html --template template.html work/report.md
+      - name: Move report
+        run: |
+          TODAY=$(date "+%Y%m%d")
+          mv work/report.html work/report-${TODAY}.html
+        env:
           TZ: "Asia/Tokyo"
       - name: Configure git
         run: |

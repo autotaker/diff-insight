@@ -21,7 +21,7 @@ TODAY=$(date +%Y%m%d)
 
 if [ "$LAST_SHA" != "$HEAD_SHA" ]; then
   pipenv run python src/main.py generate-report "${ORG}" "${REPO}" "${LAST_SHA}" "${HEAD_SHA}" work/report.md
-  pandoc -i work/report.md -o docs/report-${TODAY}.html -f markdown+hard_line_breaks --template template.html
+  # pandoc -i work/report.md -o docs/report-${TODAY}.html -f markdown+hard_line_breaks --template template.html
   echo "HEAD_SHA: $HEAD_SHA"
   echo $HEAD_SHA > last-commit.sha
 fi
