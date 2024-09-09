@@ -40,7 +40,7 @@ jobs:
       - name: Move report
         run: |
           TODAY=$(date "+%Y%m%d")
-          mv work/report.html work/report-${TODAY}.html
+          mv work/report.html docs/report-${TODAY}.html
         env:
           TZ: "Asia/Tokyo"
       - name: Configure git
@@ -49,5 +49,5 @@ jobs:
           git config --global user.name "autotaker"
       - name: Commit and push changes
         run: |
-          git add . docs
+          git add .
           git diff-index --quiet HEAD || git commit -m "Generate daily report" && git push
