@@ -49,5 +49,5 @@ jobs:
           git config --global user.name "autotaker"
       - name: Commit and push changes
         run: |
-          git add .
+          git add . docs
           git diff-index --quiet HEAD || git commit -m "Generate daily report" && git push
