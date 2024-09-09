@@ -35,13 +35,11 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           LANG: ja_JP.UTF-8
           TZ: "Asia/Tokyo"
-      - name: Commit and push changes
+      - name: Configure git
         run: |
           git config --global user.email "autotaker@gmail.com"
           git config --global user.name "autotaker"
       - name: Commit and push changes
         run: |
-          git config --global user.email "autotaker@gmail.com"
-          git config --global user.name "autotaker"
           git add .
           git diff-index --quiet HEAD || git commit -m "Generate daily report" && git push
