@@ -20,6 +20,8 @@ jobs:
           python-version: "3.12"
       - name: Install pipenv
         run: pip install pipenv
+      - name: Install pandoc
+        run: sudo apt-get update && sudo apt-get install pandoc
       - name: Install dependencies
         run: pipenv sync
       - name: set locale to ja_JP.UTF-8
