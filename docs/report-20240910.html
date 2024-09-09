@@ -7,15 +7,171 @@
   <meta name="dcterms.date" content="2024-09-10" />
   <title>Diff Insight Report</title>
   <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span { line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
     div.sourceCode { margin: 1em 0; }
     pre.sourceCode { margin: 0; }
@@ -24,7 +180,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -50,7 +206,7 @@
     code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
     code span.at { color: #7d9029; } /* Attribute */
     code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
+    code span.bu { color: #008000; } /* BuiltIn */
     code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #4070a0; } /* Char */
     code span.cn { color: #880000; } /* Constant */
@@ -63,7 +219,7 @@
     code span.ex { } /* Extension */
     code span.fl { color: #40a070; } /* Float */
     code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
     code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
     code span.kw { color: #007020; font-weight: bold; } /* Keyword */
     code span.op { color: #666666; } /* Operator */
@@ -82,39 +238,67 @@
 <h1 class="title">Diff Insight Report</h1>
 <p class="date">2024-09-10</p>
 </header>
-<p><a href="https://github.com/MicrosoftDocs/azure-ai-docs/compare/MicrosoftDocs:72f3416...MicrosoftDocs:3501c57" target="_blank">View Diff on GitHub</a></p>
+<p><a
+href="https://github.com/MicrosoftDocs/azure-ai-docs/compare/MicrosoftDocs:72f3416...MicrosoftDocs:3501c57"
+target="_blank">View Diff on GitHub</a></p>
 <h1 id="ハイライト">ハイライト</h1>
-<p>以下の変更点が重要です：<br />
-1. カスタムモデルの利用方法に関する注意事項の追加。<br />
-2. 有害カテゴリーのAPI用語の追加。<br />
-3. ローカル認証を無効にする手順の詳細化。</p>
-<h2 id="新機能">新機能</h2>
+<p>このコードの変更は、以下の3つの記事に重要な情報を追加・修正するものでした。</p>
 <ul class="incremental">
-<li>特になし</li>
+<li><strong>モデルカスタマイズに関するノートの追加</strong></li>
+<li><strong>有害カテゴリの説明にAPI用語の追加</strong></li>
+<li><strong>ローカル認証無効化手順の明確化</strong></li>
 </ul>
-<h2 id="互換性の破壊的変更">互換性の破壊的変更</h2>
+<h2 id="新機能">新機能</h2>
+<h3 id="カスタムモデルの情報追加">カスタムモデルの情報追加</h3>
 <ul class="incremental">
-<li>特になし</li>
+<li>カスタムモデルの利用に関する注意書きが追加されました。</li>
+<li>REST APIおよびVision
+Studioを通じて利用可能ですが、クライアント言語SDKではサポートされていないことが明記されました。</li>
+</ul>
+<h3
+id="有害カテゴリに関するapi用語の追加">有害カテゴリに関するAPI用語の追加</h3>
+<ul class="incremental">
+<li>有害カテゴリの説明に「API
+term」という新しい列がセットされ、カテゴリごとの対応するAPI用語が記載されました。</li>
+</ul>
+<h2 id="既存機能の修正">既存機能の修正</h2>
+<h3 id="カスタムモデルの情報追加-1">カスタムモデルの情報追加</h3>
+<ul class="incremental">
+<li>見出しを修正して、表現を一貫性のあるものにしました。</li>
+<li>文言を細かく調整して、具体性と明確さが増しています。</li>
+</ul>
+<h3
+id="ローカル認証の無効化手順の明確化">ローカル認証の無効化手順の明確化</h3>
+<ul class="incremental">
+<li>文の並びを変更し、説明の流れを自然なものにしました。</li>
+<li>PowerShellを用いた具体的なコマンド例を追加して、手順を追加しました。</li>
+<li>ローカル認証のステータスを確認する方法を追加しました。</li>
 </ul>
 <h2 id="その他の更新">その他の更新</h2>
-<ul class="incremental">
-<li>モデルカスタマイズのガイドに、SDKを使用せずREST APIとVision Studioでのみ利用可能な情報を追加。</li>
-<li>有害カテゴリー説明ガイドにAPI用語を追加。</li>
-<li>ローカル認証を無効にする手順にMicrosoft Entra認証の強制方法、BicepやARMテンプレート、PowerShellの例を追加。</li>
-</ul>
+<p>特になし</p>
 <h1 id="インサイト">インサイト</h1>
-<p>今回の変更は主にガイドラインの補強と技術的な明確化に焦点を当てています。</p>
-<h3 id="記事-articlesai-servicescomputer-visionhow-tomodel-customization.md">記事: articles/ai-services/computer-vision/how-to/model-customization.md</h3>
-<p>ガイドにモデルカスタマイズがREST APIとVision Studioでのみ可能で、クライアント言語SDKではサポートされていないことが明示されました。これにより、ユーザーは使えるツールに関する明確な理解を持てるようになります。また、見出しやREST APIの利用に関する説明が改善され、ドキュメントの可読性が向上しています。</p>
-<h3 id="記事-articlesai-servicescontent-safetyconceptsharm-categories.md">記事: articles/ai-services/content-safety/concepts/harm-categories.md</h3>
-<p>各有害カテゴリー（例: Hate, Sexual, Violence, SelfHarm）について、APIでの用語が追加されました。これにより、ユーザーはこれらのカテゴリーをAPIでどのように参照するかが明確になり、コンテンツモデレーションにおける理解と運用が容易になります。加えて、表の形式が使いやすく改良され、ユーザーエクスペリエンスの向上が図られました。</p>
-<h3 id="記事-articlesai-servicesdisable-local-auth.md">記事: articles/ai-services/disable-local-auth.md</h3>
-<p>ローカル認証の無効化に関するガイドが詳細化されました。具体的には、Microsoft Entra認証の強制方法、BicepやARMテンプレートの設定方法、PowerShellを用いた無効化手順が具体例とともに追加されました。また、ローカル認証のステータスを確認する方法も追加され、ユーザーが手順を正しく実施しているかを確認しやすくなっています。これにより、セキュリティ強化と管理の効率化が図れます。</p>
-<p>これらの変更は全体的に、Azure AIサービスの利用者にとって情報の明確さと操作の利便性を高める目的で行われています。特に、セキュリティ面での強化や特定の機能利用に関する注意書きの追加は、ユーザーがサービスを正しくかつ効果的に活用する助けとなるでしょう。</p>
+<p>この度の変更は、AzureのAIサービスに関するドキュメントの質を向上させるための重要なステップです。各変更が特定のユーザー要求に対応し、ドキュメントの使いやすさを向上させています。</p>
+<h3 id="カスタムモデルに関する追加">カスタムモデルに関する追加</h3>
+<p>モデルのカスタマイズに関する注意書きの追加は非常に重要です。多くのユーザーがクライアント言語SDKでのサポートを期待している可能性があるため、これを明確にすることで無駄な混乱を避けられます。また、見出しの変更や文言の調整は、全体のガイドの一貫性を保ち、ユーザーにとっての可読性を向上させる効果があります。</p>
+<h3 id="有害カテゴリのapi用語追加">有害カテゴリのAPI用語追加</h3>
+<p>API用語の追加は開発者にとって非常に有用です。これにより、API呼び出し時に使用する具体的な用語が明確になるため、開発作業がスムーズに進むでしょう。各カテゴリに対する詳細説明を変更せずに用語を追加する方法は、既存の情報を損なわずに新しい価値を提供する賢明なアプローチです。</p>
+<h3
+id="ローカル認証の無効化手順の明確化-1">ローカル認証の無効化手順の明確化</h3>
+<p>ローカル認証を無効化する手順の明確化は、管理者にとって非常に役立ちます。PowerShellによる具体的なコマンド例や状態確認方法の追加は、手作業のエラーを減らし、ユーザーにとっての操作を直感的で分かりやすいものにします。特に、特定の操作の結果を確認するためのセクションは、実務での信頼性を高める重要なポイントです。</p>
+<p>これらの改善により、AzureのAIサービスに関連するドキュメントは、より実用的で効果的なリソースとなり、ユーザーの満足度を向上させるものと期待されます。</p>
 <h1 id="summary-table">Summary Table</h1>
-<table>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 11%" />
+<col style="width: 25%" />
+<col style="width: 15%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+</colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th>Filename</th>
 <th>Type</th>
 <th>Title</th>
@@ -125,28 +309,28 @@
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td><a href="#item-a3f1c3">model-customization.md</a></td>
 <td>minor update</td>
-<td>モデルカスタマイズに関する重要な注意事項を追加</td>
+<td>カスタムモデルの情報を追加</td>
 <td>modified</td>
 <td>5</td>
 <td>2</td>
 <td>7</td>
 </tr>
-<tr class="even">
+<tr>
 <td><a href="#item-4c6a07">harm-categories.md</a></td>
 <td>minor update</td>
-<td>有害カテゴリーのAPI用語を追加</td>
+<td>有害カテゴリに関するAPI用語の追加</td>
 <td>modified</td>
 <td>6</td>
 <td>6</td>
 <td>12</td>
 </tr>
-<tr class="odd">
+<tr>
 <td><a href="#item-ae6204">disable-local-auth.md</a></td>
 <td>minor update</td>
-<td>ローカル認証を無効にする手順を拡充</td>
+<td>ローカル認証の無効化手順の明確化</td>
 <td>modified</td>
 <td>10</td>
 <td>2</td>
@@ -155,112 +339,162 @@
 </tbody>
 </table>
 <h1 id="modified-contents">Modified Contents</h1>
-<h2 id="item-a3f1c3">articles/ai-services/computer-vision/how-to/model-customization.md</h2>
+<h2
+id="item-a3f1c3">articles/ai-services/computer-vision/how-to/model-customization.md</h2>
 <details>
-<p><summary>Diff</summary></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode diff"><code class="sourceCode diff"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="dt">@@ -18,6 +18,9 @@ Image Analysis 4.0 allows you to train a custom model using your own training im</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a> </span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a> This guide shows you how to create and train a custom image classification model. The few differences between training an image classification model and object detection model are noted.</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="va">+&gt; [!NOTE]</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="va">+&gt; Model customization is available through the REST API and Vision Studio, but not through the client language SDKs.</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="va">+</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a> ## Prerequisites</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a> </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a> * Azure subscription - [Create one for free](https://azure.microsoft.com/free/cognitive-services)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a><span class="dt">@@ -331,7 +334,7 @@ If an evaluation set isn&#39;t provided when training the model, the reported perfor</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a> </span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a> ![Screenshot of evaluation]( ../media/customization/training-result.png)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a> </span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a><span class="st">-## Test custom model in Vision Studio</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a><span class="va">+## Test the custom model in Vision Studio</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a> </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a> Once you&#39;ve built a custom model, you can test by selecting the **Try it out** button on the model evaluation screen.</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a> </span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="dt">@@ -466,7 +469,7 @@ The API call returns an **ImageAnalysisResult** JSON object, which contains all</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a> </span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a> ## Next steps</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a> </span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a><span class="st">-In this guide, you created and trained a custom image classification model using Image Analysis. Next, learn more about the Analyze Image 4.0 API, so you can call your custom model from an application using REST or library SDKs.</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a><span class="va">+In this guide, you created and trained a custom image classification model using Image Analysis. Next, learn more about the Analyze Image 4.0 API, so you can call your custom model from an application using REST.</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a> </span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a> * See the [Model customization concepts](../concept-model-customization.md) guide for a broad overview of this feature and a list of frequently asked questions.</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true"></a> * [Call the Analyze Image API](./call-analyze-image-40.md). &lt;!--Note the sections [Set model name when using a custom model](./call-analyze-image-40.md#set-model-name-when-using-a-custom-model) and [Get results using custom model](./call-analyze-image-40.md#get-results-using-custom-model).--&gt;</span></code></pre></div>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -18,6 +18,9 @@ Image Analysis 4.0 allows you to train a custom model using your own training im</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> This guide shows you how to create and train a custom image classification model. The few differences between training an image classification model and object detection model are noted.</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; [!NOTE]</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; Model customization is available through the REST API and Vision Studio, but not through the client language SDKs.</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> ## Prerequisites</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a> * Azure subscription - [Create one for free](https://azure.microsoft.com/free/cognitive-services)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -331,7 +334,7 @@ If an evaluation set isn&#39;t provided when training the model, the reported perfor</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a> ![Screenshot of evaluation]( ../media/customization/training-result.png)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="st">-## Test custom model in Vision Studio</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="va">+## Test the custom model in Vision Studio</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a> Once you&#39;ve built a custom model, you can test by selecting the **Try it out** button on the model evaluation screen.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -466,7 +469,7 @@ The API call returns an **ImageAnalysisResult** JSON object, which contains all</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a> ## Next steps</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="st">-In this guide, you created and trained a custom image classification model using Image Analysis. Next, learn more about the Analyze Image 4.0 API, so you can call your custom model from an application using REST or library SDKs.</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="va">+In this guide, you created and trained a custom image classification model using Image Analysis. Next, learn more about the Analyze Image 4.0 API, so you can call your custom model from an application using REST.</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a> * See the [Model customization concepts](../concept-model-customization.md) guide for a broad overview of this feature and a list of frequently asked questions.</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a> * [Call the Analyze Image API](./call-analyze-image-40.md). &lt;!--Note the sections [Set model name when using a custom model](./call-analyze-image-40.md#set-model-name-when-using-a-custom-model) and [Get results using custom model](./call-analyze-image-40.md#get-results-using-custom-model).--&gt;</span></code></pre></div>
 </details>
 <h3 id="summary">Summary</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="fu">{</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    <span class="dt">&quot;filename&quot;</span><span class="fu">:</span> <span class="st">&quot;articles/ai-services/computer-vision/how-to/model-customization.md&quot;</span><span class="fu">,</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;モデルカスタマイズに関する重要な注意事項を追加&quot;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;filename&quot;</span><span class="fu">:</span> <span class="st">&quot;articles/ai-services/computer-vision/how-to/model-customization.md&quot;</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;カスタムモデルの情報を追加&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h3 id="explanation">Explanation</h3>
-<p>この変更では、AzureのImage Analysis 4.0を使用してカスタムモデルを訓練するためのガイドに対する小規模な更新が行われました。具体的には、モデルカスタマイズ機能がREST APIとVision Studioを通じて利用可能であるが、クライアント言語SDKを通じては利用できないことを明記した注記が追加されました。また、セクション見出しの文言が改善され、作成したカスタムモデルをアプリケーションからRESTを使って呼び出す方法に関する説明が明確にされました。全体として、文書はユーザーに対して重要な情報を提供するために少し更新されています。</p>
-<h2 id="item-4c6a07">articles/ai-services/content-safety/concepts/harm-categories.md</h2>
+<p>この変更は、カスタムモデルの利用に関する重要な情報を追加するもので、主に以下のような点が修正されています。</p>
+<ol class="incremental" type="1">
+<li><p><strong>注意書きの追加</strong>:
+新たに追加されたノートでは、モデルのカスタマイズがREST APIおよびVision
+Studioを通じて利用可能であるが、クライアント言語SDKではサポートされていないことを明記しています。これにより、ユーザーは利用可能なオプションをより明確に理解できます。</p></li>
+<li><p><strong>見出しの修正</strong>: 「Test custom model in Vision
+Studio」という見出しが「Test the custom model in Vision
+Studio」に修正されています。これにより、表現が一貫性を持つようになり、ユーザーにとって理解しやすくなります。</p></li>
+<li><p><strong>文言の調整</strong>: ガイドの最後にあたる部分では、REST
+APIを使用してアプリケーションからカスタムモデルを呼び出す方法に関する記述が少し調整されており、特にクライアントライブラリSDKを省く形で具体性が増しています。</p></li>
+</ol>
+<p>これらの修正は、ガイドの使いやすさおよび明確さを向上させるためのものであり、ユーザーにとって役立つ情報源となることを目的としています。</p>
+<h2
+id="item-4c6a07">articles/ai-services/content-safety/concepts/harm-categories.md</h2>
 <details>
-<p><summary>Diff</summary></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode diff"><code class="sourceCode diff"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="dt">@@ -21,12 +21,12 @@ This guide describes all of the harm categories and ratings that Azure AI Conten</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a> Content Safety recognizes four distinct categories of objectionable content.</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a> </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="st">-| Category  | Description         |</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="st">-| --------- | ------------------- |</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="st">-| Hate and Fairness      | Hate and fairness-related harms refer to any content that attacks or uses discriminatory language with reference to a person or Identity group based on certain differentiating attributes of these groups. &lt;br&gt;&lt;br&gt;This includes, but is not limited to:&lt;ul&gt;&lt;li&gt;Race, ethnicity, nationality&lt;/li&gt;&lt;li&gt;Gender identity groups and expression&lt;/li&gt;&lt;li&gt;Sexual orientation&lt;/li&gt;&lt;li&gt;Religion&lt;/li&gt;&lt;li&gt;Personal appearance and body size&lt;/li&gt;&lt;li&gt;Disability status&lt;/li&gt;&lt;li&gt;Harassment and bullying&lt;/li&gt;&lt;/ul&gt; |</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="st">-| Sexual  | Sexual describes language related to anatomical organs and genitals, romantic relationships and sexual acts, acts portrayed in erotic or affectionate terms, including those portrayed as an assault or a forced sexual violent act against one’s will. &lt;br&gt;&lt;br&gt; This includes but is not limited to:&lt;ul&gt;&lt;li&gt;Vulgar content&lt;/li&gt;&lt;li&gt;Prostitution&lt;/li&gt;&lt;li&gt;Nudity and Pornography&lt;/li&gt;&lt;li&gt;Abuse&lt;/li&gt;&lt;li&gt;Child exploitation, child abuse, child grooming&lt;/li&gt;&lt;/ul&gt;   |</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="st">-| Violence  | Violence describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes weapons, guns and related entities. &lt;br&gt;&lt;br&gt;This includes, but isn&#39;t limited to:  &lt;ul&gt;&lt;li&gt;Weapons&lt;/li&gt;&lt;li&gt;Bullying and intimidation&lt;/li&gt;&lt;li&gt;Terrorist and violent extremism&lt;/li&gt;&lt;li&gt;Stalking&lt;/li&gt;&lt;/ul&gt;  |</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="st">-| Self-Harm  | Self-harm describes language related to physical actions intended to purposely hurt, injure, damage one’s body or kill oneself. &lt;br&gt;&lt;br&gt; This includes, but isn&#39;t limited to: &lt;ul&gt;&lt;li&gt;Eating Disorders&lt;/li&gt;&lt;li&gt;Bullying and intimidation&lt;/li&gt;&lt;/ul&gt;  |</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="va">+| Category  | Description         |API term |</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="va">+| --------- | ------------------- | -- |</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="va">+| Hate and Fairness      | Hate and fairness-related harms refer to any content that attacks or uses discriminatory language with reference to a person or Identity group based on certain differentiating attributes of these groups. &lt;br&gt;&lt;br&gt;This includes, but is not limited to:&lt;ul&gt;&lt;li&gt;Race, ethnicity, nationality&lt;/li&gt;&lt;li&gt;Gender identity groups and expression&lt;/li&gt;&lt;li&gt;Sexual orientation&lt;/li&gt;&lt;li&gt;Religion&lt;/li&gt;&lt;li&gt;Personal appearance and body size&lt;/li&gt;&lt;li&gt;Disability status&lt;/li&gt;&lt;li&gt;Harassment and bullying&lt;/li&gt;&lt;/ul&gt; | `Hate` |</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="va">+| Sexual  | Sexual describes language related to anatomical organs and genitals, romantic relationships and sexual acts, acts portrayed in erotic or affectionate terms, including those portrayed as an assault or a forced sexual violent act against one’s will. &lt;br&gt;&lt;br&gt; This includes but is not limited to:&lt;ul&gt;&lt;li&gt;Vulgar content&lt;/li&gt;&lt;li&gt;Prostitution&lt;/li&gt;&lt;li&gt;Nudity and Pornography&lt;/li&gt;&lt;li&gt;Abuse&lt;/li&gt;&lt;li&gt;Child exploitation, child abuse, child grooming&lt;/li&gt;&lt;/ul&gt;   | `Sexual` |</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="va">+| Violence  | Violence describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes weapons, guns and related entities. &lt;br&gt;&lt;br&gt;This includes, but isn&#39;t limited to:  &lt;ul&gt;&lt;li&gt;Weapons&lt;/li&gt;&lt;li&gt;Bullying and intimidation&lt;/li&gt;&lt;li&gt;Terrorist and violent extremism&lt;/li&gt;&lt;li&gt;Stalking&lt;/li&gt;&lt;/ul&gt;  | `Violence` |</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a><span class="va">+| Self-Harm  | Self-harm describes language related to physical actions intended to purposely hurt, injure, damage one’s body or kill oneself. &lt;br&gt;&lt;br&gt; This includes, but isn&#39;t limited to: &lt;ul&gt;&lt;li&gt;Eating Disorders&lt;/li&gt;&lt;li&gt;Bullying and intimidation&lt;/li&gt;&lt;/ul&gt;  | `SelfHarm` |</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a> </span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a> Classification can be multi-labeled. For example, when a text sample goes through the text moderation model, it could be classified as both Sexual content and Violence.</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a> </span></code></pre></div>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -21,12 +21,12 @@ This guide describes all of the harm categories and ratings that Azure AI Conten</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> Content Safety recognizes four distinct categories of objectionable content.</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">-| Category  | Description         |</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="st">-| --------- | ------------------- |</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="st">-| Hate and Fairness      | Hate and fairness-related harms refer to any content that attacks or uses discriminatory language with reference to a person or Identity group based on certain differentiating attributes of these groups. &lt;br&gt;&lt;br&gt;This includes, but is not limited to:&lt;ul&gt;&lt;li&gt;Race, ethnicity, nationality&lt;/li&gt;&lt;li&gt;Gender identity groups and expression&lt;/li&gt;&lt;li&gt;Sexual orientation&lt;/li&gt;&lt;li&gt;Religion&lt;/li&gt;&lt;li&gt;Personal appearance and body size&lt;/li&gt;&lt;li&gt;Disability status&lt;/li&gt;&lt;li&gt;Harassment and bullying&lt;/li&gt;&lt;/ul&gt; |</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="st">-| Sexual  | Sexual describes language related to anatomical organs and genitals, romantic relationships and sexual acts, acts portrayed in erotic or affectionate terms, including those portrayed as an assault or a forced sexual violent act against one’s will. &lt;br&gt;&lt;br&gt; This includes but is not limited to:&lt;ul&gt;&lt;li&gt;Vulgar content&lt;/li&gt;&lt;li&gt;Prostitution&lt;/li&gt;&lt;li&gt;Nudity and Pornography&lt;/li&gt;&lt;li&gt;Abuse&lt;/li&gt;&lt;li&gt;Child exploitation, child abuse, child grooming&lt;/li&gt;&lt;/ul&gt;   |</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="st">-| Violence  | Violence describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes weapons, guns and related entities. &lt;br&gt;&lt;br&gt;This includes, but isn&#39;t limited to:  &lt;ul&gt;&lt;li&gt;Weapons&lt;/li&gt;&lt;li&gt;Bullying and intimidation&lt;/li&gt;&lt;li&gt;Terrorist and violent extremism&lt;/li&gt;&lt;li&gt;Stalking&lt;/li&gt;&lt;/ul&gt;  |</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="st">-| Self-Harm  | Self-harm describes language related to physical actions intended to purposely hurt, injure, damage one’s body or kill oneself. &lt;br&gt;&lt;br&gt; This includes, but isn&#39;t limited to: &lt;ul&gt;&lt;li&gt;Eating Disorders&lt;/li&gt;&lt;li&gt;Bullying and intimidation&lt;/li&gt;&lt;/ul&gt;  |</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="va">+| Category  | Description         |API term |</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="va">+| --------- | ------------------- | -- |</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="va">+| Hate and Fairness      | Hate and fairness-related harms refer to any content that attacks or uses discriminatory language with reference to a person or Identity group based on certain differentiating attributes of these groups. &lt;br&gt;&lt;br&gt;This includes, but is not limited to:&lt;ul&gt;&lt;li&gt;Race, ethnicity, nationality&lt;/li&gt;&lt;li&gt;Gender identity groups and expression&lt;/li&gt;&lt;li&gt;Sexual orientation&lt;/li&gt;&lt;li&gt;Religion&lt;/li&gt;&lt;li&gt;Personal appearance and body size&lt;/li&gt;&lt;li&gt;Disability status&lt;/li&gt;&lt;li&gt;Harassment and bullying&lt;/li&gt;&lt;/ul&gt; | `Hate` |</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="va">+| Sexual  | Sexual describes language related to anatomical organs and genitals, romantic relationships and sexual acts, acts portrayed in erotic or affectionate terms, including those portrayed as an assault or a forced sexual violent act against one’s will. &lt;br&gt;&lt;br&gt; This includes but is not limited to:&lt;ul&gt;&lt;li&gt;Vulgar content&lt;/li&gt;&lt;li&gt;Prostitution&lt;/li&gt;&lt;li&gt;Nudity and Pornography&lt;/li&gt;&lt;li&gt;Abuse&lt;/li&gt;&lt;li&gt;Child exploitation, child abuse, child grooming&lt;/li&gt;&lt;/ul&gt;   | `Sexual` |</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="va">+| Violence  | Violence describes language related to physical actions intended to hurt, injure, damage, or kill someone or something; describes weapons, guns and related entities. &lt;br&gt;&lt;br&gt;This includes, but isn&#39;t limited to:  &lt;ul&gt;&lt;li&gt;Weapons&lt;/li&gt;&lt;li&gt;Bullying and intimidation&lt;/li&gt;&lt;li&gt;Terrorist and violent extremism&lt;/li&gt;&lt;li&gt;Stalking&lt;/li&gt;&lt;/ul&gt;  | `Violence` |</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="va">+| Self-Harm  | Self-harm describes language related to physical actions intended to purposely hurt, injure, damage one’s body or kill oneself. &lt;br&gt;&lt;br&gt; This includes, but isn&#39;t limited to: &lt;ul&gt;&lt;li&gt;Eating Disorders&lt;/li&gt;&lt;li&gt;Bullying and intimidation&lt;/li&gt;&lt;/ul&gt;  | `SelfHarm` |</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a> Classification can be multi-labeled. For example, when a text sample goes through the text moderation model, it could be classified as both Sexual content and Violence.</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
 </details>
 <h3 id="summary-1">Summary</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="fu">{</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    <span class="dt">&quot;filename&quot;</span><span class="fu">:</span> <span class="st">&quot;articles/ai-services/content-safety/concepts/harm-categories.md&quot;</span><span class="fu">,</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;有害カテゴリーのAPI用語を追加&quot;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;filename&quot;</span><span class="fu">:</span> <span class="st">&quot;articles/ai-services/content-safety/concepts/harm-categories.md&quot;</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;有害カテゴリに関するAPI用語の追加&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h3 id="explanation-1">Explanation</h3>
-<p>この変更では、Azure AI コンテンツ セーフティの有害カテゴリーを説明するガイドに対する小規模な修正が行われました。具体的には、各有害カテゴリーに対応するAPIでの用語（例: <code>Hate</code>, <code>Sexual</code>, <code>Violence</code>, <code>SelfHarm</code>）を追加しました。これにより、ユーザーはそれぞれのカテゴリーをAPIでどう参照するかが明確になり、コンテンツモデレーションにおける理解が容易になります。また、表の形式が改善され、ユーザーフレンドリーな構造になっています。この更新は、ユーザーが有害なコンテンツの分類をより効果的に利用できるようにするための重要な改善です。</p>
+<p>この変更は、Azure AI
+コンテンツセーフティにおける有害カテゴリの説明にAPI用語を追加するものであり、内容の明確さおよび使いやすさを向上させる目的があります。</p>
+<ol class="incremental" type="1">
+<li><p><strong>新しい列の追加</strong>: 有害カテゴリの表に「API
+term」という新しい列が追加され、各カテゴリに対して対応するAPI用語が示されています。これにより、開発者がプログラム内で使用する際に役立つ情報が提供されます。</p></li>
+<li><p><strong>既存の説明の維持</strong>:
+各カテゴリの詳細説明や具体例に関しては変更がないため、既存の情報が保持され、ユーザーは従来の知識を基に理解を深めることができます。</p></li>
+<li><p><strong>カテゴリの明確化</strong>:
+追加されたAPI用語によって、開発者は特定の用語を使用してAPIを呼び出す際に、何を指しているのかをより明確に把握できるようになっています。</p></li>
+</ol>
+<p>この修正は、技術者が適切な用語を使用し、Azure AI
+コンテンツセーフティの機能をより効果的に活用できるよう手助けすることを目的としています。</p>
 <h2 id="item-ae6204">articles/ai-services/disable-local-auth.md</h2>
 <details>
-<p><summary>Diff</summary></p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode diff"><code class="sourceCode diff"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">@@ -13,13 +13,21 @@ ms.author: pafarley</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a> </span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a> # Disable local authentication in Azure AI Services</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a> </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="st">-Azure AI Services provides Microsoft Entra authentication support for all resources. This gives organizations control to disable local authentication methods and enforce Microsoft Entra authentication. This feature provides you with seamless integration when you require centralized control and management of identities and resource credentials.</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="va">+Azure AI Services provides Microsoft Entra authentication support for all resources. This feature provides you with seamless integration when you require centralized control and management of identities and resource credentials. Organizations can disable local authentication methods and enforce Microsoft Entra authentication instead.</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a> </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a><span class="st">-You can disable local authentication using the Azure policy [Cognitive Services accounts should have local authentication methods disabled](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F71ef260a-8f18-47b7-abcb-62d0673d94dc). You can set it at the subscription level or resource group level to enforce the policy for a group of services.</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="va">+You can disable local authentication using the Azure policy [Cognitive Services accounts should have local authentication methods disabled](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F71ef260a-8f18-47b7-abcb-62d0673d94dc). Set it at the subscription level or resource group level to enforce the policy for a group of services.</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a> </span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a> If you&#39;re creating an account using Bicep / ARM template, you can set the property `disableLocalAuth` to `true` to disable local authentication. For more information, see </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a> [Microsoft.CognitiveServices accounts - Bicep, ARM template, &amp; Terraform](/azure/templates/microsoft.cognitiveservices/accounts)</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a> </span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a><span class="va">+You can also use PowerShell with the Azure CLI to disable local authentication for an individual resource. First sign in with the `Connect-AzAccount` command. Then use the `Set-AzCognitiveServicesAccount` cmdlet with the parameter `-DisableLocalAuth $true`, like the following example:</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="va">+</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a><span class="va">+```powershell</span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a><span class="va">+Set-AzCognitiveServicesAccount -ResourceGroupName &quot;my-resource-group&quot; -Name &quot;my-resource-name&quot; -DisableLocalAuth $false</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="va">+```</span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a><span class="va">+</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a><span class="va">+## Verify local authentication status</span></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a><span class="va">+</span></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a> Disabling local authentication doesn&#39;t take effect immediately. Allow a few minutes for the service to block future authentication requests.</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a> </span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a> You can use PowerShell to determine whether the local authentication policy is currently enabled. First sign in with the `Connect-AzAccount` command. Then use the cmdlet **[Get-AzCognitiveServicesAccount](/powershell/module/az.cognitiveservices/get-azcognitiveservicesaccount)** to retrieve your resource, and check the property `DisableLocalAuth`. A value of `true` means local authentication is disabled.</span></code></pre></div>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -13,13 +13,21 @@ ms.author: pafarley</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> # Disable local authentication in Azure AI Services</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">-Azure AI Services provides Microsoft Entra authentication support for all resources. This gives organizations control to disable local authentication methods and enforce Microsoft Entra authentication. This feature provides you with seamless integration when you require centralized control and management of identities and resource credentials.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="va">+Azure AI Services provides Microsoft Entra authentication support for all resources. This feature provides you with seamless integration when you require centralized control and management of identities and resource credentials. Organizations can disable local authentication methods and enforce Microsoft Entra authentication instead.</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">-You can disable local authentication using the Azure policy [Cognitive Services accounts should have local authentication methods disabled](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F71ef260a-8f18-47b7-abcb-62d0673d94dc). You can set it at the subscription level or resource group level to enforce the policy for a group of services.</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="va">+You can disable local authentication using the Azure policy [Cognitive Services accounts should have local authentication methods disabled](https://ms.portal.azure.com/#view/Microsoft_Azure_Policy/PolicyDetailBlade/definitionId/%2Fproviders%2FMicrosoft.Authorization%2FpolicyDefinitions%2F71ef260a-8f18-47b7-abcb-62d0673d94dc). Set it at the subscription level or resource group level to enforce the policy for a group of services.</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a> If you&#39;re creating an account using Bicep / ARM template, you can set the property `disableLocalAuth` to `true` to disable local authentication. For more information, see </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a> [Microsoft.CognitiveServices accounts - Bicep, ARM template, &amp; Terraform](/azure/templates/microsoft.cognitiveservices/accounts)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="va">+You can also use PowerShell with the Azure CLI to disable local authentication for an individual resource. First sign in with the `Connect-AzAccount` command. Then use the `Set-AzCognitiveServicesAccount` cmdlet with the parameter `-DisableLocalAuth $true`, like the following example:</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="va">+```powershell</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="va">+Set-AzCognitiveServicesAccount -ResourceGroupName &quot;my-resource-group&quot; -Name &quot;my-resource-name&quot; -DisableLocalAuth $false</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="va">+```</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="va">+## Verify local authentication status</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a> Disabling local authentication doesn&#39;t take effect immediately. Allow a few minutes for the service to block future authentication requests.</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a> You can use PowerShell to determine whether the local authentication policy is currently enabled. First sign in with the `Connect-AzAccount` command. Then use the cmdlet **[Get-AzCognitiveServicesAccount](/powershell/module/az.cognitiveservices/get-azcognitiveservicesaccount)** to retrieve your resource, and check the property `DisableLocalAuth`. A value of `true` means local authentication is disabled.</span></code></pre></div>
 </details>
 <h3 id="summary-2">Summary</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="fu">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="dt">&quot;filename&quot;</span><span class="fu">:</span> <span class="st">&quot;articles/ai-services/disable-local-auth.md&quot;</span><span class="fu">,</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;ローカル認証を無効にする手順を拡充&quot;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;filename&quot;</span><span class="fu">:</span> <span class="st">&quot;articles/ai-services/disable-local-auth.md&quot;</span><span class="fu">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;ローカル認証の無効化手順の明確化&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <h3 id="explanation-2">Explanation</h3>
-<p>この変更では、Azure AI サービスにおけるローカル認証の無効化に関するガイドが小規模に更新されました。主な更新内容としては、Microsoft Entra 認証を強制するためにローカル認証メソッドを無効にする手順が明確にされ、BicepやARMテンプレートを使用してアカウントを作成する際の設定方法が具体的に説明されています。また、PowerShellを使用してローカル認証を無効にする手順も追加され、具体的なコマンド例が示されています。さらに、ローカル認証のステータスを確認する方法に関する情報も追加され、ユーザーが手順を実施した際の状況を把握しやすくなっています。この更新により、Azure のリソース管理がより円滑に行えるようにサポートが強化されています。</p>
+<p>この変更は、Azure AI
+サービスにおけるローカル認証の無効化に関する手順を明確にすることを目的としたもので、内容の構成が改善されています。</p>
+<ol class="incremental" type="1">
+<li><p><strong>文の並び替え</strong>:
+最初の段落で「オーガニゼーションがローカル認証方法を無効化し、代わりにMicrosoft
+Entra認証を強制することができる」という文が文脈の中に組み込まれ、全体の説明の流れがより自然になっています。</p></li>
+<li><p><strong>手順の追加</strong>:
+PowerShellを用いてローカル認証を無効化する手順が新たに追加されており、具体的なコマンド例（<code>Set-AzCognitiveServicesAccount</code>）が示されています。これにより、ユーザーは実際の操作を理解しやすくなります。</p></li>
+<li><p><strong>状態確認の追加</strong>:
+ローカル認証のステータスを確認する方法が説明され、新たに「Verify local
+authentication
+status」というセクションが追加されました。これにより、ユーザーはローカル認証の無効化が正しく行われたかどうかを確認できる手助けがされています。</p></li>
+</ol>
+<p>これらの変更により、ドキュメントはユーザーにとってより実用的で明確なリソースとなり、Azure
+AI サービスの管理に役立つものとなっています。</p>
 </body>
 </html>
