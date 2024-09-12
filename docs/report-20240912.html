@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2024-09-12" />
+  <title>Diff Insight Report</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Diff Insight Report</h1>
+<p class="date">2024-09-12</p>
+</header>
+<p><a
+href="https://github.com/MicrosoftDocs/azure-ai-docs/compare/MicrosoftDocs:9392315...MicrosoftDocs:022de22"
+target="_blank">View Diff on GitHub</a></p>
+<h1 id="ハイライト">ハイライト</h1>
+<p>今回の更新では、重要なドキュメントファイルに対して、クライアントライブラリおよびREST
+APIのバージョン変更、新しいファインチューニングチュートリアルの追加、RAGベースのアプリケーションチュートリアルの改善、およびAzure
+Machine
+Learningのワークスペーステンプレート作成ガイドの大幅な更新が行われています。</p>
+<h2 id="新機能">新機能</h2>
+<ul class="incremental">
+<li>最新のAPIおよびクライアントライブラリバージョンへの更新</li>
+<li>新しい「Fine-tuning GPT-4o mini」チュートリアルの追加</li>
+<li>改善されたRAGベースのアプリケーションチュートリアル</li>
+<li>更新されたAzure Machine
+Learningワークスペーステンプレート作成ガイド</li>
+</ul>
+<h2 id="互換性が失われる変更">互換性が失われる変更</h2>
+<ul class="incremental">
+<li>APIおよびクライアントライブラリの以前のバージョン情報が削除され、新しいバージョンに置き換えられています。これにより、一部の古い設定やリンクが無効になる可能性があります。</li>
+</ul>
+<h2 id="その他の更新">その他の更新</h2>
+<ul class="incremental">
+<li>GitHubリポジトリへのリンクと環境変数の説明の具体化</li>
+<li>Azure Machine Learningガイドでの用語の統一と説明の明確化</li>
+</ul>
+<h1 id="洞察">洞察</h1>
+<p>今回の変更は、ユーザーが最新の技術とリソースにアクセスできるようにすることを目的としています。具体的には、以下のような点がポイントです。</p>
+<p><strong>1. クライアントライブラリおよびREST APIの更新</strong><br />
+toc.ymlの変更は、APIとクライアントライブラリの最新バージョンを提供することに重点を置いています。これにより、ユーザーは新しい機能や改善されたパフォーマンスを活用することができます。一方、以前のバージョンを使用しているユーザーは互換性の変更に注意が必要です。</p>
+<p><strong>2. ファインチューニングチュートリアルの更新</strong><br />
+index.ymlにおける「Fine-tuning GPT-4o
+mini」への変更は、最新の技術に基づいた教育リソースの提供を意識しています。これにより、ユーザーはより高度なモデルのチューニング手法を学びやすくなります。</p>
+<p><strong>3.
+RAGベースのアプリケーションチュートリアルの改善</strong><br />
+copilot-sdk-build-rag.mdの更新は、特に実践的なチュートリアル情報を改善するためのものです。具体的なGitHubリンクの修正や環境変数のクリアな説明は、開発者がスムーズに作業を進めるために大いに役立ちます。</p>
+<p><strong>4. Azure Machine
+Learningワークスペーステンプレートの更新</strong><br />
+how-to-create-workspace-template.mdファイルの大幅な更新は、読みやすさと分かりやすさを大幅に向上させることを意図しています。用語の統一や手順の明確化により、ガイドがより実践的かつ学習しやすくなっています。</p>
+<p>これらのアップデートは、全体としてユーザビリティを向上させ、最新の技術トレンドに対応するためのものです。技術者や開発者にとって、これらの情報は非常に有益であり、新しい機能や改善点をすぐに取り入れることができます。</p>
+<h1 id="summary-table">Summary Table</h1>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 11%" />
+<col style="width: 25%" />
+<col style="width: 15%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr>
+<th>Filename</th>
+<th>Type</th>
+<th>Title</th>
+<th>Status</th>
+<th>A</th>
+<th>D</th>
+<th>M</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#item-81aa7b">toc.yml</a></td>
+<td>minor update</td>
+<td>クライアントライブラリおよびREST APIの更新</td>
+<td>modified</td>
+<td>3</td>
+<td>5</td>
+<td>8</td>
+</tr>
+<tr>
+<td><a href="#item-0adb87">index.yml</a></td>
+<td>minor update</td>
+<td>ファインチューニングチュートリアルの更新</td>
+<td>modified</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><a href="#item-b77dba">copilot-sdk-build-rag.md</a></td>
+<td>minor update</td>
+<td>RAGベースのアプリケーションチュートリアルの更新</td>
+<td>modified</td>
+<td>4</td>
+<td>3</td>
+<td>7</td>
+</tr>
+<tr>
+<td><a href="#item-d51e1e">how-to-create-workspace-template.md</a></td>
+<td>minor update</td>
+<td>ワークスペーステンプレート作成ガイドの更新</td>
+<td>modified</td>
+<td>42</td>
+<td>42</td>
+<td>84</td>
+</tr>
+</tbody>
+</table>
+<h1 id="modified-contents">Modified Contents</h1>
+<h2
+id="item-81aa7b">articles/ai-services/document-intelligence/toc.yml</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -295,10 +295,8 @@ items:</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>   items:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   - name: REST APIs</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>     items:</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">-    - name: 2024-02-29-preview (v4.0)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="st">-      href: /rest/api/aiservices/document-models/build-model?view=rest-aiservices-2024-02-29-preview&amp;preserve-view=true&amp;branch=docintelligence&amp;tabs=HTTP</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="st">-    - name: 2023-10-31-preview (v4.0)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="st">-      href: /rest/api/aiservices/operation-groups?view=rest-aiservices-2023-10-31-preview&amp;preserve-view=true&amp;tabs=HTTP</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="va">+    - name: 2024-07-31-preview (v4.0)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="va">+      href: /rest/api/aiservices/operation-groups?view=rest-aiservices-v4.0%20(2024-07-31-preview)&amp;preserve-view=true</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>     - name: 2023-07-31 (v3.1)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>       href: /rest/api/aiservices/document-models/analyze-document?view=rest-aiservices-2023-07-31&amp;preserve-view=true&amp;tabs=HTTP</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>     - name: 2022-08-31 (v3.0)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -307,7 +305,7 @@ items:</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>       href: v3-error-guide.md</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>     - name: v2.1</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>       href: /rest/api/aiservices/analyzer?view=rest-aiservices-v2.1&amp;preserve-view=true</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="st">-  - name: Client libraries (2023-10-31-preview)</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="va">+  - name: Client libraries (2024-07-31-preview)</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>     items:</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>     - name: C# / .NET</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>       href: /dotnet/api/overview/azure/ai.documentintelligence-readme?view=azure-dotnet-preview&amp;preserve-view=true</span></code></pre></div>
+</details>
+<h3 id="summary">Summary</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;filename&quot;</span><span class="fu">:</span> <span class="st">&quot;articles/ai-services/document-intelligence/toc.yml&quot;</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;クライアントライブラリおよびREST APIの更新&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation">Explanation</h3>
+<p>この変更は、<code>toc.yml</code>ファイルにおけるクライアントライブラリとREST
+APIに関する更新を含んでいます。具体的には、以前のバージョンの情報が新しいバージョンに置き換えられ、項目がいくつか削除されました。APIのバージョンの更新が記載され、特に「2024-02-29-preview」および「2023-10-31-preview」が「2024-07-31-preview」に変更されています。また、クライアントライブラリのバージョンも同様に更新されました。この変更は、最新のAPIおよびクライアントライブラリを利用できるようにするためのものであり、ユーザーにとって重要な情報を反映しています。また、全体として8件の変更が加えられたことが示されています。</p>
+<h2 id="item-0adb87">articles/ai-services/openai/index.yml</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -56,7 +56,7 @@ landingContent:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>         links:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>          - text: Embeddings</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>            url: ./tutorials/embeddings.md</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">-         - text: Fine-tuning GPT-3.5 Turbo</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="va">+         - text: Fine-tuning GPT-4o mini</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            url: ./tutorials/fine-tune.md</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a> #Card 2</span></code></pre></div>
+</details>
+<h3 id="summary-1">Summary</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;filename&quot;</span><span class="fu">:</span> <span class="st">&quot;articles/ai-services/openai/index.yml&quot;</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;ファインチューニングチュートリアルの更新&quot;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-1">Explanation</h3>
+<p>この変更は、<code>index.yml</code>ファイルにおけるリンクの更新を反映しています。具体的には、以前の「Fine-tuning
+GPT-3.5 Turbo」というテキストが「Fine-tuning GPT-4o
+mini」に変更されました。これにより、ユーザーは新しいチュートリアルにアクセスできるようになります。この更新は、技術の進歩に伴い、最新のリソースを提供することを目的としており、関連するチュートリアルへのリンクも一貫性を保っています。全体として、1件の追加と1件の削除が行われ、合計で2件の変更が加えられました。</p>
+<h2
+id="item-b77dba">articles/ai-studio/tutorials/copilot-sdk-build-rag.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -9,6 +9,7 @@ ms.date: 08/29/2024</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> ms.reviewer: lebaro</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> ms.author: sgilley</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> author: sdgilley</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.custom: [copilot-learning-hub]</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a> #customer intent: As a developer, I want to learn how to use the prompt flow SDK so that I can build a RAG-based chat app.</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a> ---</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -29,7 +30,7 @@ This tutorial is part two of a three-part tutorial.</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a> * Complete [Tutorial:  Part 1 - Create resources for building a custom chat application with the prompt flow SDK](copilot-sdk-create-resources.md).</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="st">-* You need a local copy of product data. The [Azure-Samples/rag-data-openai-python-promptflow repository on GitHub](https://github.com/Azure-Samples/rag-data-openai-python-promptflow/) contains sample retail product information that&#39;s relevant for this tutorial scenario. [Download the example Contoso Trek retail product data in a ZIP file](https://github.com/Azure-Samples/rag-data-openai-python-promptflow/tree/main/tutorial/data) to your local machine.</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="va">+* You need a local copy of product data. The [Azure-Samples/rag-data-openai-python-promptflow repository on GitHub](https://github.com/Azure-Samples/rag-data-openai-python-promptflow/) contains sample retail product information that&#39;s relevant for this tutorial scenario. [Download the example Contoso Trek retail product data in a ZIP file](https://github.com/Azure-Samples/rag-data-openai-python-promptflow/blob/main/tutorial/data/product-info.zip) to your local machine.</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a> ## Application code structure</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -114,7 +115,7 @@ These steps deploy a model to a real-time endpoint from the AI Studio [model cat</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a> When you deploy the `gpt-3.5-turbo` model, find the following values in the **View Code** section, and add them to your **.env** file:</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a> ```env</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="st">-AZURE_OPENAI_ENDPOINT=&lt;chat_model_endpoint_value&gt;</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="va">+AZURE_OPENAI_ENDPOINT=&lt;endpoint_value&gt;</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a> AZURE_OPENAI_CHAT_DEPLOYMENT=&lt;chat_model_deployment_name&gt;</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a> AZURE_OPENAI_API_VERSION=&lt;api_version&gt;</span></code></pre></div>
+<p>@@ -155,7 +156,7 @@ The goal with this RAG-based application is to
+ground the model responses in you</p>
+<p>If you don’t have an Azure AI Search index already created, we walk
+through how to create one. If you already have an index to use, you can
+skip to the <a href="#set-search-index">set the search environment
+variable</a> section. The search index is created on the Azure AI Search
+service that was either created or referenced in the previous step.</p>
+<p>-1. Use your own data or <a
+href="https://github.com/Azure-Samples/rag-data-openai-python-promptflow/tree/main/tutorial/data">download
+the example Contoso Trek retail product data in a ZIP file</a> to your
+local machine. Unzip the file into your <strong>rag-tutorial</strong>
+folder. This data is a collection of markdown files that represent
+product information. The data is structured in a way that is easy to
+ingest into a search index. You build a search index from this
+data.<br />
++1. Use your own data or <a
+href="https://github.com/Azure-Samples/rag-data-openai-python-promptflow/blob/main/tutorial/data/product-info.zip">download
+the example Contoso Trek retail product data in a ZIP file</a> to your
+local machine. Unzip the file into your
+<strong>rag-tutorial/data</strong> folder. This data is a collection of
+markdown files that represent product information. The data is
+structured in a way that is easy to ingest into a search index. You
+build a search index from this data.</p>
+<ol class="incremental" type="1">
+<li>The prompt flow RAG package allows you to ingest the markdown files,
+locally create a search index, and register it in the cloud project.
+Install the prompt flow RAG package:</li>
+</ol>
+<pre><code>&lt;/details&gt;
+
+### Summary
+
+```json
+{
+    &quot;filename&quot;: &quot;articles/ai-studio/tutorials/copilot-sdk-build-rag.md&quot;,
+    &quot;modification_type&quot;: &quot;minor update&quot;,
+    &quot;modification_title&quot;: &quot;RAGベースのアプリケーションチュートリアルの更新&quot;
+}</code></pre>
+<h3 id="explanation-2">Explanation</h3>
+<p>この変更は、<code>copilot-sdk-build-rag.md</code>ファイルの内容を更新し、RAG（Retrieval-Augmented
+Generation）ベースのアプリケーションに関連するチュートリアル情報を改善するものです。具体的な更新内容には、以下が含まれます。</p>
+<ol class="incremental" type="1">
+<li><code>ms.custom</code>フィールドが追加され、これはカスタム属性を指定しています。</li>
+<li>GitHubリポジトリへのリンクが変更され、正しいファイルパスである<code>product-info.zip</code>に更新されました。これにより、ユーザーは必要な製品データを確実にダウンロードできるようになります。</li>
+<li>環境変数の説明の一部も更新され、より具体的な情報を提供しています。特に、エンドポイントの変数名が具体化されました。</li>
+</ol>
+<p>全体として、4件の追加と3件の削除が行われ、合計で7件の変更が実施されました。これにより、チュートリアルがより明確で使いやすくなり、ユーザーが必要な情報をより容易に得られるようになりました。</p>
+<h2
+id="item-d51e1e">articles/machine-learning/how-to-create-workspace-template.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -10,27 +10,27 @@ ms.custom: devx-track-azurepowershell, devx-track-arm-template, devx-track-azure</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a> ms.author: larryfr</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a> author: Blackmist</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a> ms.reviewer: deeikele</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.date: 02/29/2024</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.date: 09/11/2024</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a> #Customer intent: As a DevOps person, I need to automate or customize the creation of Azure Machine Learning by using templates.</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> ---</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a> # Use an Azure Resource Manager template to create a workspace for Azure Machine Learning</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="st">-In this article, you learn several ways to create an Azure Machine Learning workspace using Azure Resource Manager templates. A Resource Manager template makes it easy to create resources as a single, coordinated operation. A template is a JSON document that defines the resources that are needed for a deployment. It may also specify deployment parameters. Parameters are used to provide input values when using the template.</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="va">+In this article, you learn several ways to create an Azure Machine Learning workspace using Azure Resource Manager templates. A Resource Manager template makes it easy to create resources as a single, coordinated operation. A template is a JSON document that defines the resources that are needed for a deployment. It might also specify deployment parameters. Parameters are used to provide input values when using the template.</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a> For more information, see [Deploy an application with Azure Resource Manager template](/azure/azure-resource-manager/templates/deploy-powershell).</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a> ## Prerequisites</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="st">-* An **Azure subscription**. If you do not have one, try the [free or paid version of Azure Machine Learning](https://azure.microsoft.com/free/).</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="va">+* An __Azure subscription__. If you don&#39;t have one, try the [free or paid version of Azure Machine Learning](https://azure.microsoft.com/free/).</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a> * To use a template from a CLI, you need either [Azure PowerShell](/powershell/azure/) or the [Azure CLI](/cli/azure/install-azure-cli).</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a> ## Limitations</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a> [!INCLUDE [register-namespace](includes/machine-learning-register-namespace.md)]</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="st">-* The example template may not always use the latest API version for Azure Machine Learning. Before using the template, we recommend modifying it to use the latest API versions. For information on the latest API versions for Azure Machine Learning, see the [Azure Machine Learning REST API](/rest/api/azureml/).</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a><span class="va">+* The example template might not always use the latest API version for Azure Machine Learning. Before using the template, we recommend modifying it to use the latest API versions. For information on the latest API versions for Azure Machine Learning, see the [Azure Machine Learning REST API](/rest/api/azureml/).</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>     &gt; [!TIP]</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>     &gt; Each Azure service has its own set of API versions. For information on the API for a specific service, check the service information in the [Azure REST API reference](/rest/api/azure/).</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -42,15 +42,15 @@ For more information, see [Deploy an application with Azure Resource Manager tem</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>     &quot;apiVersion&quot;: &quot;2023-10-01&quot;,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>     ```</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="st">-### Multiple workspaces in the same VNet</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="va">+### Multiple workspaces in the same virtual network</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="st">-The template doesn&#39;t support multiple Azure Machine Learning workspaces deployed in the same VNet. This is because the template creates new DNS zones during deployment.</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="va">+The template doesn&#39;t support multiple Azure Machine Learning workspaces deployed in the same virtual network. This limitation is because the template creates new DNS zones during deployment.</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="st">-If you want to create a template that deploys multiple workspaces in the same VNet, set this up manually (using the Azure Portal or CLI) and then [use the Azure portal to generate a template](/azure/azure-resource-manager/templates/export-template-portal).</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="va">+If you want to create a template that deploys multiple workspaces in the same virtual network, set it up manually (using the Azure portal or CLI). Then [use the Azure portal to generate a template](/azure/azure-resource-manager/templates/export-template-portal).</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="st">-## Workspace Resource Manager template</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a><span class="va">+## About the Azure Resource Manager template</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a><span class="st">-The Azure Resource Manager template used throughout this document can be found in the [microsoft.machineleaerningservices/machine-learning-workspace-vnet](https://github.com/Azure/azure-quickstart-templates/blob/master/quickstarts/microsoft.machinelearningservices/machine-learning-workspace-vnet/azuredeploy.json) directory of the Azure quickstart templates GitHub repository.</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="va">+The Azure Resource Manager template used throughout this document can be found in the [microsoft.machineleaerningservices/machine-learning-workspace-vnet](https://github.com/Azure/azure-quickstart-templates/blob/master/quickstarts/microsoft.machinelearningservices/machine-learning-workspace-vnet/azuredeploy.json) directory of the Azure Quickstart Templates GitHub repository.</span></span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a> This template creates the following Azure services:</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -60,15 +60,15 @@ This template creates the following Azure services:</span></span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a> * Azure Container Registry</span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a> * Azure Machine Learning workspace</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a><span class="st">-The resource group is the container that holds the services. The various services are required by the Azure Machine Learning workspace.</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a><span class="va">+The resource group is the container that holds the services. The Azure Machine Learning workspace uses these services for functionality such as storing data, secrets, logging, and Docker images.</span></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="st">-The example template has two **required** parameters:</span></span>
+<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a><span class="va">+The example template has two __required__ parameters:</span></span>
+<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a><span class="st">-* The **location** where the resources will be created.</span></span>
+<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a><span class="va">+* The __location__ where the resources are created.</span></span>
+<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a><span class="st">-    The template will use the location you select for most resources. The exception is the Application Insights service, which is not available in all of the locations that the other services are. If you select a location where it is not available, the service will be created in the South Central US location.</span></span>
+<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a><span class="va">+    The template uses the location you select for most resources. The exception is the Application Insights service, which isn&#39;t available in all of the locations that the other services are. If you select a location where it isn&#39;t available, the service is created in the South Central US location.</span></span>
+<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a><span class="st">-* The **workspaceName**, which is the friendly name of the Azure Machine Learning workspace.</span></span>
+<span id="cb7-71"><a href="#cb7-71" aria-hidden="true" tabindex="-1"></a><span class="va">+* The __workspaceName__, which is the friendly name of the Azure Machine Learning workspace.</span></span>
+<span id="cb7-72"><a href="#cb7-72" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-73"><a href="#cb7-73" aria-hidden="true" tabindex="-1"></a>     &gt; [!NOTE]</span>
+<span id="cb7-74"><a href="#cb7-74" aria-hidden="true" tabindex="-1"></a>     &gt; The workspace name is case-insensitive.</span>
+<span id="cb7-75"><a href="#cb7-75" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -90,7 +90,7 @@ For more information on templates, see the following articles:</span></span>
+<span id="cb7-76"><a href="#cb7-76" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-77"><a href="#cb7-77" aria-hidden="true" tabindex="-1"></a> ## Deploy template</span>
+<span id="cb7-78"><a href="#cb7-78" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a><span class="st">-To deploy your template you have to create a resource group.</span></span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a><span class="va">+To deploy your template, you have to create a resource group.</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a> See the [Azure portal](#use-the-azure-portal) section if you prefer using the graphical user interface.</span>
+<span id="cb7-83"><a href="#cb7-83" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-84"><a href="#cb7-84" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -134,7 +134,7 @@ New-AzResourceGroupDeployment `</span></span>
+<span id="cb7-85"><a href="#cb7-85" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-86"><a href="#cb7-86" aria-hidden="true" tabindex="-1"></a> ---</span>
+<span id="cb7-87"><a href="#cb7-87" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-88"><a href="#cb7-88" aria-hidden="true" tabindex="-1"></a><span class="st">-By default, all of the resources created as part of the template are new. However, you also have the option of using existing resources. By providing additional parameters to the template, you can use existing resources. For example, if you want to use an existing storage account set the **storageAccountOption** value to **existing** and provide the name of your storage account in the **storageAccountName** parameter.</span></span>
+<span id="cb7-89"><a href="#cb7-89" aria-hidden="true" tabindex="-1"></a><span class="va">+By default, all of the resources created as part of the template are new. However, you also have the option of using existing resources. By providing other parameters to the template, you can use existing resources. For example, if you want to use an existing storage account set the __storageAccountOption__ value to __existing__ and provide the name of your storage account in the __storageAccountName__ parameter.</span></span>
+<span id="cb7-90"><a href="#cb7-90" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-91"><a href="#cb7-91" aria-hidden="true" tabindex="-1"></a> &gt; [!IMPORTANT]</span>
+<span id="cb7-92"><a href="#cb7-92" aria-hidden="true" tabindex="-1"></a> &gt; If you want to use an existing Azure Storage account, it cannot be a premium account (Premium_LRS and Premium_GRS). It also cannot have a hierarchical namespace (used with Azure Data Lake Storage Gen2). Neither premium storage or hierarchical namespace are supported with the default storage account of the workspace. Neither premium storage or hierarchical namespaces are supported with the _default_ storage account of the workspace. You can use premium storage or hierarchical namespace with _non-default_ storage accounts.</span>
+<span id="cb7-93"><a href="#cb7-93" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -171,7 +171,7 @@ New-AzResourceGroupDeployment `</span></span>
+<span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a> The following example template demonstrates how to create a workspace with three settings:</span>
+<span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a><span class="st">-* Enable high confidentiality settings for the workspace. This creates a new Azure Cosmos DB instance.</span></span>
+<span id="cb7-98"><a href="#cb7-98" aria-hidden="true" tabindex="-1"></a><span class="va">+* Enable high confidentiality settings for the workspace. This configuration creates a new Azure Cosmos DB instance.</span></span>
+<span id="cb7-99"><a href="#cb7-99" aria-hidden="true" tabindex="-1"></a> * Enable encryption for the workspace.</span>
+<span id="cb7-100"><a href="#cb7-100" aria-hidden="true" tabindex="-1"></a> * Uses an existing Azure Key Vault to retrieve customer-managed keys. Customer-managed keys are used to create a new Azure Cosmos DB instance for the workspace.</span>
+<span id="cb7-101"><a href="#cb7-101" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-102"><a href="#cb7-102" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -229,9 +229,9 @@ __To get the values__ for the `cmk_keyvault` (ID of the Key Vault) and the `reso</span></span>
+<span id="cb7-103"><a href="#cb7-103" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-104"><a href="#cb7-104" aria-hidden="true" tabindex="-1"></a> To enable use of Customer Managed Keys, set the following parameters when deploying the template:</span>
+<span id="cb7-105"><a href="#cb7-105" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-106"><a href="#cb7-106" aria-hidden="true" tabindex="-1"></a><span class="st">-* **encryption_status** to **Enabled**.</span></span>
+<span id="cb7-107"><a href="#cb7-107" aria-hidden="true" tabindex="-1"></a><span class="st">-* **cmk_keyvault** to the `cmk_keyvault` value obtained in previous steps.</span></span>
+<span id="cb7-108"><a href="#cb7-108" aria-hidden="true" tabindex="-1"></a><span class="st">-* **resource_cmk_uri** to the `resource_cmk_uri` value obtained in previous steps.</span></span>
+<span id="cb7-109"><a href="#cb7-109" aria-hidden="true" tabindex="-1"></a><span class="va">+* __encryption_status__ to __Enabled__.</span></span>
+<span id="cb7-110"><a href="#cb7-110" aria-hidden="true" tabindex="-1"></a><span class="va">+* __cmk_keyvault__ to the `cmk_keyvault` value obtained in previous steps.</span></span>
+<span id="cb7-111"><a href="#cb7-111" aria-hidden="true" tabindex="-1"></a><span class="va">+* __resource_cmk_uri__ to the `resource_cmk_uri` value obtained in previous steps.</span></span>
+<span id="cb7-112"><a href="#cb7-112" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-113"><a href="#cb7-113" aria-hidden="true" tabindex="-1"></a> # [Azure CLI](#tab/azcli)</span>
+<span id="cb7-114"><a href="#cb7-114" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-115"><a href="#cb7-115" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -262,14 +262,14 @@ New-AzResourceGroupDeployment `</span></span></code></pre></div>
+<hr />
+<p>-When using a customer-managed key, Azure Machine Learning creates a
+secondary resource group which contains the Azure Cosmos DB instance.
+For more information, see <a
+href="concept-data-encryption.md#encryption-at-rest">Encryption at rest
+in Azure Cosmos DB</a>.<br />
++When you use a customer-managed key, Azure Machine Learning creates a
+secondary resource group which contains the Azure Cosmos DB instance.
+For more information, see <a
+href="concept-data-encryption.md#encryption-at-rest">Encryption at rest
+in Azure Cosmos DB</a>.</p>
+<p>-An additional configuration you can provide for your data is to set
+the <strong>confidential_data</strong> parameter to
+<strong>true</strong>. Doing so, does the following:<br />
++Another configuration you can provide for your data is to set the
+<strong>confidential_data</strong> parameter to <strong>true</strong>.
+Doing so, enables the following behavior:</p>
+<p>-* Starts encrypting the local scratch disk for Azure Machine
+Learning compute clusters, providing you have not created any previous
+clusters in your subscription. If you have previously created a cluster
+in the subscription, open a support ticket to have encryption of the
+scratch disk enabled for your compute clusters.<br />
++* Starts encrypting the local scratch disk for Azure Machine Learning
+compute clusters, providing you haven’t created any previous clusters in
+your subscription. If you had previously created a cluster in the
+subscription, open a support ticket to have encryption of the scratch
+disk enabled for your compute clusters.<br />
+* Cleans up the local scratch disk between jobs.<br />
+* Securely passes credentials for the storage account, container
+registry, and SSH account from the execution layer to your compute
+clusters by using key vault.<br />
+-* Enables IP filtering to ensure the underlying batch pools cannot be
+called by any external services other than
+AzureMachineLearningService.<br />
++* Enables IP filtering to ensure that no external services other than
+AzureMachineLearningService can call the underlying batch pools.</p>
+<pre><code> &gt; [!IMPORTANT]
+ &gt; Once a workspace has been created, you cannot change the settings for confidential data, encryption, key vault ID, or key identifiers. To change these values, you must create a new workspace using the new values.</code></pre>
+<p>@@ -278,7 +278,7 @@ An additional configuration you can provide for
+your data is to set the **confid</p>
+<p>## Deploy workspace behind a virtual network</p>
+<p>-By setting the <code>vnetOption</code> parameter value to either
+<code>new</code> or <code>existing</code>, you are able to create the
+resources used by a workspace behind a virtual network.<br />
++By setting the <code>vnetOption</code> parameter value to either
+<code>new</code> or <code>existing</code>, you’re able to create the
+resources used by a workspace behind a virtual network.</p>
+<blockquote>
+<p>[!IMPORTANT]<br />
+For container registry, only the ‘Premium’ sku is supported.<br />
+@@ -288,7 +288,7 @@ By setting the <code>vnetOption</code> parameter
+value to either <code>new</code> or <code>existing</code>, you a</p>
+</blockquote>
+<p>### Only deploy workspace behind private endpoint</p>
+<p>-If your associated resources are not behind a virtual network, you
+can set the <strong>privateEndpointType</strong> parameter to
+<code>AutoAproval</code> or <code>ManualApproval</code> to deploy the
+workspace behind a private endpoint. This can be done for both new and
+existing workspaces. When updating an existing workspace, fill in the
+template parameters with the information from the existing
+workspace.<br />
++If your associated resources aren’t behind a virtual network, you can
+set the <strong>privateEndpointType</strong> parameter to
+<code>AutoAproval</code> or <code>ManualApproval</code> to deploy the
+workspace behind a private endpoint. This setting can be used for both
+new and existing workspaces. When updating an existing workspace, fill
+in the template parameters with the information from the existing
+workspace.</p>
+<p># <a href="#tab/azcli">Azure CLI</a></p>
+<p>@@ -318,7 +318,7 @@ New-AzResourceGroupDeployment `</p>
+<p>### Use a new virtual network</p>
+<p>-To deploy a resource behind a new virtual network, set the
+<strong>vnetOption</strong> to <strong>new</strong> along with the
+virtual network settings for the respective resource. The deployment
+below shows how to deploy a workspace with the storage account resource
+behind a new virtual network.<br />
++To deploy a resource behind a new virtual network, set the
+<strong>vnetOption</strong> to <strong>new</strong> along with the
+virtual network settings for the respective resource. The following
+example shows how to deploy a workspace with the storage account
+resource behind a new virtual network.</p>
+<p># <a href="#tab/azcli">Azure CLI</a></p>
+<p>@@ -397,7 +397,7 @@ New-AzResourceGroupDeployment `</p>
+<p>### Use an existing virtual network &amp; resources</p>
+<p>-To deploy a workspace with existing associated resources you have to
+set the <strong>vnetOption</strong> parameter to
+<strong>existing</strong> along with subnet parameters. However, you
+need to create service endpoints in the virtual network for each of the
+resources <strong>before</strong> deployment. Like with new virtual
+network deployments, you can have one or all of your resources behind a
+virtual network.<br />
++To deploy a workspace with existing resources, you have to set the
+<strong>vnetOption</strong> parameter to <strong>existing</strong> along
+with subnet parameters. However, you need to create service endpoints in
+the virtual network for each of the resources <strong>before</strong>
+deployment. Like with new virtual network deployments, you can have one
+or all of your resources behind a virtual network.</p>
+<blockquote>
+<p>[!IMPORTANT]<br />
+Subnet should have <code>Microsoft.Storage</code> service endpoint<br />
+@@ -474,15 +474,15 @@ To deploy a workspace with existing associated
+resources you have to set the **v</p>
+</blockquote>
+<p>## Use the Azure portal</p>
+<p>-1. Follow the steps in <a
+href="/azure/azure-resource-manager/templates/deploy-portal#deploy-resources-from-custom-template">Deploy
+resources from custom template</a>. When you arrive at the
+<strong>Select a template</strong> screen, choose the
+<strong>quickstarts</strong> entry. When it appears, select the link
+labeled “Click here to open template repository”. This link takes you to
+the <code>quickstarts</code> directory in the Azure quickstart templates
+repository.<br />
+-1. In the list of quickstart templates, select
+<code>microsoft.machinelearningservices</code>. Finally, select
+<code>Deploy to Azure</code>.<br />
++1. Follow the steps in <a
+href="/azure/azure-resource-manager/templates/deploy-portal#deploy-resources-from-custom-template">Deploy
+resources from custom template</a>. When you arrive at the
+<strong>Custom deployment</strong> screen, choose the <strong>Quickstart
+template</strong> entry.<br />
++1. In the dropdown for <strong>Quickstart templates</strong>, select
+the
+<code>microsoft.machinelearningservices/machine-learning-workspace-vnet</code>
+entry. Finally, use <code>Select template</code>.<br />
+1. When the template appears, provide the following required information
+and any other parameters depending on your deployment scenario.</p>
+<pre><code>* Subscription: Select the Azure subscription to use for these resources.</code></pre>
+<ul class="incremental">
+<li><ul class="incremental">
+<li>Resource group: Select or create a resource group to contain the
+services.</li>
+</ul></li>
+<li><ul class="incremental">
+<li>Region: Select the Azure region where the resources will be
+created.</li>
+</ul></li>
+<li><ul class="incremental">
+<li>Workspace name: The name to use for the Azure Machine Learning
+workspace that will be created. The workspace name must be between 3 and
+33 characters. It may only contain alphanumeric characters and ‘-’.</li>
+</ul></li>
+<li><ul class="incremental">
+<li>Location: Select the location where the resources will be
+created.</li>
+</ul></li>
+<li><ul class="incremental">
+<li>Resource group: Select or create the resource group that is to
+contain the services.</li>
+</ul></li>
+<li><ul class="incremental">
+<li>Region: Select the Azure region where the resources are to be
+created.</li>
+</ul></li>
+<li><ul class="incremental">
+<li>Workspace name: The name to use for the Azure Machine Learning
+workspace to be created. The workspace name must be between 3 and 33
+characters. It can only contain alphanumeric characters and ‘-’.</li>
+</ul></li>
+<li><ul class="incremental">
+<li>Location: Select the location where the resources are to be
+created.</li>
+</ul></li>
+</ul>
+<ol class="incremental" type="1">
+<li>Select <strong>Review + create</strong>.</li>
+<li>In the <strong>Review + create</strong> screen, agree to the listed
+terms and conditions and select <strong>Create</strong>.</li>
+</ol>
+<p>@@ -498,11 +498,11 @@ For more information, see [Deploy resources
+from custom template](/azure/azure-r</p>
+<p>When you use an Azure Resource Manager template to create the
+workspace and associated resources (including Azure Key Vault), multiple
+times. For example, using the template multiple times with the same
+parameters as part of a continuous integration and deployment
+pipeline.</p>
+<p>-Most resource creation operations through templates are idempotent,
+but Key Vault clears the access policies each time the template is used.
+Clearing the access policies breaks access to the Key Vault for any
+existing workspace that is using it. For example, Stop/Create
+functionalities of Azure Notebooks VM may fail.<br />
++Most resource creation operations through templates are idempotent, but
+Key Vault clears the access policies each time the template is used.
+Clearing the access policies breaks access to the Key Vault for any
+existing workspace that is using it. For example, Stop/Create
+functionalities of Azure Notebooks VM might fail.</p>
+<p>To avoid this problem, we recommend one of the following
+approaches:</p>
+<p>-* Do not deploy the template more than once for the same parameters.
+Or delete the existing resources before using the template to recreate
+them.<br />
++* Don’t deploy the template more than once for the same parameters. Or
+delete the existing resources before using the template to recreate
+them.</p>
+<ul class="incremental">
+<li>Examine the Key Vault access policies and then use these policies to
+set the <code>accessPolicies</code> property of the template. To view
+the access policies, use the following Azure CLI command:</li>
+</ul>
+<p>@@ -512,9 +512,9 @@ To avoid this problem, we recommend one of the
+following approaches:</p>
+<pre><code> For more information on using the `accessPolicies` section of the template, see the [AccessPolicyEntry object reference](/azure/templates/Microsoft.KeyVault/2018-02-14/vaults#AccessPolicyEntry).</code></pre>
+<p>-* Check if the Key Vault resource already exists. If it does, do not
+recreate it through the template. For example, to use the existing Key
+Vault instead of creating a new one, make the following changes to the
+template:<br />
++* Check if the Key Vault resource already exists. If it does, don’t
+recreate it through the template. For example, to use the existing Key
+Vault instead of creating a new one, make the following changes to the
+template:</p>
+<ul class="incremental">
+<li><ul class="incremental">
+<li><strong>Add</strong> a parameter that accepts the ID of an existing
+Key Vault resource:</li>
+</ul></li>
+<li><ul class="incremental">
+<li><p><strong>Add</strong> a parameter that accepts the ID of an
+existing Key Vault resource:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;keyVaultId&quot;:</span><span class="fu">{</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="er">@@</span> <span class="er">-525</span><span class="fu">,</span><span class="er">7</span> <span class="er">+525</span><span class="fu">,</span><span class="er">7</span> <span class="er">@@</span> <span class="er">To</span> <span class="er">avoid</span> <span class="er">this</span> <span class="er">problem</span><span class="fu">,</span> <span class="er">we</span> <span class="er">recommend</span> <span class="er">one</span> <span class="er">of</span> <span class="er">the</span> <span class="er">following</span> <span class="er">approaches</span><span class="fu">:</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div></li>
+</ul></li>
+<li><ul class="incremental">
+<li><strong>Remove</strong> the section that creates a Key Vault
+resource:</li>
+</ul></li>
+<li><ul class="incremental">
+<li><p><strong>Remove</strong> the section that creates a Key Vault
+resource:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="er">@@</span> <span class="er">-545</span><span class="fu">,</span><span class="er">7</span> <span class="er">+545</span><span class="fu">,</span><span class="er">7</span> <span class="er">@@</span> <span class="er">To</span> <span class="er">avoid</span> <span class="er">this</span> <span class="er">problem</span><span class="fu">,</span> <span class="er">we</span> <span class="er">recommend</span> <span class="er">one</span> <span class="er">of</span> <span class="er">the</span> <span class="er">following</span> <span class="er">approaches</span><span class="fu">:</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span><span class="er">,</span></span></code></pre></div></li>
+</ul></li>
+<li><ul class="incremental">
+<li><strong>Remove</strong> the
+<code>"[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",</code>
+line from the <code>dependsOn</code> section of the workspace. Also
+<strong>Change</strong> the <code>keyVault</code> entry in the
+<code>properties</code> section of the workspace to reference the
+<code>keyVaultId</code> parameter:</li>
+</ul></li>
+<li><ul class="incremental">
+<li><p><strong>Remove</strong> the
+<code>"[resourceId('Microsoft.KeyVault/vaults', variables('keyVaultName'))]",</code>
+line from the <code>dependsOn</code> section of the workspace. Also
+<strong>Change</strong> the <code>keyVault</code> entry in the
+<code>properties</code> section of the workspace to reference the
+<code>keyVaultId</code> parameter:</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="er">@@</span> <span class="er">-573</span><span class="fu">,</span><span class="er">7</span> <span class="er">+573</span><span class="fu">,</span><span class="er">7</span> <span class="er">@@</span> <span class="er">To</span> <span class="er">avoid</span> <span class="er">this</span> <span class="er">problem</span><span class="fu">,</span> <span class="er">we</span> <span class="er">recommend</span> <span class="er">one</span> <span class="er">of</span> <span class="er">the</span> <span class="er">following</span> <span class="er">approaches</span><span class="fu">:</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div></li>
+</ul></li>
+<li><p>After these changes, you can specify the ID of the existing Key
+Vault resource when running the template. The template will then reuse
+the Key Vault by setting the <code>keyVault</code> property of the
+workspace to its ID.</p></li>
+<li><p>After these changes, you can specify the ID of the existing Key
+Vault resource when running the template. The template then reuses the
+Key Vault by setting the <code>keyVault</code> property of the workspace
+to its ID.</p>
+<p>To get the ID of the Key Vault, you can reference the output of the
+original template job or use the Azure CLI. The following command is an
+example of using the Azure CLI to get the Key Vault resource
+ID:</p></li>
+</ul>
+<p>@@ -587,7 +587,7 @@ To avoid this problem, we recommend one of the
+following approaches:<br />
+/subscriptions/{subscription-guid}/resourceGroups/myresourcegroup/providers/Microsoft.KeyVault/vaults/mykeyvault<br />
+```</p>
+<p>-## Next steps<br />
++## Related content</p>
+<ul class="incremental">
+<li><a href="/azure/azure-resource-manager/templates/deploy-rest">Deploy
+resources with Resource Manager templates and Resource Manager REST
+API</a>.</li>
+<li><a
+href="/azure/azure-resource-manager/templates/create-visual-studio-deployment-project">Creating
+and deploying Azure resource groups through Visual Studio</a>.</li>
+</ul>
+<pre><code>&lt;/details&gt;
+
+### Summary
+
+```json
+{
+    &quot;filename&quot;: &quot;articles/machine-learning/how-to-create-workspace-template.md&quot;,
+    &quot;modification_type&quot;: &quot;minor update&quot;,
+    &quot;modification_title&quot;: &quot;ワークスペーステンプレート作成ガイドの更新&quot;
+}</code></pre>
+<h3 id="explanation-3">Explanation</h3>
+<p>この変更は、<code>how-to-create-workspace-template.md</code>ファイルの内容を大規模に更新し、Azure
+Machine
+Learningのワークスペーステンプレート作成に関する情報を改善しています。具体的には、全体で42件の追加と42件の削除が行われ、合計84件の変更が実施されました。</p>
+<p>主な更新内容には以下が含まれます：</p>
+<ol class="incremental" type="1">
+<li><strong>日付の更新</strong>:
+文書の最終更新日が「2024年2月29日」から「2024年9月11日」に変更されました。</li>
+<li><strong>用語の統一</strong>:
+一部の用語が一貫性を持たせるために更新されています（例えば、“VNet”から”virtual
+network”への変更）。</li>
+<li><strong>情報の明確化</strong>:
+特定の技術用語や手順が明確に説明され、技術的な詳細が追加されました。例えば、リソースの作成やテンプレートの使用方法に関する具体的な手順の追加。</li>
+<li><strong>改善された表現</strong>:
+文の構文や表現を改善することで、読みやすさを向上させています。重要なフィールド名は太字にされ、目立つように工夫されています。</li>
+</ol>
+<p>これにより、読者はテンプレートの使用方法や構成要素をより理解しやすくなり、Azure
+Machine Learningのワークスペースを効率的に作成できるようになります。</p>
+</body>
+</html>
