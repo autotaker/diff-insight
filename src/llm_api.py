@@ -259,17 +259,22 @@ class LLMAPI:
             explanation += f"### {item['filename']}\n\n" + item_explanation + "\n\n"
             explanation_report += f"## {item['filename']}{{#{hash}}}\n\n"
             if 'patch' in item:
+                # find longest fence (^````*) in the patch
+                fences = ["```"] + re.findall(r"^(`{3,})", item['patch'], re.MULTILINE)
+                longest_fence = max(fences, key=len)
+                markdown_fence = longest_fence + '`'
+
                 explanation_report += textwrap.dedent("""\
                     <details>
                     <summary>Diff</summary>
-                    ```diff
+                    {markdown_fence}diff
                     {patch}
-                    ```
+                    {markdown_fence}
                     </details>
 
                     {item_explanation}
 
-                    """).format(patch=item['patch'], item_explanation=item_explanation)
+                    """).format(patch=item['patch'], item_explanation=item_explanation, markdown_fence=markdown_fence)
             else:
                 explanation_report += item_explanation + "\n\n"
 
