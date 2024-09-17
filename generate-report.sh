@@ -20,8 +20,12 @@ HEAD_SHA=$(jq -r '.sha' work/head.json)
 TODAY=$(date +%Y%m%d)
 
 if [ "$LAST_SHA" != "$HEAD_SHA" ]; then
-  pipenv run python src/main.py generate-report "${ORG}" "${REPO}" "${LAST_SHA}" "${HEAD_SHA}" work/report.md
-  # pandoc -i work/report.md -o docs/report-${TODAY}.html -f markdown+hard_line_breaks --template template.html
+  pipenv run python src/main.py generate-report "${ORG}" "${REPO}" "${LAST_SHA}" "${HEAD_SHA}" work/report-{date}-{category}.md
+  for file in work/report-*.md; do
+    if [ -f "$file" ]; then
+      pandoc -i "$file" -o "docs/$(basename "$file" .md).html" -f markdown+hard_line_breaks --template template.html
+    fi
+  done
   echo "HEAD_SHA: $HEAD_SHA"
   echo $HEAD_SHA > last-commit.sha
 fi

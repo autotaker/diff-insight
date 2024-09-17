@@ -1,0 +1,12 @@
+categories:
+  openai:
+    paths:
+      - articles/ai-services/openai
+  search:
+    paths:
+      - articles/search
+  misc:
+    paths:
+      - articles/ai-studio
+      - articles/ai-services/document-intelligence
+      - articles/ai-services/language-service

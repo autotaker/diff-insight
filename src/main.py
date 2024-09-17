@@ -6,6 +6,7 @@ import json
 import os
 import typer
 from cache import Cache
+from category_classifier import CategoryClassifier
 from github_api import GitHubAPI
 from index_generator import IndexGenerator
 from llm_api import LLMAPI
@@ -33,7 +34,7 @@ def fetch(owner: str, repo: str, base: str, head: str):
         raise typer.Abort()
     github_api = GitHubAPI(token)
     diff_data = github_api.get_repo_diff(owner, repo, base, head)
-    typer.echo(diff_data)
+    typer.echo(json.dumps(diff_data, ensure_ascii=False, indent=2))
 
 
 @app.command()
@@ -66,7 +67,7 @@ def generate_report(owner: str, repo: str, base: str, head: str, output: str):
     :param repo: Repository name
     :param base: Base commit SHA or branch name
     :param head: Head commit SHA or branch name
-    :param output: Output filename for the Markdown report
+    :param output: Output filename for the Markdown report like "report_{date}_{category}.md"
     """
     cache = Cache()
     if not token:
@@ -82,24 +83,37 @@ def generate_report(owner: str, repo: str, base: str, head: str, output: str):
         f"{base_key}_diff", github_api.get_repo_diff, owner, repo, base, head
     )
 
+    classifier = CategoryClassifier("categories.yaml")
+
     permalink = diff_data.get("permalink_url", "")
 
+    categories = classifier.classify_diff(diff_data)
     llm_api = LLMAPI(api_key)
-    explanation, summary = cache.with_cache(
-        f"{base_key}_explanation",
-        llm_api.generate_diff_explanation,
-        diff_data.get("files", ""),
-        "detailed",
-    )
-
     report_generator = ReportGenerator()
-    title = "Diff Insight Report"
     date = datetime.today().date()
-    report = report_generator.generate_markdown_report(
-        title, date, permalink, summary, explanation
-    )
-    report_generator.save_report_to_file(report, output)
-    typer.echo(f"Report saved to {output}")
+    datestr = date.strftime("%Y%m%d")
+
+    if not categories:
+        typer.echo("No patches maching the categories.")
+        return
+
+    for category, patches in categories.items():
+        typer.echo(f"Category: {category}")
+
+        explanation, summary = cache.with_cache(
+            f"{base_key}_{category}_explanation",
+            llm_api.generate_diff_explanation,
+            patches,
+            "detailed",
+        )
+
+        title = f"Diff Insight Report - {category}"
+        report = report_generator.generate_markdown_report(
+            title, date, permalink, summary, explanation
+        )
+        output_path = output.format(category=category, date=datestr)
+        report_generator.save_report_to_file(report, output_path)
+        typer.echo(f"Report saved to {output_path}")
 
 
 @app.command()

@@ -26,7 +26,6 @@ def parse_summary(diff_item: dict[str, Any], explanation: str) -> dict[str, str]
 
     ```json
     {
-        "filename": "src/llm_api.py",
         "modification_type": "new feature",
         "modification_title": "Add support for generating diff explanations"
     }
@@ -35,7 +34,7 @@ def parse_summary(diff_item: dict[str, Any], explanation: str) -> dict[str, str]
 
     parse_summary(explanation)
 
-        Output: {'filename': 'src/llm_api.py', 'modification_type': 'new feature', 'modification_title': 'Add support for generating diff explanations'}
+        Output: {'modification_type': 'new feature', 'modification_title': 'Add support for generating diff explanations'}
     """
     summary_match = re.search(r"## Summary\n\n```json\n(.*?)\n```", explanation, re.DOTALL)
     summary = {}
@@ -183,7 +182,6 @@ class LLMAPI:
 
             ```json
             {{
-                "filename": "{{filename in full path}}",
                 "modification_type": "{{purpose of the modification. Candidates are: \
                     'new feature', 'breaking change', 'bug fix', 'minor update'}}",
                 "modification_title": "{{Short title of the modification. Locale: {loc} }}"
