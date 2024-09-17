@@ -33,16 +33,6 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           LANG: ja_JP.UTF-8
           TZ: "Asia/Tokyo"
-      - name: Run Pandoc
-        uses: docker://pandoc/core
-        with:
-          args: -i work/report.md -o work/report.html -f markdown+hard_line_breaks -t html5 --template template.html
-      - name: Move report
-        run: |
-          TODAY=$(date "+%Y%m%d")
-          mv work/report.html docs/report-${TODAY}.html
-        env:
-          TZ: "Asia/Tokyo"
       - name: Configure git
         run: |
           git config --global user.email "autotaker@gmail.com"

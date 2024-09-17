@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2024-09-17" />
+  <title>Diff Insight Report - openai</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Diff Insight Report - openai</h1>
+<p class="date">2024-09-17</p>
+</header>
+<p><a
+href="https://github.com/MicrosoftDocs/azure-ai-docs/compare/MicrosoftDocs:022de22...MicrosoftDocs:135d681"
+target="_blank">View Diff on GitHub</a></p>
+<h1 id="ハイライト">ハイライト</h1>
+<p>このコード変更には、Azure
+OpenAIサービスに関連する複数の文書と関連メディアの更新が含まれています。主な新機能の追加および既存機能の更新内容、特に新しいモデルの詳細情報と利用方法が明確に示されています。</p>
+<h2 id="新機能">新機能</h2>
+<ol class="incremental" type="1">
+<li><strong>新しいモデルの導入</strong>: <code>o1-preview</code>および
+<code>o1-mini</code>モデルに関する情報が追加されました。</li>
+<li><strong>価格確認用画像の追加</strong>:
+新たに料金確認画面のスクリーンショットが追加されました。</li>
+<li><strong>GPT-4 Turbo with Visionガイドの追加</strong>: JavaScript
+SDKを使用して、この新しいモデルを利用するためのクイックスタートガイドが明記されました。</li>
+</ol>
+<h2 id="破壊的変更">破壊的変更</h2>
+<p>特に破壊的変更は含まれていないものの、日付や自動アップグレードの変更によって、一部ユーザーには影響が考えられます。例えば、<code>gpt-35-turbo</code>モデルの自動アップグレードの日付が変更された点などです。</p>
+<h2 id="その他の更新">その他の更新</h2>
+<ol class="incremental" type="1">
+<li>メタデータの更新:
+大部分の日付フィールドが最新の日付に更新されました。</li>
+<li>注意事項の追加:
+構造化出力やJSONモードの利用に際しての制限などが明記されました。</li>
+<li>文書の整備:
+各ガイド文書に対する詳細な説明と具体的な手順が追加されました。</li>
+<li>視覚資料の更新:
+新しいスクリーンショットの追加による文書の視覚的改善。</li>
+</ol>
+<h1 id="インサイト">インサイト</h1>
+<p>この変更は全体的にAzure
+OpenAIサービスの利用者にとって大きな利便性をもたらすもので、特に新しいモデルの紹介やその利用方法の詳細が追加された点が重要です。具体的な目的は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>ユーザー体験の向上</strong>:
+メタデータの更新や新しい画像の追加により、文書全体が最新情報を提供し、より直感的な操作が可能になっています。</li>
+<li><strong>具体的な利用ガイドの追加</strong>:
+特に新しいモデル（<code>o1-preview</code>および
+<code>o1-mini</code>）の導入に関連する情報が追加され、これによりユーザーがこれらのモデルをどのように利用できるかについて明確なガイダンスを提供しています。</li>
+<li><strong>技術的な詳細の充実</strong>:
+TypeScript、JavaScript、それぞれの利用環境に関する情報の区分けや依存関係の明確化により、開発者がスムーズに移行・構築できるように配慮されています。</li>
+<li><strong>コスト管理の支援</strong>:
+新たに価格確認の手法やスクリーンショットが提供されているため、ユーザーがデプロイメント前にコストを確認できるよう配慮されています。</li>
+</ol>
+<p>これらの更新・追加により、Azure
+OpenAIを活用するユーザーは、効率的かつ要所要所で整備された最新情報をもとに、アプリケーション開発や運用を進めることができます。また、新しい安全対策やリソース管理に関する情報が提供されたことで、利用者の信頼をさらに高めることが期待されます。</p>
+<h1 id="summary-table">Summary Table</h1>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 11%" />
+<col style="width: 25%" />
+<col style="width: 15%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr>
+<th>Filename</th>
+<th>Type</th>
+<th>Title</th>
+<th>Status</th>
+<th>A</th>
+<th>D</th>
+<th>M</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#item-03fc2e">model-retirements.md</a></td>
+<td>minor update</td>
+<td>モデルの退役と更新日付の変更</td>
+<td>modified</td>
+<td>9</td>
+<td>5</td>
+<td>14</td>
+</tr>
+<tr>
+<td><a href="#item-db2c37">models.md</a></td>
+<td>minor update</td>
+<td>新しいモデルの情報追加と更新</td>
+<td>modified</td>
+<td>18</td>
+<td>1</td>
+<td>19</td>
+</tr>
+<tr>
+<td><a href="#item-fcd528">dall-e-quickstart.md</a></td>
+<td>minor update</td>
+<td>DALL·Eクイックスタートのメタデータ更新</td>
+<td>modified</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td><a href="#item-2a6183">gpt-v-quickstart.md</a></td>
+<td>minor update</td>
+<td>GPT-4クイックスタートのメタデータとコンテンツの追加</td>
+<td>modified</td>
+<td>7</td>
+<td>1</td>
+<td>8</td>
+</tr>
+<tr>
+<td><a href="#item-50fa9e">json-mode.md</a></td>
+<td>minor update</td>
+<td>JSONモードに関する注意事項の追加</td>
+<td>modified</td>
+<td>3</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="#item-c8df1c">provisioned-get-started.md</a></td>
+<td>minor update</td>
+<td>プロビジョニング開始ガイドの更新</td>
+<td>modified</td>
+<td>18</td>
+<td>7</td>
+<td>25</td>
+</tr>
+<tr>
+<td><a href="#item-3eb72b">provisioned-throughput-onboarding.md</a></td>
+<td>minor update</td>
+<td>プロビジョニングスループットオンボーディングガイドの更新</td>
+<td>modified</td>
+<td>8</td>
+<td>5</td>
+<td>13</td>
+</tr>
+<tr>
+<td><a href="#item-cc2557">structured-outputs.md</a></td>
+<td>minor update</td>
+<td>構造化出力の使用に関する注意事項の追加</td>
+<td>modified</td>
+<td>3</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td><a href="#item-6cffcf">dall-e-javascript.md</a></td>
+<td>minor update</td>
+<td>DALL-E JavaScript ガイドの内容更新</td>
+<td>modified</td>
+<td>114</td>
+<td>23</td>
+<td>137</td>
+</tr>
+<tr>
+<td><a href="#item-a128c9">gpt-v-javascript.md</a></td>
+<td>new feature</td>
+<td>GPT-4 Turbo with VisionをJavaScript
+SDKで利用するためのクイックスタートガイドの追加</td>
+<td>added</td>
+<td>246</td>
+<td>0</td>
+<td>246</td>
+</tr>
+<tr>
+<td><a href="#item-786699">use-your-data-javascript.md</a></td>
+<td>minor update</td>
+<td>JavaScript SDKでのデータ活用ガイドの更新</td>
+<td>modified</td>
+<td>192</td>
+<td>59</td>
+<td>251</td>
+</tr>
+<tr>
+<td><a href="#item-761d2a">confirm-pricing.png</a></td>
+<td>new feature</td>
+<td>価格確認用の画像の追加</td>
+<td>added</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-5bc2ef">deployment-screen.png</a></td>
+<td>minor update</td>
+<td>デプロイメント画面の画像の更新</td>
+<td>modified</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-52c1f4">use-your-data-quickstart.md</a></td>
+<td>minor update</td>
+<td>クイックスタートガイドの更新</td>
+<td>modified</td>
+<td>22</td>
+<td>3</td>
+<td>25</td>
+</tr>
+<tr>
+<td><a href="#item-53303b">whats-new.md</a></td>
+<td>new feature</td>
+<td>Azure OpenAIサービスの新機能に関する更新</td>
+<td>modified</td>
+<td>44</td>
+<td>1</td>
+<td>45</td>
+</tr>
+</tbody>
+</table>
+<h1 id="modified-contents">Modified Contents</h1>
+<h2
+id="item-03fc2e">articles/ai-services/openai/concepts/model-retirements.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -4,7 +4,7 @@ titleSuffix: Azure OpenAI</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> description: Learn about the model deprecations and retirements in Azure OpenAI.</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> ms.service: azure-ai-openai</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> ms.topic: conceptual</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.date: 09/09/2024</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.date: 09/12/2024</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a> ms.custom: </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> manager: nitinme</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a> author: mrbullwinkle</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -91,9 +91,9 @@ These models are currently available for use in Azure OpenAI Service.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a> | Model | Version | Retirement date | Suggested replacements |</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a> | ---- | ---- | ---- | --- |</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="st">-| `gpt-35-turbo` | 0301 | January 27, 2025&lt;br&gt;&lt;br&gt; Deployments set to [**Auto-update to default**](/azure/ai-services/openai/how-to/working-with-models?tabs=powershell#auto-update-to-default) will be automatically upgraded to version: `0125`, starting on November 15, 2024.   | `gpt-35-turbo` (0125) &lt;br&gt;&lt;br&gt; `gpt-4o-mini`  |</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="st">-| `gpt-35-turbo`&lt;br&gt;`gpt-35-turbo-16k` | 0613 | January 27, 2025 &lt;br&gt;&lt;br&gt; Deployments set to [**Auto-update to default**](/azure/ai-services/openai/how-to/working-with-models?tabs=powershell#auto-update-to-default) will be automatically upgraded to version: `0125`, starting on November 15, 2024.  | `gpt-35-turbo` (0125) &lt;br&gt;&lt;br&gt; `gpt-4o-mini`|</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="st">-| `gpt-35-turbo` | 1106 | No earlier than Nov 17, 2024 &lt;br&gt;&lt;br&gt; Deployments set to [**Auto-update to default**](/azure/ai-services/openai/how-to/working-with-models?tabs=powershell#auto-update-to-default) will be automatically upgraded to version: `0125`, starting on November 15, 2024. | `gpt-35-turbo` (0125) &lt;br&gt;&lt;br&gt; `gpt-4o-mini` |</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="va">+| `gpt-35-turbo` | 0301 | January 27, 2025&lt;br&gt;&lt;br&gt; Deployments set to [**Auto-update to default**](/azure/ai-services/openai/how-to/working-with-models?tabs=powershell#auto-update-to-default) will be automatically upgraded to version: `0125`, starting on November 13, 2024.   | `gpt-35-turbo` (0125) &lt;br&gt;&lt;br&gt; `gpt-4o-mini`  |</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="va">+| `gpt-35-turbo`&lt;br&gt;`gpt-35-turbo-16k` | 0613 | January 27, 2025 &lt;br&gt;&lt;br&gt; Deployments set to [**Auto-update to default**](/azure/ai-services/openai/how-to/working-with-models?tabs=powershell#auto-update-to-default) will be automatically upgraded to version: `0125`, starting on November 13, 2024.  | `gpt-35-turbo` (0125) &lt;br&gt;&lt;br&gt; `gpt-4o-mini`|</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="va">+| `gpt-35-turbo` | 1106 | No earlier than Nov 17, 2024 &lt;br&gt;&lt;br&gt; Deployments set to [**Auto-update to default**](/azure/ai-services/openai/how-to/working-with-models?tabs=powershell#auto-update-to-default) will be automatically upgraded to version: `0125`, starting on November 13, 2024. | `gpt-35-turbo` (0125) &lt;br&gt;&lt;br&gt; `gpt-4o-mini` |</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a> | `gpt-35-turbo` | 0125 | No earlier than Feb 22, 2025 | `gpt-4o-mini` |</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a> | `gpt-4`&lt;br&gt;`gpt-4-32k` | 0314 | June 6, 2025 | `gpt-4o` |</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a> | `gpt-4`&lt;br&gt;`gpt-4-32k` | 0613 | June 6, 2025 | `gpt-4o` |</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -115,7 +115,7 @@ These models are currently available for use in Azure OpenAI Service.</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a> | Model | Current default version | New default version | Default upgrade date |</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a> |---|---|---|---|</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="st">-| `gpt-35-turbo` | 0301 | 0125 | Deployments of versions `0301`, `0613`, and `1106` set to [**Auto-update to default**](/azure/ai-services/openai/how-to/working-with-models?tabs=powershell#auto-update-to-default) will be automatically upgraded to version: `0125`, starting on November 15, 2024.|</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="va">+| `gpt-35-turbo` | 0301 | 0125 | Deployments of versions `0301`, `0613`, and `1106` set to [**Auto-update to default**](/azure/ai-services/openai/how-to/working-with-models?tabs=powershell#auto-update-to-default) will be automatically upgraded to version: `0125`, starting on November 13, 2024.|</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -158,6 +158,10 @@ If you&#39;re an existing customer looking for information about these models, see [</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a> ## Retirement and deprecation history</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="va">+## September 12, 2024</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="va">+* `gpt-35-turbo` (0301), (0613), (1106) and `gpt-35-turbo-16k` (0613) auto-update to default upgrade date updated to November 13, 2024.</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a> ## September 9, 2024</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a> * `gpt-35-turbo` (0301) and (0613) retirement changed to January 27, 2025.</span></code></pre></div>
+</details>
+<h3 id="summary">Summary</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;モデルの退役と更新日付の変更&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation">Explanation</h3>
+<p>この変更では、Azure
+OpenAIサービスのモデルに関する文書が更新されました。具体的には、モデルの退役日に関する情報が変更され、いくつかの自動アップグレードの日付が更新されています。</p>
+<p>主な変更点は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>ファイルのメタデータ更新</strong>:
+<ul class="incremental">
+<li><code>ms.date</code>フィールドが「2024年9月9日」から「2024年9月12日」に変更されました。</li>
+</ul></li>
+<li><strong>自動アップグレードの日付変更</strong>:
+<ul class="incremental">
+<li>モデル <code>gpt-35-turbo</code>（0301）、（0613）、（1106）、および
+<code>gpt-35-turbo-16k</code>（0613）の自動アップグレードの日付が、2024年11月15日から2024年11月13日に変更されています。</li>
+</ul></li>
+<li><strong>資料の整備</strong>:
+<ul class="incremental">
+<li>全体的に、退役モデルの表が更新され、最新情報に合わせて内容が整備されています。</li>
+</ul></li>
+</ol>
+<p>この更新により、ユーザーは最新のモデル退役情報とそれに伴う変更内容を容易に確認できるようになりました。</p>
+<h2 id="item-db2c37">articles/ai-services/openai/concepts/models.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -4,7 +4,7 @@ titleSuffix: Azure OpenAI</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> description: Learn about the different model capabilities that are available with Azure OpenAI.</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> ms.service: azure-ai-openai</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> ms.topic: conceptual</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.date: 09/09/2024</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.date: 09/12/2024</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a> ms.custom: references_regions, build-2023, build-2023-dataai, refefences_regions</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a> manager: nitinme</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a> author: mrbullwinkle #ChrisHMSFT</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -26,6 +26,23 @@ Azure OpenAI Service is powered by a diverse set of models with different capabi</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a> | [Whisper](#whisper-models) | A series of models in preview that can transcribe and translate speech to text. |</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a> | [Text to speech](#text-to-speech-models-preview) (Preview) | A series of models in preview that can synthesize text to speech. |</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="va">+## o1-preview and o1-mini models limited access</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="va">+The Azure OpenAI `o1-preview` and `o1-mini` models are specifically designed to tackle reasoning and problem-solving tasks with increased focus and capability. These models spend more time processing and understanding the user&#39;s request, making them exceptionally strong in areas like science, coding, and math compared to previous iterations.</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="va">+### Availability</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="va">+The `o1-preview` and `o1-mini` models are available in the East US2 region for limited access through the [AI Studio](https://ai.azure.com) early access playground. Data processing for the `o1` models may occur in a different region than where they are available for use.</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="va">+To try the `o1-preview` and `o1-mini` models in the early access playground, **registration is required, and access will be granted based on Microsoft’s eligibility criteria**.</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="va">+Request access: [limited access model application](https://aka.ms/oai/modelaccess)</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="va">+Once access has been granted, you will need to:</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Navigate to https://ai.azure.com/resources and select a resource in the `eastus2` region. If you do not have an Azure OpenAI resource in this region you will need to [create one](https://portal.azure.com/#create/Microsoft.CognitiveServicesOpenAI).  </span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="va">+2. Once the `eastus2` Azure OpenAI resource is selected, in the upper left-hand panel under **Playgrounds** select **Early access playground (preview)**.</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a> ## GPT-4o and GPT-4 Turbo</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a> GPT-4o integrates text and images in a single model, enabling it to handle multiple data types simultaneously. This multimodal approach enhances accuracy and responsiveness in human-computer interactions. GPT-4o matches GPT-4 Turbo in English text and coding tasks while offering superior performance in non-English languages and vision tasks, setting new benchmarks for AI capabilities.</span></code></pre></div>
+</details>
+<h3 id="summary-1">Summary</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;新しいモデルの情報追加と更新&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-1">Explanation</h3>
+<p>変更された内容では、Azure
+OpenAIサービスに関する文書が更新され、新しいモデル情報やその利用条件が追加されました。</p>
+<p>主な変更点は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>ファイルのメタデータ更新</strong>:
+<ul class="incremental">
+<li><code>ms.date</code>フィールドが「2024年9月9日」から「2024年9月12日」に更新されました。</li>
+</ul></li>
+<li><strong>新しいモデルの導入</strong>:
+<ul class="incremental">
+<li><code>o1-preview</code>および
+<code>o1-mini</code>モデルに関するセクションが新たに追加されました。これらのモデルは、推論や問題解決タスクに特化しており、ユーザーの要求を処理して理解する能力が向上しています。科学、コーディング、数学などの分野での強みが強調されています。</li>
+</ul></li>
+<li><strong>利用可能性とアクセス条件の説明</strong>:
+<ul class="incremental">
+<li><code>o1-preview</code>および <code>o1-mini</code>モデルは、East
+US2地域で限られたアクセスで利用可能であることが記載されています。また、これらのモデルを利用するためには事前登録が必要であり、Microsoftの基準に基づいてアクセスが付与されることが説明されています。</li>
+</ul></li>
+<li><strong>アクセス方法の手順</strong>:
+<ul class="incremental">
+<li>アクセスをリクエストしてから、特定の手順に従ってモデルを利用する方法が明確に説明されています。</li>
+</ul></li>
+</ol>
+<p>これにより、Azure
+OpenAIサービスを利用する開発者や研究者は、新しいモデルの詳細な情報と、その利用のための手続きについて理解を深めることができます。</p>
+<h2
+id="item-fcd528">articles/ai-services/openai/dall-e-quickstart.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -5,11 +5,11 @@ description: Learn how to get started generating images with Azure OpenAI Servic</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> #services: cognitive-services</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> manager: nitinme</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> ms.service: azure-ai-openai</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.custom: devx-track-python, devx-track-dotnet, devx-track-extended-java, devx-track-go, devx-track-js</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.custom: devx-track-python, devx-track-dotnet, devx-track-extended-java, devx-track-go, devx-track-js, devx-track-ts</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a> ms.topic: quickstart</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a> author: PatrickFarley</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a> ms.author: pafarley</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.date: 08/21/2024</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.date: 09/06/2024</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a> zone_pivot_groups: openai-quickstart-dall-e</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a> ---</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-2">Summary</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;DALL·Eクイックスタートのメタデータ更新&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-2">Explanation</h3>
+<p>この変更では、DALL·Eのクイックスタートに関する文書が更新され、メタデータにいくつかの修正が加えられました。</p>
+<p>主な変更点は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>カスタムメタデータの追加</strong>:
+<ul class="incremental">
+<li><code>ms.custom</code>フィールドに
+<code>devx-track-ts</code>が追加されました。これにより、TypeScriptに関するトラッキングが含まれることになりました。</li>
+</ul></li>
+<li><strong>更新日付の変更</strong>:
+<ul class="incremental">
+<li><code>ms.date</code>フィールドが「2024年8月21日」から「2024年9月6日」に更新されました。これにより、文書が最新であることが示されます。</li>
+</ul></li>
+</ol>
+<p>これらの変更により、DALL·Eのクイックスタートガイドが新たな技術トラッキングの情報を反映し、最新の状況に合わせた情報提供が可能になりました。</p>
+<h2
+id="item-2a6183">articles/ai-services/openai/gpt-v-quickstart.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -5,7 +5,7 @@ description: Use this article to get started using Azure OpenAI to deploy and us</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a> services: cognitive-services</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a> manager: nitinme</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a> ms.service: azure-ai-openai</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.custom: devx-track-python</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.custom: devx-track-python, devx-track-js, devx-track-ts</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a> ms.topic: quickstart</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> author: PatrickFarley</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a> ms.author: pafarley</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -39,6 +39,12 @@ Get started using GPT-4 Turbo with images with the Azure OpenAI Service.</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a> ::: zone-end</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="va">+::: zone pivot=&quot;programming-language-javascript&quot;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="va">+[!INCLUDE [JavaScript quickstart](includes/gpt-v-javascript.md)]</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="va">+::: zone-end</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a> ## Next steps</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a> * Learn more about these APIs in the [GPT-4 Turbo with Vision how-to guide](./gpt-v-quickstart.md)</span></code></pre></div>
+</details>
+<h3 id="summary-3">Summary</h3>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;GPT-4クイックスタートのメタデータとコンテンツの追加&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-3">Explanation</h3>
+<p>この変更では、GPT-4のクイックスタートガイドが更新され、メタデータおよび内容に関するいくつかの修正が加えられました。</p>
+<p>主な変更点は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>カスタムメタデータの追加</strong>:
+<ul class="incremental">
+<li><code>ms.custom</code>フィールドに <code>devx-track-js</code>および
+<code>devx-track-ts</code>が追加されました。これにより、JavaScriptおよびTypeScriptに関するトラッキングが含まれるようになりました。</li>
+</ul></li>
+<li><strong>新しいゾーンの追加</strong>:
+<ul class="incremental">
+<li>JavaScript用のゾーンが新たに追加され、その中で「JavaScriptクイックスタート」の内容がインクルードされています。これは、JavaScriptを使用する開発者が簡単に情報を取得できるようにするためのものです。</li>
+</ul></li>
+<li><strong>次のステップの明確化</strong>:
+<ul class="incremental">
+<li>「次のステップ」セクションが強調され、APIについてのさらなる情報を学ぶためのリンクが提供されています。</li>
+</ul></li>
+</ol>
+<p>これらの変更により、開発者はAzure
+OpenAIを使用してのGPT-4の導入に関する情報をより容易に得られ、異なるプログラミング言語に対するサポートが拡充されました。</p>
+<h2
+id="item-50fa9e">articles/ai-services/openai/how-to/json-mode.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -20,6 +20,9 @@ JSON mode allows you to set the models response format to return a valid JSON ob</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> &gt; [!NOTE]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> &gt; While JSON mode is still supported, when possible we recommend using [structured outputs](./structured-outputs.md). Like JSON mode structured outputs generates valid JSON, but with the added benefit that you can constrain the model to use a specific JSON schema.</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt;[!NOTE]</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; Currently Structured outputs is not supported on [bring your own data](../concepts/use-your-data.md) scenario.</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a> ## JSON mode support</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a> JSON mode is only currently supported with the following models:</span></code></pre></div>
+</details>
+<h3 id="summary-4">Summary</h3>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;JSONモードに関する注意事項の追加&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-4">Explanation</h3>
+<p>この変更では、JSONモードに関する文書が更新され、新しい注意事項が追加されました。</p>
+<p>主な変更点は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>注意事項の追加</strong>:
+<ul class="incremental">
+<li>新たに追加された注意事項では、現在のところ「構造化出力」が「データを持ち込む」シナリオでサポートされていないことが明記されました。これにより、ユーザーは特定の状況で利用できない機能について、事前に理解することができます。</li>
+</ul></li>
+<li><strong>JSONモードの説明の強調</strong>:
+<ul class="incremental">
+<li>JSONモードの使用に関する情報が強調されています。特に、構造化出力の推奨理由が再確認され、ユーザーに対して効率的なデータフォーマットの使用を促しています。</li>
+</ul></li>
+</ol>
+<p>これらの変更により、JSONモードの利用に関する理解が深まり、ユーザーは特定の使用条件や制限についてより明確な情報を得ることができます。</p>
+<h2
+id="item-c8df1c">articles/ai-services/openai/how-to/provisioned-get-started.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -75,7 +75,17 @@ After you purchase a commitment on your quota, you can create a deployment. To c</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a> Important things to note: </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a> * The deployment dialog contains a reminder that you can purchase an Azure Reservation for Azure OpenAI Provisioned to obtain a significant discount for a term commitment. </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">-* There is a message that tells you the list, hourly price of the deployment that you would be charged if this deployment is not covered by a reservation.  This is a list price that does not include any negotiated discounts for your company. </span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="va">+Once you have entered the deployment settings, click **Confirm Pricing** to continue.  A pricing confirmation dialog will appear that will display the list price for the deployment, if you choose to pay for it on an hourly basis, with no Azure Reservation to provide a term discount.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="va">+If you are unsure of the costs, cancel the deployment and proceed once you understand the payment model and underlying costs for provisioned deployment. This step may prevent unexpected, high charges on your payment invoice. Resources to educate yourself include: </span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="va">+* [Azure Pricing Portal](https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/) </span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="va">+* [Understanding the provisioned throughput purchase model](provisioned-throughput-onboarding.md#understanding-the-provisioned-throughput-purchase-model) </span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="va">+The image below shows the pricing confirmation you will see. The price shown is an example only. </span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/provisioned/confirm-pricing.png&quot; alt-text=&quot;Screenshot showing the pricing confirmation screen.&quot; lightbox=&quot;../media/provisioned/confirm-pricing.png&quot;:::</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a> If you wish to create your deployment programmatically, you can do so with the following Azure CLI command. Update the `sku-capacity` with the desired number of provisioned throughput units.</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -110,16 +120,17 @@ Things to notice:</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a> Selecting a resource and clicking **Switch resource** will cause the deployment dialog to redisplay using the selected resource. You can then proceed to create your deployment in the new region. </span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="st">-Learn more about the purchase model and how to purchase a reservation: </span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="st">-* [Azure OpenAI provisioned onboarding guide](./provisioned-throughput-onboarding.md) </span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="st">-* [Guide for Azure OpenAI provisioned reservations](../concepts/provisioned-throughput.md) </span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a> ## Optionally purchase a reservation </span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a> Following the creation of your deployment, you might want to purchase a term discount via an Azure Reservation.  An Azure Reservation can provide a substantial discount on the hourly rate for users intending to use the deployment beyond a few days.   </span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="st">-For more information on purchasing a reservation, see [Save costs with Microsoft Azure OpenAI service Provisioned Reservations](/azure/cost-management-billing/reservations/azure-openai).</span></span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a><span class="va">+For more information on the purchase model and reservations, see:</span></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="va">+* [Save costs with Microsoft Azure OpenAI service provisioned reservations](/azure/cost-management-billing/reservations/azure-openai).</span></span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a><span class="va">+* [Azure OpenAI provisioned onboarding guide](./provisioned-throughput-onboarding.md) </span></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="va">+* [Guide for Azure OpenAI provisioned reservations](../concepts/provisioned-throughput.md) </span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; [!IMPORTANT]</span></span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; Capacity availability for model deployments is dynamic and changes frequently across regions and models. To prevent you from purchasing a reservation for more PTUs than you can use, create deployments first, and then purchase the Azure Reservation to cover the PTUs you have deployed. This best practice will ensure that you can take full advantage of the reservation discount and prevent you from purchasing a term commitment that you cannot use.</span></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a> ## Make your first inferencing calls</span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a> The inferencing code for provisioned deployments is the same a standard deployment type. The following code snippet shows a chat completions call to a GPT-4 model. For your first time using these models programmatically, we recommend starting with our [quickstart guide](../quickstart.md). Our recommendation is to use the OpenAI library with version 1.0 or greater since this includes retry logic within the library.</span></code></pre></div>
+</details>
+<h3 id="summary-5">Summary</h3>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;プロビジョニング開始ガイドの更新&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-5">Explanation</h3>
+<p>この変更では、Azure
+OpenAIのプロビジョニング開始ガイドが更新され、デプロイメントの手続きや価格確認に関する重要な情報が追加されました。</p>
+<p>主な変更点は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>価格確認プロセスの明確化</strong>:
+<ul class="incremental">
+<li>ユーザーがデプロイメントの設定を入力した後、<strong>Confirm
+Pricing</strong>をクリックすることで、デプロイメントのリスト価格が表示されることが追加されました。この処理により、ユーザーは料金モデルを理解した上でデプロイを進めることが可能になります。</li>
+</ul></li>
+<li><strong>コスト理解の推奨</strong>:
+<ul class="incremental">
+<li>ユーザーがデプロイメントをキャンセルし、料金モデルや関連コストについての理解を深められるようにするための注意喚起が追加されています。これにより、予期しない高額請求を防ぐためのリソースへのリンクも提供されています。</li>
+</ul></li>
+<li><strong>視覚的な資料の追加</strong>:
+<ul class="incremental">
+<li>価格確認画面のスクリーンショットが追加され、ユーザーが実際に目にすることになる確認画面の例を示しています。</li>
+</ul></li>
+<li><strong>予約購入に関する指導と注意事項</strong>:
+<ul class="incremental">
+<li>モデルのデプロイメントに関して、予約購入の動的な可用性についての重要な注意事項が追加されており、事前にデプロイを行った上で適切なPTU数に対する予約を購入することが推奨されています。</li>
+</ul></li>
+</ol>
+<p>これらの変更により、ユーザーがプロビジョニングデプロイメントをより理解しやすくし、コスト管理を適切に行えるよう支援する内容となっています。</p>
+<h2
+id="item-3eb72b">articles/ai-services/openai/how-to/provisioned-throughput-onboarding.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -3,7 +3,7 @@ title: Azure OpenAI Service Provisioned Throughput Units (PTU) onboarding</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a> description: Learn about provisioned throughput units onboarding and Azure OpenAI. </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a> ms.service: azure-ai-openai</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> ms.topic: conceptual </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.date: 08/07/2024</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.date: 09/12/2024</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a> manager: nitinme</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a> author: mrbullwinkle </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a> ms.author: mbullwin </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -81,6 +81,7 @@ Customers that require long-term usage of provisioned deployments, however, migh</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a> &gt; It is not recommended to scale production deployments according to incoming traffic and pay for them purely on an hourly basis. There are two reasons for this:</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a> &gt; * The cost savings achieved by purchasing an Azure Reservation for Azure OpenAI Provisioned are significant, and it will be less expensive in many cases to maintain a deployment sized for full production volume paid for via a reservation than it would be to scale the deployment with incoming traffic.</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a> &gt; * Having unused provisioned quota (PTUs) does not guarentee that capacity will be available to support increasing the size of the deployment when required. Quota limits the maximum number of PTUs that can be deployed, but it is not a capacity guarantee. Provisioned capacity for each region and modal dynamically changes throughout the day and might not be available when required. As a result, it is recommended to maintain a permanant deployment to cover your traffic needs (paid for via a reservation).</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; * Charges for deployments on a deleted resource will continue until the resource is purged.  To prevent this, delete a resource’s deployment before deleting the resource.  For more information, see [Recover or purge deleted Azure AI services resources](../../recover-purge-resources.md). </span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a> ## Azure Reservations for Azure OpenAI Provisioned   </span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -103,9 +104,11 @@ Discounts on top of the hourly usage price can be obtained by purchasing an Azur</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a> * If the size of provisioned deployments within the scope of a reservation exceeds the amount of the reservation, the excess is charged at the hourly rate. For example, if deployments amounting to 250 PTUs exist within the scope of a 200 PTU reservation, 50 PTUs will be charged on an hourly basis until the deployment sizes are reduced to 200 PTUs, or a new reservation is created to cover the remaining 50. </span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a> * Reservations guarantee a discounted price for the selected term.  They do not reserve capacity on the service or guarantee that it will be available when a deployment is created.  It is highly recommended that customers create deployments prior to purchasing a reservation to prevent from over-purchasing a reservation. </span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="st">- </span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="st">-&gt; [!NOTE]</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="st">-&gt; The Azure role and tenant policy requirements to purchase a reservation are different than those required to create a deployment or Azure OpenAI resource. See Azure OpenAI [Provisioned reservation documentation](https://aka.ms/oai/docs/ptum-reservations) for more details.</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; [!IMPORTANT] </span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; * Capacity availability for model deployments is dynamic and changes frequently across regions and models.  To prevent you from purchasing a reservation for more PTUs than you can use, create deployments first, and then purchase the Azure Reservation to cover the PTUs you have deployed.  This best practice will ensure that you can take full advantage of the reservation discount and prevent you from purchasing a term commitment that you cannot use. </span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt;</span></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; * The Azure role and tenant policy requirements to purchase a reservation are different than those required to create a deployment or Azure OpenAI resource.  Verify authorization to purchase reservations in advance of needing to do so. See Azure OpenAI [Provisioned reservation documentation](https://aka.ms/oai/docs/ptum-reservations) for more details.</span></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a> ## Important: Sizing Azure OpenAI Provisioned Reservations </span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -119,7 +122,7 @@ To assist customers with purchasing the correct reservation amounts. The total n</span></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a> Managing Azure Reservations </span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="st">-After a reservation is created, it is a best practice monitor it to ensure it is receiving the usage you are expecting.  This may be done via the Azure Reservation Portal or Azure Monitor.  Details on these topics and others can be found here: </span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a><span class="va">+After a reservation is created, it is a best practice monitor it to ensure it is receiving the usage you are expecting.  This can be done via the Azure Reservation Portal or Azure Monitor.  Details on these topics and others can be found here: </span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a> * [View Azure reservation utilization](/azure/cost-management-billing/reservations/reservation-utilization) </span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a> * [View Azure Reservation purchase and refund transactions](/azure/cost-management-billing/reservations/view-purchase-refunds) </span></code></pre></div>
+</details>
+<h3 id="summary-6">Summary</h3>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;プロビジョニングスループットオンボーディングガイドの更新&quot;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-6">Explanation</h3>
+<p>この変更では、Azure
+OpenAIサービスのプロビジョニングスループットオンボーディングガイドが更新され、運用に関する重要な情報が追加されました。</p>
+<p>主な変更点は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>日付の更新</strong>:
+<ul class="incremental">
+<li>ドキュメントの日付が08/07/2024から09/12/2024に変更され、最新の情報が提供されていることを示しています。</li>
+</ul></li>
+<li><strong>デプロイメント削除に関する注意事項の追加</strong>:
+<ul class="incremental">
+<li>デプロイメントが削除されたリソースに対しては、リソースが完全に消去されるまで課金が続くことが明記されました。このため、リソースを削除する前にデプロイメントを削除することが推奨されています。</li>
+</ul></li>
+<li><strong>動的な可用性に関する重要な注意</strong>:
+<ul class="incremental">
+<li>モデルデプロイメントの容量の可用性が動的に変わることが強調され、予約購入の前にデプロイメントを作成することがベストプラクティスとして推奨されています。この変更により、ユーザーは無駄な予約購入を避けることができます。</li>
+</ul></li>
+<li><strong>予約の監視に関する提案の明確化</strong>:
+<ul class="incremental">
+<li>予約が作成された後は、その使用状況を監視することが推奨されており、Azure
+Reservation PortalやAzure
+Monitorを通じて行うことができることが説明されています。</li>
+</ul></li>
+</ol>
+<p>これらの改善により、ユーザーはコスト管理やリソースの運用についてより良い理解を得ることができ、より効率的にAzure
+OpenAIサービスを活用できるようになります。</p>
+<h2
+id="item-cc2557">articles/ai-services/openai/how-to/structured-outputs.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -16,6 +16,9 @@ recommendations: false</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a> Structured outputs make a model follow a [JSON Schema](https://json-schema.org/overview/what-is-jsonschema) definition that you provide as part of your inference API call. This is in contrast to the older [JSON mode](./json-mode.md) feature, which guaranteed valid JSON would be generated, but was unable to ensure strict adherence to the supplied schema. Structured outputs is recommended for function calling, extracting structured data, and building complex multi-step workflows.</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt;[!NOTE]</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; Currently Structured outputs is not supported on [bring your own data](../concepts/use-your-data.md) scenario.</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a> ## Supported models</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a> Currently only `gpt-4o` version: `2024-08-06` supports structured outputs.</span></code></pre></div>
+</details>
+<h3 id="summary-7">Summary</h3>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;構造化出力の使用に関する注意事項の追加&quot;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-7">Explanation</h3>
+<p>この変更では、構造化出力機能に関するガイドが更新され、現在の制約についての重要な情報が追加されました。</p>
+<p>主な変更点は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>注意事項の追加</strong>:
+<ul class="incremental">
+<li>構造化出力機能が「自分のデータを持ち込む（bring your own
+data）」シナリオでサポートされていないことが注記として加えられました。これにより、ユーザーはこの機能を利用する際の制約を理解しやすくなっています。</li>
+</ul></li>
+<li><strong>内容の強調</strong>:
+<ul class="incremental">
+<li>構造化出力は、提供したJSONスキーマに従ってモデルが動作することを強調。これにより、ユーザーは旧来のJSONモードとの違いを意識し、構造化出力の利用目的や利点について理解を深めることができます。</li>
+</ul></li>
+</ol>
+<p>この変更により、ユーザーは構造化出力の機能を使用する際の注意点を把握し、適切なシナリオでこの機能を活用できるよう支援されています。</p>
+<h2
+id="item-6cffcf">articles/ai-services/openai/includes/dall-e-javascript.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -8,19 +8,30 @@ ms.service: azure-ai-openai</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a> ms.topic: include</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a> author: PatrickFarley</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a> ms.author: pafarley</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.date: 08/24/2023</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.date: 09/06/2024</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a> ---</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a> Use this guide to get started generating images with the Azure OpenAI SDK for JavaScript.</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="st">-[Library source code](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai) | [Package (npm)](https://www.npmjs.com/package/@azure/openai) | [Samples](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/openai/Azure.AI.OpenAI/tests/Samples)</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="va">+[Reference documentation](https://platform.openai.com/docs/api-reference/images/create) | [Source code](https://github.com/openai/openai-node) | [Package (npm)](https://www.npmjs.com/package/openai) | [Samples](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai/samples)</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a> ## Prerequisites</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [TypeScript](#tab/typescript)</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="va">+- An Azure subscription - [Create one for free](https://azure.microsoft.com/free/cognitive-services?azure-portal=true)</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="va">+- [LTS versions of Node.js](https://github.com/nodejs/release#release-schedule)</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="va">+- [TypeScript](https://www.typescriptlang.org/download/)</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="va">+- An Azure OpenAI resource created in a supported region (see [Region availability](/azure/ai-services/openai/concepts/models#model-summary-table-and-region-availability)). For more information, see [Create a resource and deploy a model with Azure OpenAI](../how-to/create-resource.md).</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [JavaScript](#tab/javascript)</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a> - An Azure subscription - [Create one for free](https://azure.microsoft.com/free/cognitive-services?azure-portal=true)</span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a> - [LTS versions of Node.js](https://github.com/nodejs/release#release-schedule)</span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a> - An Azure OpenAI resource created in a supported region (see [Region availability](/azure/ai-services/openai/concepts/models#model-summary-table-and-region-availability)). For more information, see [Create a resource and deploy a model with Azure OpenAI](../how-to/create-resource.md).</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="va">+---</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a> ## Setup</span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -39,10 +50,10 @@ npm init</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-36"><a href="#cb17-36" aria-hidden="true" tabindex="-1"></a> ## Install the client library</span>
+<span id="cb17-37"><a href="#cb17-37" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-38"><a href="#cb17-38" aria-hidden="true" tabindex="-1"></a><span class="st">-Install the Azure OpenAI client library for JavaScript with npm:</span></span>
+<span id="cb17-39"><a href="#cb17-39" aria-hidden="true" tabindex="-1"></a><span class="va">+Install the client libraries with:</span></span>
+<span id="cb17-40"><a href="#cb17-40" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-41"><a href="#cb17-41" aria-hidden="true" tabindex="-1"></a> ```console</span>
+<span id="cb17-42"><a href="#cb17-42" aria-hidden="true" tabindex="-1"></a><span class="st">-npm install @azure/openai</span></span>
+<span id="cb17-43"><a href="#cb17-43" aria-hidden="true" tabindex="-1"></a><span class="va">+npm install openai @azure/identity</span></span>
+<span id="cb17-44"><a href="#cb17-44" aria-hidden="true" tabindex="-1"></a> ```</span>
+<span id="cb17-45"><a href="#cb17-45" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-46"><a href="#cb17-46" aria-hidden="true" tabindex="-1"></a> Your app&#39;s _package.json_ file will be updated with the dependencies.</span>
+<span id="cb17-47"><a href="#cb17-47" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -51,43 +62,123 @@ Your app&#39;s _package.json_ file will be updated with the dependencies.</span></span>
+<span id="cb17-48"><a href="#cb17-48" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-49"><a href="#cb17-49" aria-hidden="true" tabindex="-1"></a> Create a new file named _ImageGeneration.js_ and open it in your preferred code editor. Copy the following code into the _ImageGeneration.js_ file:</span>
+<span id="cb17-50"><a href="#cb17-50" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-51"><a href="#cb17-51" aria-hidden="true" tabindex="-1"></a><span class="st">-```javascript</span></span>
+<span id="cb17-52"><a href="#cb17-52" aria-hidden="true" tabindex="-1"></a><span class="st">-const { OpenAIClient, AzureKeyCredential } = require(&quot;@azure/openai&quot;);</span></span>
+<span id="cb17-53"><a href="#cb17-53" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [TypeScript](#tab/typescript)</span></span>
+<span id="cb17-54"><a href="#cb17-54" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-55"><a href="#cb17-55" aria-hidden="true" tabindex="-1"></a><span class="va">+```typescript</span></span>
+<span id="cb17-56"><a href="#cb17-56" aria-hidden="true" tabindex="-1"></a><span class="va">+import &quot;dotenv/config&quot;;</span></span>
+<span id="cb17-57"><a href="#cb17-57" aria-hidden="true" tabindex="-1"></a><span class="va">+import { AzureOpenAI } from &quot;openai&quot;;</span></span>
+<span id="cb17-58"><a href="#cb17-58" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-59"><a href="#cb17-59" aria-hidden="true" tabindex="-1"></a> // You will need to set these environment variables or edit the following values</span>
+<span id="cb17-60"><a href="#cb17-60" aria-hidden="true" tabindex="-1"></a><span class="st">-const endpoint = process.env[&quot;AZURE_OPENAI_ENDPOINT&quot;] ;</span></span>
+<span id="cb17-61"><a href="#cb17-61" aria-hidden="true" tabindex="-1"></a><span class="st">-const azureApiKey = process.env[&quot;AZURE_OPENAI_API_KEY&quot;] ;</span></span>
+<span id="cb17-62"><a href="#cb17-62" aria-hidden="true" tabindex="-1"></a><span class="va">+const endpoint = process.env[&quot;AZURE_OPENAI_ENDPOINT&quot;];</span></span>
+<span id="cb17-63"><a href="#cb17-63" aria-hidden="true" tabindex="-1"></a><span class="va">+const apiKey = process.env[&quot;AZURE_OPENAI_API_KEY&quot;];</span></span>
+<span id="cb17-64"><a href="#cb17-64" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-65"><a href="#cb17-65" aria-hidden="true" tabindex="-1"></a><span class="va">+// Required Azure OpenAI deployment name and API version</span></span>
+<span id="cb17-66"><a href="#cb17-66" aria-hidden="true" tabindex="-1"></a><span class="va">+const apiVersion = &quot;2024-07-01&quot;;</span></span>
+<span id="cb17-67"><a href="#cb17-67" aria-hidden="true" tabindex="-1"></a><span class="va">+const deploymentName = &quot;dall-e-3&quot;;</span></span>
+<span id="cb17-68"><a href="#cb17-68" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-69"><a href="#cb17-69" aria-hidden="true" tabindex="-1"></a> // The prompt to generate images from</span>
+<span id="cb17-70"><a href="#cb17-70" aria-hidden="true" tabindex="-1"></a> const prompt = &quot;a monkey eating a banana&quot;;</span>
+<span id="cb17-71"><a href="#cb17-71" aria-hidden="true" tabindex="-1"></a><span class="st">-const size = &quot;256x256&quot;;</span></span>
+<span id="cb17-72"><a href="#cb17-72" aria-hidden="true" tabindex="-1"></a><span class="va">+const numberOfImagesToGenerate = 1;</span></span>
+<span id="cb17-73"><a href="#cb17-73" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-74"><a href="#cb17-74" aria-hidden="true" tabindex="-1"></a><span class="va">+function getClient(): AzureOpenAI {</span></span>
+<span id="cb17-75"><a href="#cb17-75" aria-hidden="true" tabindex="-1"></a><span class="va">+  return new AzureOpenAI({</span></span>
+<span id="cb17-76"><a href="#cb17-76" aria-hidden="true" tabindex="-1"></a><span class="va">+    endpoint,</span></span>
+<span id="cb17-77"><a href="#cb17-77" aria-hidden="true" tabindex="-1"></a><span class="va">+    apiKey,</span></span>
+<span id="cb17-78"><a href="#cb17-78" aria-hidden="true" tabindex="-1"></a><span class="va">+    apiVersion,</span></span>
+<span id="cb17-79"><a href="#cb17-79" aria-hidden="true" tabindex="-1"></a><span class="va">+    deployment: deploymentName,</span></span>
+<span id="cb17-80"><a href="#cb17-80" aria-hidden="true" tabindex="-1"></a><span class="va">+  });</span></span>
+<span id="cb17-81"><a href="#cb17-81" aria-hidden="true" tabindex="-1"></a><span class="va">+}</span></span>
+<span id="cb17-82"><a href="#cb17-82" aria-hidden="true" tabindex="-1"></a><span class="va">+async function main() {</span></span>
+<span id="cb17-83"><a href="#cb17-83" aria-hidden="true" tabindex="-1"></a><span class="va">+  console.log(&quot;== Image Generation ==&quot;);</span></span>
+<span id="cb17-84"><a href="#cb17-84" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-85"><a href="#cb17-85" aria-hidden="true" tabindex="-1"></a><span class="va">+  const client = getClient();</span></span>
+<span id="cb17-86"><a href="#cb17-86" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-87"><a href="#cb17-87" aria-hidden="true" tabindex="-1"></a><span class="va">+  const results = await client.images.generate({</span></span>
+<span id="cb17-88"><a href="#cb17-88" aria-hidden="true" tabindex="-1"></a><span class="va">+    prompt,</span></span>
+<span id="cb17-89"><a href="#cb17-89" aria-hidden="true" tabindex="-1"></a><span class="va">+    size: &quot;1024x1024&quot;,</span></span>
+<span id="cb17-90"><a href="#cb17-90" aria-hidden="true" tabindex="-1"></a><span class="va">+    n: numberOfImagesToGenerate,</span></span>
+<span id="cb17-91"><a href="#cb17-91" aria-hidden="true" tabindex="-1"></a><span class="va">+    model: &quot;&quot;,</span></span>
+<span id="cb17-92"><a href="#cb17-92" aria-hidden="true" tabindex="-1"></a><span class="va">+    style: &quot;vivid&quot;, // or &quot;natural&quot;</span></span>
+<span id="cb17-93"><a href="#cb17-93" aria-hidden="true" tabindex="-1"></a><span class="va">+  });</span></span>
+<span id="cb17-94"><a href="#cb17-94" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-95"><a href="#cb17-95" aria-hidden="true" tabindex="-1"></a><span class="va">+  for (const image of results.data) {</span></span>
+<span id="cb17-96"><a href="#cb17-96" aria-hidden="true" tabindex="-1"></a><span class="va">+    console.log(`Image generation result URL: ${image.url}`);</span></span>
+<span id="cb17-97"><a href="#cb17-97" aria-hidden="true" tabindex="-1"></a><span class="va">+  }</span></span>
+<span id="cb17-98"><a href="#cb17-98" aria-hidden="true" tabindex="-1"></a><span class="va">+}</span></span>
+<span id="cb17-99"><a href="#cb17-99" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-100"><a href="#cb17-100" aria-hidden="true" tabindex="-1"></a><span class="va">+main().catch((err) =&gt; {</span></span>
+<span id="cb17-101"><a href="#cb17-101" aria-hidden="true" tabindex="-1"></a><span class="va">+  console.error(&quot;The sample encountered an error:&quot;, err);</span></span>
+<span id="cb17-102"><a href="#cb17-102" aria-hidden="true" tabindex="-1"></a><span class="va">+});</span></span>
+<span id="cb17-103"><a href="#cb17-103" aria-hidden="true" tabindex="-1"></a><span class="va">+```</span></span>
+<span id="cb17-104"><a href="#cb17-104" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-105"><a href="#cb17-105" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Build the application with the following command:</span></span>
+<span id="cb17-106"><a href="#cb17-106" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-107"><a href="#cb17-107" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```console</span></span>
+<span id="cb17-108"><a href="#cb17-108" aria-hidden="true" tabindex="-1"></a><span class="va">+    tsc</span></span>
+<span id="cb17-109"><a href="#cb17-109" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb17-110"><a href="#cb17-110" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-111"><a href="#cb17-111" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Run the application with the following command:</span></span>
+<span id="cb17-112"><a href="#cb17-112" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-113"><a href="#cb17-113" aria-hidden="true" tabindex="-1"></a><span class="st">-// The number of images to generate</span></span>
+<span id="cb17-114"><a href="#cb17-114" aria-hidden="true" tabindex="-1"></a><span class="st">-const n = 2;</span></span>
+<span id="cb17-115"><a href="#cb17-115" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```console</span></span>
+<span id="cb17-116"><a href="#cb17-116" aria-hidden="true" tabindex="-1"></a><span class="va">+    node ImageGeneration.js</span></span>
+<span id="cb17-117"><a href="#cb17-117" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb17-118"><a href="#cb17-118" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-119"><a href="#cb17-119" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-120"><a href="#cb17-120" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [JavaScript](#tab/javascript)</span></span>
+<span id="cb17-121"><a href="#cb17-121" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-122"><a href="#cb17-122" aria-hidden="true" tabindex="-1"></a><span class="va">+```javascript</span></span>
+<span id="cb17-123"><a href="#cb17-123" aria-hidden="true" tabindex="-1"></a><span class="va">+require(&quot;dotenv/config&quot;);</span></span>
+<span id="cb17-124"><a href="#cb17-124" aria-hidden="true" tabindex="-1"></a><span class="va">+const { AzureOpenAI } = require(&quot;openai&quot;);</span></span>
+<span id="cb17-125"><a href="#cb17-125" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-126"><a href="#cb17-126" aria-hidden="true" tabindex="-1"></a><span class="va">+// You will need to set these environment variables or edit the following values</span></span>
+<span id="cb17-127"><a href="#cb17-127" aria-hidden="true" tabindex="-1"></a><span class="va">+const endpoint = process.env[&quot;AZURE_OPENAI_ENDPOINT&quot;];</span></span>
+<span id="cb17-128"><a href="#cb17-128" aria-hidden="true" tabindex="-1"></a><span class="va">+const apiKey = process.env[&quot;AZURE_OPENAI_API_KEY&quot;];</span></span>
+<span id="cb17-129"><a href="#cb17-129" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-130"><a href="#cb17-130" aria-hidden="true" tabindex="-1"></a><span class="va">+// Required Azure OpenAI deployment name and API version</span></span>
+<span id="cb17-131"><a href="#cb17-131" aria-hidden="true" tabindex="-1"></a><span class="va">+const apiVersion = &quot;2024-07-01&quot;;</span></span>
+<span id="cb17-132"><a href="#cb17-132" aria-hidden="true" tabindex="-1"></a><span class="va">+const deploymentName = &quot;dall-e-3&quot;;</span></span>
+<span id="cb17-133"><a href="#cb17-133" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-134"><a href="#cb17-134" aria-hidden="true" tabindex="-1"></a><span class="va">+// The prompt to generate images from</span></span>
+<span id="cb17-135"><a href="#cb17-135" aria-hidden="true" tabindex="-1"></a><span class="va">+const prompt = &quot;a monkey eating a banana&quot;;</span></span>
+<span id="cb17-136"><a href="#cb17-136" aria-hidden="true" tabindex="-1"></a><span class="va">+const numberOfImagesToGenerate = 1;</span></span>
+<span id="cb17-137"><a href="#cb17-137" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-138"><a href="#cb17-138" aria-hidden="true" tabindex="-1"></a><span class="va">+function getClient() {</span></span>
+<span id="cb17-139"><a href="#cb17-139" aria-hidden="true" tabindex="-1"></a><span class="va">+  return new AzureOpenAI({</span></span>
+<span id="cb17-140"><a href="#cb17-140" aria-hidden="true" tabindex="-1"></a><span class="va">+    endpoint,</span></span>
+<span id="cb17-141"><a href="#cb17-141" aria-hidden="true" tabindex="-1"></a><span class="va">+    apiKey,</span></span>
+<span id="cb17-142"><a href="#cb17-142" aria-hidden="true" tabindex="-1"></a><span class="va">+    apiVersion,</span></span>
+<span id="cb17-143"><a href="#cb17-143" aria-hidden="true" tabindex="-1"></a><span class="va">+    deployment: deploymentName,</span></span>
+<span id="cb17-144"><a href="#cb17-144" aria-hidden="true" tabindex="-1"></a><span class="va">+  });</span></span>
+<span id="cb17-145"><a href="#cb17-145" aria-hidden="true" tabindex="-1"></a><span class="va">+}</span></span>
+<span id="cb17-146"><a href="#cb17-146" aria-hidden="true" tabindex="-1"></a> async function main() {</span>
+<span id="cb17-147"><a href="#cb17-147" aria-hidden="true" tabindex="-1"></a><span class="st">-    console.log(&quot;== Batch Image Generation ==&quot;);</span></span>
+<span id="cb17-148"><a href="#cb17-148" aria-hidden="true" tabindex="-1"></a><span class="st">-  </span></span>
+<span id="cb17-149"><a href="#cb17-149" aria-hidden="true" tabindex="-1"></a><span class="st">-    const client = new OpenAIClient(endpoint, new AzureKeyCredential(azureApiKey));</span></span>
+<span id="cb17-150"><a href="#cb17-150" aria-hidden="true" tabindex="-1"></a><span class="st">-    const deploymentName = &quot;dall-e&quot;;</span></span>
+<span id="cb17-151"><a href="#cb17-151" aria-hidden="true" tabindex="-1"></a><span class="st">-    const results = await client.getImages(deploymentName, prompt, { n, size });</span></span>
+<span id="cb17-152"><a href="#cb17-152" aria-hidden="true" tabindex="-1"></a><span class="st">-  </span></span>
+<span id="cb17-153"><a href="#cb17-153" aria-hidden="true" tabindex="-1"></a><span class="st">-    for (const image of results.data) {</span></span>
+<span id="cb17-154"><a href="#cb17-154" aria-hidden="true" tabindex="-1"></a><span class="st">-      console.log(`Image generation result URL: ${image.url}`);</span></span>
+<span id="cb17-155"><a href="#cb17-155" aria-hidden="true" tabindex="-1"></a><span class="st">-    }</span></span>
+<span id="cb17-156"><a href="#cb17-156" aria-hidden="true" tabindex="-1"></a><span class="st">-    //console.log(`Image generation result URL: ${results.result.status}`);</span></span>
+<span id="cb17-157"><a href="#cb17-157" aria-hidden="true" tabindex="-1"></a><span class="va">+  console.log(&quot;== Image Generation ==&quot;);</span></span>
+<span id="cb17-158"><a href="#cb17-158" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-159"><a href="#cb17-159" aria-hidden="true" tabindex="-1"></a><span class="va">+  const client = getClient();</span></span>
+<span id="cb17-160"><a href="#cb17-160" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-161"><a href="#cb17-161" aria-hidden="true" tabindex="-1"></a><span class="va">+  const results = await client.images.generate({</span></span>
+<span id="cb17-162"><a href="#cb17-162" aria-hidden="true" tabindex="-1"></a><span class="va">+    prompt,</span></span>
+<span id="cb17-163"><a href="#cb17-163" aria-hidden="true" tabindex="-1"></a><span class="va">+    size: &quot;1024x1024&quot;,</span></span>
+<span id="cb17-164"><a href="#cb17-164" aria-hidden="true" tabindex="-1"></a><span class="va">+    n: numberOfImagesToGenerate,</span></span>
+<span id="cb17-165"><a href="#cb17-165" aria-hidden="true" tabindex="-1"></a><span class="va">+    model: &quot;&quot;,</span></span>
+<span id="cb17-166"><a href="#cb17-166" aria-hidden="true" tabindex="-1"></a><span class="va">+    style: &quot;vivid&quot;, // or &quot;natural&quot;</span></span>
+<span id="cb17-167"><a href="#cb17-167" aria-hidden="true" tabindex="-1"></a><span class="va">+  });</span></span>
+<span id="cb17-168"><a href="#cb17-168" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb17-169"><a href="#cb17-169" aria-hidden="true" tabindex="-1"></a><span class="va">+  for (const image of results.data) {</span></span>
+<span id="cb17-170"><a href="#cb17-170" aria-hidden="true" tabindex="-1"></a><span class="va">+    console.log(`Image generation result URL: ${image.url}`);</span></span>
+<span id="cb17-171"><a href="#cb17-171" aria-hidden="true" tabindex="-1"></a><span class="va">+  }</span></span>
+<span id="cb17-172"><a href="#cb17-172" aria-hidden="true" tabindex="-1"></a> }</span>
+<span id="cb17-173"><a href="#cb17-173" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-174"><a href="#cb17-174" aria-hidden="true" tabindex="-1"></a> main().catch((err) =&gt; {</span>
+<span id="cb17-175"><a href="#cb17-175" aria-hidden="true" tabindex="-1"></a><span class="st">-console.error(&quot;The sample encountered an error:&quot;, err);</span></span>
+<span id="cb17-176"><a href="#cb17-176" aria-hidden="true" tabindex="-1"></a><span class="va">+  console.error(&quot;The sample encountered an error:&quot;, err);</span></span>
+<span id="cb17-177"><a href="#cb17-177" aria-hidden="true" tabindex="-1"></a> });</span>
+<span id="cb17-178"><a href="#cb17-178" aria-hidden="true" tabindex="-1"></a> ```</span>
+<span id="cb17-179"><a href="#cb17-179" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-180"><a href="#cb17-180" aria-hidden="true" tabindex="-1"></a> Run the script with the following command:</span>
+<span id="cb17-181"><a href="#cb17-181" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-182"><a href="#cb17-182" aria-hidden="true" tabindex="-1"></a> ```console</span>
+<span id="cb17-183"><a href="#cb17-183" aria-hidden="true" tabindex="-1"></a><span class="st">-node _ImageGeneration.js</span></span>
+<span id="cb17-184"><a href="#cb17-184" aria-hidden="true" tabindex="-1"></a><span class="va">+node ImageGeneration.js</span></span>
+<span id="cb17-185"><a href="#cb17-185" aria-hidden="true" tabindex="-1"></a> ```</span>
+<span id="cb17-186"><a href="#cb17-186" aria-hidden="true" tabindex="-1"></a><span class="va">+---</span></span>
+<span id="cb17-187"><a href="#cb17-187" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-188"><a href="#cb17-188" aria-hidden="true" tabindex="-1"></a> ## Output</span>
+<span id="cb17-189"><a href="#cb17-189" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-8">Summary</h3>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;DALL-E JavaScript ガイドの内容更新&quot;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-8">Explanation</h3>
+<p>この変更では、Azure OpenAI
+SDKを使用したDALL-Eの画像生成に関するJavaScriptガイドが更新され、複数の重要な情報が追加および修正されました。</p>
+<p>主な変更点は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>日付の更新</strong>:
+<ul class="incremental">
+<li>ドキュメントの日付が08/24/2023から09/06/2024に変更され、情報の最新性が反映されています。</li>
+</ul></li>
+<li><strong>リファレンスリンクとソースコードの更新</strong>:
+<ul class="incremental">
+<li>新しいリファレンスドキュメントのリンクおよびソースコードのリンクが追加され、ユーザーが必要なリソースにアクセスしやすくなっています。</li>
+</ul></li>
+<li><strong>TypeScriptとJavaScriptの設定情報の明確化</strong>:
+<ul class="incremental">
+<li>TypeScriptとJavaScriptのそれぞれの利用に関する前提条件が整理され、視覚的に区分けされています。これにより、ユーザーは自分が使っている環境に合わせた情報を容易に見つけることができます。</li>
+</ul></li>
+<li><strong>コードサンプルの改善</strong>:
+<ul class="incremental">
+<li>コードサンプルが更新され、新しいクライアントライブラリの使用法やAPIの設定が明確に示されています。特に、DALL-Eのモデル名やAPIバージョンなどの具体的な設定が強調されています。</li>
+</ul></li>
+<li><strong>コマンドの整備</strong>:
+<ul class="incremental">
+<li>新しいコマンドや環境変数に関する説明が追加され、アプリケーションのビルドや実行方法が明確に指示されています。これにより、ユーザーは手順を簡単に理解し、実行できるようになります。</li>
+</ul></li>
+</ol>
+<p>これらの変更により、ユーザーはDALL-Eを利用した画像生成のための最新の情報と手順を得ることができ、よりスムーズにAzure
+OpenAI SDKを活用できるようになります。</p>
+<h2
+id="item-a128c9">articles/ai-services/openai/includes/gpt-v-javascript.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -0,0 +1,246 @@</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="va">+---</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="va">+title: &#39;Quickstart: Use GPT-4 Turbo with Vision on your images and videos with the JavaScript SDK&#39;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="va">+titleSuffix: Azure OpenAI</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="va">+description: Get started using the OpenAI JavaScript SDK to deploy and use the GPT-4 Turbo with Vision model.</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="va">+services: cognitive-services</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="va">+manager: nitinme</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.service: azure-ai-openai</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.topic: include</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.custom: references_regions</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.date: 09/06/2024</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="va">+---</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="va">+Use this article to get started using the OpenAI JavaScript SDK to deploy and use the GPT-4 Turbo with Vision model. </span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="va">+This SDK is provided by OpenAI with Azure specific types provided by Azure. </span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="va">+[Reference documentation](https://platform.openai.com/docs/api-reference/chat) | [Library source code](https://github.com/openai/openai-node?azure-portal=true) | [Package (npm)](https://www.npmjs.com/package/openai) | [Samples](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai/samples)</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="va">+## Prerequisites</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="va">+## [**TypeScript**](#tab/typescript)</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="va">+- An Azure subscription - [Create one for free](https://azure.microsoft.com/free/cognitive-services?azure-portal=true)</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="va">+- [LTS versions of Node.js](https://github.com/nodejs/release#release-schedule)</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="va">+- [TypeScript](https://www.typescriptlang.org/download/)</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="va">+- An Azure OpenAI resource created in a supported region (see [Region availability](/azure/ai-services/openai/concepts/models#model-summary-table-and-region-availability)). For more information, see [Create a resource and deploy a model with Azure OpenAI](../how-to/create-resource.md).</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="va">+## [**JavaScript**](#tab/javascript)</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="va">+- An Azure subscription - [Create one for free](https://azure.microsoft.com/free/cognitive-services?azure-portal=true)</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="va">+- [LTS versions of Node.js](https://github.com/nodejs/release#release-schedule)</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="va">+- An Azure OpenAI resource created in a supported region (see [Region availability](/azure/ai-services/openai/concepts/models#model-summary-table-and-region-availability)). For more information, see [Create a resource and deploy a model with Azure OpenAI](../how-to/create-resource.md).</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="va">+---</span></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; [!NOTE]</span></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a><span class="va">+&gt; This library is maintained by OpenAI. Refer to the [release history](https://github.com/openai/openai-node/releases) to track the latest updates to the library.</span></span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a><span class="va">+[!INCLUDE [get-key-endpoint](get-key-endpoint.md)]</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a><span class="va">+[!INCLUDE [environment-variables](environment-variables.md)]</span></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a><span class="va">+## Create a Node application</span></span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a><span class="va">+In a console window (such as cmd, PowerShell, or Bash), create a new directory for your app, and navigate to it. Then run the `npm init` command to create a node application with a _package.json_ file.</span></span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a><span class="va">+```console</span></span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a><span class="va">+npm init</span></span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a><span class="va">+```</span></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a><span class="va">+## Install the client library</span></span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a><span class="va">+Install the client libraries with:</span></span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a><span class="va">+```console</span></span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a><span class="va">+npm install openai @azure/identity</span></span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a><span class="va">+```</span></span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a><span class="va">+Your app&#39;s _package.json_ file will be updated with the dependencies.</span></span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a><span class="va">+## Create a new JavaScript application for image prompts</span></span>
+<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a><span class="va">+Select an image from the [azure-samples/cognitive-services-sample-data-files](https://github.com/Azure-Samples/cognitive-services-sample-data-files/tree/master/ComputerVision/Images) and set the URL for an image in the environment variables.</span></span>
+<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a><span class="va">+## [**TypeScript**](#tab/typescript)</span></span>
+<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Create a _quickstart.ts_ and paste in the following code. </span></span>
+<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-73"><a href="#cb19-73" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```typescript</span></span>
+<span id="cb19-74"><a href="#cb19-74" aria-hidden="true" tabindex="-1"></a><span class="va">+    import &quot;dotenv/config&quot;;</span></span>
+<span id="cb19-75"><a href="#cb19-75" aria-hidden="true" tabindex="-1"></a><span class="va">+    import { AzureOpenAI } from &quot;openai&quot;;</span></span>
+<span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a><span class="va">+    import type {</span></span>
+<span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a><span class="va">+      ChatCompletion,</span></span>
+<span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a><span class="va">+      ChatCompletionCreateParamsNonStreaming,</span></span>
+<span id="cb19-79"><a href="#cb19-79" aria-hidden="true" tabindex="-1"></a><span class="va">+    } from &quot;openai/resources/index&quot;;</span></span>
+<span id="cb19-80"><a href="#cb19-80" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-81"><a href="#cb19-81" aria-hidden="true" tabindex="-1"></a><span class="va">+    // You will need to set these environment variables or edit the following values</span></span>
+<span id="cb19-82"><a href="#cb19-82" aria-hidden="true" tabindex="-1"></a><span class="va">+    const endpoint = process.env[&quot;AZURE_OPENAI_ENDPOINT&quot;] || &quot;&lt;endpoint&gt;&quot;;</span></span>
+<span id="cb19-83"><a href="#cb19-83" aria-hidden="true" tabindex="-1"></a><span class="va">+    const apiKey = process.env[&quot;AZURE_OPENAI_API_KEY&quot;] || &quot;&lt;api key&gt;&quot;;</span></span>
+<span id="cb19-84"><a href="#cb19-84" aria-hidden="true" tabindex="-1"></a><span class="va">+    const imageUrl = process.env[&quot;IMAGE_URL&quot;] || &quot;&lt;image url&gt;&quot;;</span></span>
+<span id="cb19-85"><a href="#cb19-85" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-86"><a href="#cb19-86" aria-hidden="true" tabindex="-1"></a><span class="va">+    // Required Azure OpenAI deployment name and API version</span></span>
+<span id="cb19-87"><a href="#cb19-87" aria-hidden="true" tabindex="-1"></a><span class="va">+    const apiVersion = &quot;2024-07-01-preview&quot;;</span></span>
+<span id="cb19-88"><a href="#cb19-88" aria-hidden="true" tabindex="-1"></a><span class="va">+    const deploymentName = &quot;gpt-4-with-turbo&quot;;</span></span>
+<span id="cb19-89"><a href="#cb19-89" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a><span class="va">+    function getClient(): AzureOpenAI {</span></span>
+<span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a><span class="va">+      return new AzureOpenAI({</span></span>
+<span id="cb19-92"><a href="#cb19-92" aria-hidden="true" tabindex="-1"></a><span class="va">+        endpoint,</span></span>
+<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a><span class="va">+        apiKey,</span></span>
+<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a><span class="va">+        apiVersion,</span></span>
+<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a><span class="va">+        deployment: deploymentName,</span></span>
+<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a><span class="va">+      });</span></span>
+<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a><span class="va">+    function createMessages(): ChatCompletionCreateParamsNonStreaming {</span></span>
+<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a><span class="va">+      return {</span></span>
+<span id="cb19-100"><a href="#cb19-100" aria-hidden="true" tabindex="-1"></a><span class="va">+        messages: [</span></span>
+<span id="cb19-101"><a href="#cb19-101" aria-hidden="true" tabindex="-1"></a><span class="va">+          { role: &quot;system&quot;, content: &quot;You are a helpful assistant.&quot; },</span></span>
+<span id="cb19-102"><a href="#cb19-102" aria-hidden="true" tabindex="-1"></a><span class="va">+          {</span></span>
+<span id="cb19-103"><a href="#cb19-103" aria-hidden="true" tabindex="-1"></a><span class="va">+            role: &quot;user&quot;,</span></span>
+<span id="cb19-104"><a href="#cb19-104" aria-hidden="true" tabindex="-1"></a><span class="va">+            content: [</span></span>
+<span id="cb19-105"><a href="#cb19-105" aria-hidden="true" tabindex="-1"></a><span class="va">+              {</span></span>
+<span id="cb19-106"><a href="#cb19-106" aria-hidden="true" tabindex="-1"></a><span class="va">+                type: &quot;text&quot;,</span></span>
+<span id="cb19-107"><a href="#cb19-107" aria-hidden="true" tabindex="-1"></a><span class="va">+                text: &quot;Describe this picture:&quot;,</span></span>
+<span id="cb19-108"><a href="#cb19-108" aria-hidden="true" tabindex="-1"></a><span class="va">+              },</span></span>
+<span id="cb19-109"><a href="#cb19-109" aria-hidden="true" tabindex="-1"></a><span class="va">+              {</span></span>
+<span id="cb19-110"><a href="#cb19-110" aria-hidden="true" tabindex="-1"></a><span class="va">+                type: &quot;image_url&quot;,</span></span>
+<span id="cb19-111"><a href="#cb19-111" aria-hidden="true" tabindex="-1"></a><span class="va">+                image_url: {</span></span>
+<span id="cb19-112"><a href="#cb19-112" aria-hidden="true" tabindex="-1"></a><span class="va">+                  url: imageUrl,</span></span>
+<span id="cb19-113"><a href="#cb19-113" aria-hidden="true" tabindex="-1"></a><span class="va">+                },</span></span>
+<span id="cb19-114"><a href="#cb19-114" aria-hidden="true" tabindex="-1"></a><span class="va">+              },</span></span>
+<span id="cb19-115"><a href="#cb19-115" aria-hidden="true" tabindex="-1"></a><span class="va">+            ],</span></span>
+<span id="cb19-116"><a href="#cb19-116" aria-hidden="true" tabindex="-1"></a><span class="va">+          },</span></span>
+<span id="cb19-117"><a href="#cb19-117" aria-hidden="true" tabindex="-1"></a><span class="va">+        ],</span></span>
+<span id="cb19-118"><a href="#cb19-118" aria-hidden="true" tabindex="-1"></a><span class="va">+        model: &quot;&quot;,</span></span>
+<span id="cb19-119"><a href="#cb19-119" aria-hidden="true" tabindex="-1"></a><span class="va">+        max_tokens: 2000,</span></span>
+<span id="cb19-120"><a href="#cb19-120" aria-hidden="true" tabindex="-1"></a><span class="va">+      };</span></span>
+<span id="cb19-121"><a href="#cb19-121" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb19-122"><a href="#cb19-122" aria-hidden="true" tabindex="-1"></a><span class="va">+    async function printChoices(completion: ChatCompletion): Promise&lt;void&gt; {</span></span>
+<span id="cb19-123"><a href="#cb19-123" aria-hidden="true" tabindex="-1"></a><span class="va">+      for (const choice of completion.choices) {</span></span>
+<span id="cb19-124"><a href="#cb19-124" aria-hidden="true" tabindex="-1"></a><span class="va">+        console.log(choice.message);</span></span>
+<span id="cb19-125"><a href="#cb19-125" aria-hidden="true" tabindex="-1"></a><span class="va">+      }</span></span>
+<span id="cb19-126"><a href="#cb19-126" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb19-127"><a href="#cb19-127" aria-hidden="true" tabindex="-1"></a><span class="va">+    export async function main() {</span></span>
+<span id="cb19-128"><a href="#cb19-128" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.log(&quot;== Get GPT-4 Turbo with vision Sample ==&quot;);</span></span>
+<span id="cb19-129"><a href="#cb19-129" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-130"><a href="#cb19-130" aria-hidden="true" tabindex="-1"></a><span class="va">+      const client = getClient();</span></span>
+<span id="cb19-131"><a href="#cb19-131" aria-hidden="true" tabindex="-1"></a><span class="va">+      const messages = createMessages();</span></span>
+<span id="cb19-132"><a href="#cb19-132" aria-hidden="true" tabindex="-1"></a><span class="va">+      const completion = await client.chat.completions.create(messages);</span></span>
+<span id="cb19-133"><a href="#cb19-133" aria-hidden="true" tabindex="-1"></a><span class="va">+      await printChoices(completion);</span></span>
+<span id="cb19-134"><a href="#cb19-134" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb19-135"><a href="#cb19-135" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-136"><a href="#cb19-136" aria-hidden="true" tabindex="-1"></a><span class="va">+    main().catch((err) =&gt; {</span></span>
+<span id="cb19-137"><a href="#cb19-137" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.error(&quot;Error occurred:&quot;, err);</span></span>
+<span id="cb19-138"><a href="#cb19-138" aria-hidden="true" tabindex="-1"></a><span class="va">+    });</span></span>
+<span id="cb19-139"><a href="#cb19-139" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb19-140"><a href="#cb19-140" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Make the following changes:</span></span>
+<span id="cb19-141"><a href="#cb19-141" aria-hidden="true" tabindex="-1"></a><span class="va">+    1. Enter the name of your GPT-4 Turbo with Vision deployment in the appropriate field.</span></span>
+<span id="cb19-142"><a href="#cb19-142" aria-hidden="true" tabindex="-1"></a><span class="va">+    1. Change the value of the `&quot;url&quot;` field to the URL of your image.</span></span>
+<span id="cb19-143"><a href="#cb19-143" aria-hidden="true" tabindex="-1"></a><span class="va">+        &gt; [!TIP]</span></span>
+<span id="cb19-144"><a href="#cb19-144" aria-hidden="true" tabindex="-1"></a><span class="va">+        &gt; You can also use a base 64 encoded image data instead of a URL. For more information, see the [GPT-4 Turbo with Vision how-to guide](../how-to/gpt-with-vision.md#use-a-local-image).</span></span>
+<span id="cb19-145"><a href="#cb19-145" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-146"><a href="#cb19-146" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Build the application with the following command:</span></span>
+<span id="cb19-147"><a href="#cb19-147" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-148"><a href="#cb19-148" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```console</span></span>
+<span id="cb19-149"><a href="#cb19-149" aria-hidden="true" tabindex="-1"></a><span class="va">+    tsc</span></span>
+<span id="cb19-150"><a href="#cb19-150" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb19-151"><a href="#cb19-151" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-152"><a href="#cb19-152" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Run the application with the following command:</span></span>
+<span id="cb19-153"><a href="#cb19-153" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-154"><a href="#cb19-154" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```console</span></span>
+<span id="cb19-155"><a href="#cb19-155" aria-hidden="true" tabindex="-1"></a><span class="va">+    node quickstart.js</span></span>
+<span id="cb19-156"><a href="#cb19-156" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb19-157"><a href="#cb19-157" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-158"><a href="#cb19-158" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-159"><a href="#cb19-159" aria-hidden="true" tabindex="-1"></a><span class="va">+## [**JavaScript**](#tab/javascript)</span></span>
+<span id="cb19-160"><a href="#cb19-160" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-161"><a href="#cb19-161" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Replace the contents of _quickstart.js_ with the following code. </span></span>
+<span id="cb19-162"><a href="#cb19-162" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-163"><a href="#cb19-163" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```javascript</span></span>
+<span id="cb19-164"><a href="#cb19-164" aria-hidden="true" tabindex="-1"></a><span class="va">+    import &quot;dotenv/config&quot;;</span></span>
+<span id="cb19-165"><a href="#cb19-165" aria-hidden="true" tabindex="-1"></a><span class="va">+    import { AzureOpenAI } from &quot;openai&quot;;</span></span>
+<span id="cb19-166"><a href="#cb19-166" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-167"><a href="#cb19-167" aria-hidden="true" tabindex="-1"></a><span class="va">+    // You will need to set these environment variables or edit the following values</span></span>
+<span id="cb19-168"><a href="#cb19-168" aria-hidden="true" tabindex="-1"></a><span class="va">+    const endpoint = process.env[&quot;AZURE_OPENAI_ENDPOINT&quot;] || &quot;&lt;endpoint&gt;&quot;;</span></span>
+<span id="cb19-169"><a href="#cb19-169" aria-hidden="true" tabindex="-1"></a><span class="va">+    const apiKey = process.env[&quot;AZURE_OPENAI_API_KEY&quot;] || &quot;&lt;api key&gt;&quot;;</span></span>
+<span id="cb19-170"><a href="#cb19-170" aria-hidden="true" tabindex="-1"></a><span class="va">+    const imageUrl = process.env[&quot;IMAGE_URL&quot;] || &quot;&lt;image url&gt;&quot;;</span></span>
+<span id="cb19-171"><a href="#cb19-171" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-172"><a href="#cb19-172" aria-hidden="true" tabindex="-1"></a><span class="va">+    // Required Azure OpenAI deployment name and API version</span></span>
+<span id="cb19-173"><a href="#cb19-173" aria-hidden="true" tabindex="-1"></a><span class="va">+    const apiVersion = &quot;2024-07-01-preview&quot;;</span></span>
+<span id="cb19-174"><a href="#cb19-174" aria-hidden="true" tabindex="-1"></a><span class="va">+    const deploymentName = &quot;gpt-4-with-turbo&quot;;</span></span>
+<span id="cb19-175"><a href="#cb19-175" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-176"><a href="#cb19-176" aria-hidden="true" tabindex="-1"></a><span class="va">+    function getClient() {</span></span>
+<span id="cb19-177"><a href="#cb19-177" aria-hidden="true" tabindex="-1"></a><span class="va">+      return new AzureOpenAI({</span></span>
+<span id="cb19-178"><a href="#cb19-178" aria-hidden="true" tabindex="-1"></a><span class="va">+        endpoint,</span></span>
+<span id="cb19-179"><a href="#cb19-179" aria-hidden="true" tabindex="-1"></a><span class="va">+        apiKey,</span></span>
+<span id="cb19-180"><a href="#cb19-180" aria-hidden="true" tabindex="-1"></a><span class="va">+        apiVersion,</span></span>
+<span id="cb19-181"><a href="#cb19-181" aria-hidden="true" tabindex="-1"></a><span class="va">+        deployment: deploymentName,</span></span>
+<span id="cb19-182"><a href="#cb19-182" aria-hidden="true" tabindex="-1"></a><span class="va">+      });</span></span>
+<span id="cb19-183"><a href="#cb19-183" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb19-184"><a href="#cb19-184" aria-hidden="true" tabindex="-1"></a><span class="va">+    function createMessages() {</span></span>
+<span id="cb19-185"><a href="#cb19-185" aria-hidden="true" tabindex="-1"></a><span class="va">+      return {</span></span>
+<span id="cb19-186"><a href="#cb19-186" aria-hidden="true" tabindex="-1"></a><span class="va">+        messages: [</span></span>
+<span id="cb19-187"><a href="#cb19-187" aria-hidden="true" tabindex="-1"></a><span class="va">+          { role: &quot;system&quot;, content: &quot;You are a helpful assistant.&quot; },</span></span>
+<span id="cb19-188"><a href="#cb19-188" aria-hidden="true" tabindex="-1"></a><span class="va">+          {</span></span>
+<span id="cb19-189"><a href="#cb19-189" aria-hidden="true" tabindex="-1"></a><span class="va">+            role: &quot;user&quot;,</span></span>
+<span id="cb19-190"><a href="#cb19-190" aria-hidden="true" tabindex="-1"></a><span class="va">+            content: [</span></span>
+<span id="cb19-191"><a href="#cb19-191" aria-hidden="true" tabindex="-1"></a><span class="va">+              {</span></span>
+<span id="cb19-192"><a href="#cb19-192" aria-hidden="true" tabindex="-1"></a><span class="va">+                type: &quot;text&quot;,</span></span>
+<span id="cb19-193"><a href="#cb19-193" aria-hidden="true" tabindex="-1"></a><span class="va">+                text: &quot;Describe this picture:&quot;,</span></span>
+<span id="cb19-194"><a href="#cb19-194" aria-hidden="true" tabindex="-1"></a><span class="va">+              },</span></span>
+<span id="cb19-195"><a href="#cb19-195" aria-hidden="true" tabindex="-1"></a><span class="va">+              {</span></span>
+<span id="cb19-196"><a href="#cb19-196" aria-hidden="true" tabindex="-1"></a><span class="va">+                type: &quot;image_url&quot;,</span></span>
+<span id="cb19-197"><a href="#cb19-197" aria-hidden="true" tabindex="-1"></a><span class="va">+                image_url: {</span></span>
+<span id="cb19-198"><a href="#cb19-198" aria-hidden="true" tabindex="-1"></a><span class="va">+                  url: imageUrl,</span></span>
+<span id="cb19-199"><a href="#cb19-199" aria-hidden="true" tabindex="-1"></a><span class="va">+                },</span></span>
+<span id="cb19-200"><a href="#cb19-200" aria-hidden="true" tabindex="-1"></a><span class="va">+              },</span></span>
+<span id="cb19-201"><a href="#cb19-201" aria-hidden="true" tabindex="-1"></a><span class="va">+            ],</span></span>
+<span id="cb19-202"><a href="#cb19-202" aria-hidden="true" tabindex="-1"></a><span class="va">+          },</span></span>
+<span id="cb19-203"><a href="#cb19-203" aria-hidden="true" tabindex="-1"></a><span class="va">+        ],</span></span>
+<span id="cb19-204"><a href="#cb19-204" aria-hidden="true" tabindex="-1"></a><span class="va">+        model: &quot;&quot;,</span></span>
+<span id="cb19-205"><a href="#cb19-205" aria-hidden="true" tabindex="-1"></a><span class="va">+        max_tokens: 2000,</span></span>
+<span id="cb19-206"><a href="#cb19-206" aria-hidden="true" tabindex="-1"></a><span class="va">+      };</span></span>
+<span id="cb19-207"><a href="#cb19-207" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb19-208"><a href="#cb19-208" aria-hidden="true" tabindex="-1"></a><span class="va">+    async function printChoices(completion) {</span></span>
+<span id="cb19-209"><a href="#cb19-209" aria-hidden="true" tabindex="-1"></a><span class="va">+      for (const choice of completion.choices) {</span></span>
+<span id="cb19-210"><a href="#cb19-210" aria-hidden="true" tabindex="-1"></a><span class="va">+        console.log(choice.message);</span></span>
+<span id="cb19-211"><a href="#cb19-211" aria-hidden="true" tabindex="-1"></a><span class="va">+      }</span></span>
+<span id="cb19-212"><a href="#cb19-212" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb19-213"><a href="#cb19-213" aria-hidden="true" tabindex="-1"></a><span class="va">+    export async function main() {</span></span>
+<span id="cb19-214"><a href="#cb19-214" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.log(&quot;== Get GPT-4 Turbo with vision Sample ==&quot;);</span></span>
+<span id="cb19-215"><a href="#cb19-215" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-216"><a href="#cb19-216" aria-hidden="true" tabindex="-1"></a><span class="va">+      const client = getClient();</span></span>
+<span id="cb19-217"><a href="#cb19-217" aria-hidden="true" tabindex="-1"></a><span class="va">+      const messages = createMessages();</span></span>
+<span id="cb19-218"><a href="#cb19-218" aria-hidden="true" tabindex="-1"></a><span class="va">+      const completion = await client.chat.completions.create(messages);</span></span>
+<span id="cb19-219"><a href="#cb19-219" aria-hidden="true" tabindex="-1"></a><span class="va">+      await printChoices(completion);</span></span>
+<span id="cb19-220"><a href="#cb19-220" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb19-221"><a href="#cb19-221" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb19-222"><a href="#cb19-222" aria-hidden="true" tabindex="-1"></a><span class="va">+    main().catch((err) =&gt; {</span></span>
+<span id="cb19-223"><a href="#cb19-223" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.error(&quot;Error occurred:&quot;, err);</span></span>
+<span id="cb19-224"><a href="#cb19-224" aria-hidden="true" tabindex="-1"></a><span class="va">+    });</span></span>
+<span id="cb19-225"><a href="#cb19-225" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb19-226"><a href="#cb19-226" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-227"><a href="#cb19-227" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Make the following changes:</span></span>
+<span id="cb19-228"><a href="#cb19-228" aria-hidden="true" tabindex="-1"></a><span class="va">+    1. Enter the name of your GPT-4 Turbo with Vision deployment in the appropriate field.</span></span>
+<span id="cb19-229"><a href="#cb19-229" aria-hidden="true" tabindex="-1"></a><span class="va">+    1. Change the value of the `&quot;url&quot;` field to the URL of your image.</span></span>
+<span id="cb19-230"><a href="#cb19-230" aria-hidden="true" tabindex="-1"></a><span class="va">+        &gt; [!TIP]</span></span>
+<span id="cb19-231"><a href="#cb19-231" aria-hidden="true" tabindex="-1"></a><span class="va">+        &gt; You can also use a base 64 encoded image data instead of a URL. For more information, see the [GPT-4 Turbo with Vision how-to guide](../how-to/gpt-with-vision.md#use-a-local-image).</span></span>
+<span id="cb19-232"><a href="#cb19-232" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Run the application with the following command:</span></span>
+<span id="cb19-233"><a href="#cb19-233" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-234"><a href="#cb19-234" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```console</span></span>
+<span id="cb19-235"><a href="#cb19-235" aria-hidden="true" tabindex="-1"></a><span class="va">+    node quickstart.js</span></span>
+<span id="cb19-236"><a href="#cb19-236" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb19-237"><a href="#cb19-237" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-238"><a href="#cb19-238" aria-hidden="true" tabindex="-1"></a><span class="va">+---</span></span>
+<span id="cb19-239"><a href="#cb19-239" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-240"><a href="#cb19-240" aria-hidden="true" tabindex="-1"></a><span class="va">+## Clean up resources</span></span>
+<span id="cb19-241"><a href="#cb19-241" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-242"><a href="#cb19-242" aria-hidden="true" tabindex="-1"></a><span class="va">+If you want to clean up and remove an Azure OpenAI resource, you can delete the resource or resource group. Deleting the resource group also deletes any other resources associated with it.</span></span>
+<span id="cb19-243"><a href="#cb19-243" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-244"><a href="#cb19-244" aria-hidden="true" tabindex="-1"></a><span class="va">+- [Azure portal](../../multi-service-resource.md?pivots=azportal#clean-up-resources)</span></span>
+<span id="cb19-245"><a href="#cb19-245" aria-hidden="true" tabindex="-1"></a><span class="va">+- [Azure CLI](../../multi-service-resource.md?pivots=azcli#clean-up-resources)</span></span>
+<span id="cb19-246"><a href="#cb19-246" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb19-247"><a href="#cb19-247" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span></code></pre></div>
+</details>
+<h3 id="summary-9">Summary</h3>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;new feature&quot;</span><span class="fu">,</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;GPT-4 Turbo with VisionをJavaScript SDKで利用するためのクイックスタートガイドの追加&quot;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-9">Explanation</h3>
+<p>この変更では、JavaScript SDKを使用してGPT-4 Turbo with
+Visionモデルを使用するための新しいガイドが追加されました。このガイドは、ユーザーがこの強力なAIモデルを簡単に利用できるように設計されています。</p>
+<p>主な内容は以下の通りです：</p>
+<ol class="incremental" type="1">
+<li><strong>ガイドの目的</strong>:
+<ul class="incremental">
+<li>ユーザーがOpenAIのJavaScript SDKを利用して、GPT-4 Turbo with
+Visionモデルをデプロイし、画像や動画に対して使用する方法を示しています。</li>
+</ul></li>
+<li><strong>必要な前提条件</strong>:
+<ul class="incremental">
+<li>Azureアカウント、Node.jsのLTSバージョン、TypeScriptのインストール、およびサポートされている地域に作成されたAzure
+OpenAIリソースが必要です。これにより、ユーザーが必要な環境を整える手助けがされています。</li>
+</ul></li>
+<li><strong>ライブラリのインストール</strong>:
+<ul class="incremental">
+<li>クライアントライブラリのインストール手順が詳しく説明されており、ユーザーは<code>npm install openai @azure/identity</code>コマンドで簡単にライブラリを追加できます。</li>
+</ul></li>
+<li><strong>具体的なコードサンプル</strong>:
+<ul class="incremental">
+<li>TypeScriptとJavaScriptそれぞれのコードサンプルが提供されており、画像提示に対するモデルの使用方法が具体的に示されています。これにより、ユーザーは実際にアプリケーションを作成する際の具体例を得ることができます。</li>
+</ul></li>
+<li><strong>アプリケーションの実行方法</strong>:
+<ul class="incremental">
+<li>ビルドおよび実行の手順が示されており、ユーザーは<code>tsc</code>でビルドした後、<code>node quickstart.js</code>でアプリケーションを実行することができます。</li>
+</ul></li>
+<li><strong>リソースのクリーンアップ</strong>:
+<ul class="incremental">
+<li>最後に、Azure
+OpenAIリソースの削除方法が記載されており、リソース管理に関する情報も提供されています。</li>
+</ul></li>
+</ol>
+<p>この新しいガイドは、開発者が迅速にGPT-4 Turbo with
+Visionを利用できるように設計されており、AIプロジェクトのための基盤を作るのに役立ちます。</p>
+<h2
+id="item-786699">articles/ai-services/openai/includes/use-your-data-javascript.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -5,7 +5,7 @@ author: glharper</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a> ms.author: glharper</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a> ms.service: azure-ai-openai</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a> ms.topic: include</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.date: 03/04/2024</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.date: 09/06/2024</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a> ---</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a> [!INCLUDE [Set up required variables](./use-your-data-common-variables.md)]</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -23,81 +23,214 @@ npm init</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a> Install the Azure OpenAI client and Azure Identity libraries for JavaScript with npm:</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [TypeScript](#tab/typescript)</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="va">+```console</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="va">+npm install openai @azure/identity @azure/openai </span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a><span class="va">+```</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="va">+The `@azure/openai/types` dependency is included to extend the Azure OpenAI model for the `data_sources` property. This import is only necessary for TypeScript.</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [JavaScript](#tab/javascript)</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a> ```console</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a> npm install @azure/openai @azure/identity</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a> ```</span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a><span class="va">+---</span></span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a> Your app&#39;s _package.json_ file will be updated with the dependencies.</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a> ## Create a sample application</span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a><span class="st">-Open a command prompt where you want the new project, and create a new file named ChatWithOwnData.js. Copy the following code into the ChatWithOwnData.js file.</span></span>
+<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a><span class="st">-```javascript</span></span>
+<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a><span class="st">-const { OpenAIClient, AzureKeyCredential } = require(&quot;@azure/openai&quot;);</span></span>
+<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a><span class="st">-// Set the Azure and AI Search values from environment variables</span></span>
+<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a><span class="st">-const endpoint = process.env[&quot;AZURE_OPENAI_ENDPOINT&quot;];</span></span>
+<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a><span class="st">-const azureApiKey = process.env[&quot;AZURE_OPENAI_API_KEY&quot;];</span></span>
+<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a><span class="st">-const deploymentId = process.env[&quot;AZURE_OPENAI_DEPLOYMENT_ID&quot;];</span></span>
+<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a><span class="st">-const searchEndpoint = process.env[&quot;AZURE_AI_SEARCH_ENDPOINT&quot;];</span></span>
+<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a><span class="st">-const searchKey = process.env[&quot;AZURE_AI_SEARCH_API_KEY&quot;];</span></span>
+<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a><span class="st">-const searchIndex = process.env[&quot;AZURE_AI_SEARCH_INDEX&quot;];</span></span>
+<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a><span class="st">-async function main(){</span></span>
+<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a><span class="st">-  const client = new OpenAIClient(endpoint, new AzureKeyCredential(azureApiKey));</span></span>
+<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a><span class="st">-  const messages = [</span></span>
+<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a><span class="st">-    { role: &quot;user&quot;, content: &quot;What are my available health plans?&quot; },</span></span>
+<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a><span class="st">-  ];</span></span>
+<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a><span class="st">-  console.log(`Message: ${messages.map((m) =&gt; m.content).join(&quot;\n&quot;)}`);</span></span>
+<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a><span class="st">-  const events = await client.streamChatCompletions(deploymentId, messages, { </span></span>
+<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a><span class="st">-    maxTokens: 128,</span></span>
+<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a><span class="st">-    azureExtensionOptions: {</span></span>
+<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a><span class="st">-      extensions: [</span></span>
+<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a><span class="st">-        {</span></span>
+<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a><span class="st">-          type: &quot;AzureCognitiveSearch&quot;,</span></span>
+<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a><span class="st">-          endpoint: searchEndpoint,</span></span>
+<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a><span class="st">-          key: searchKey,</span></span>
+<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a><span class="st">-          indexName: searchIndex,</span></span>
+<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a><span class="st">-        },</span></span>
+<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a><span class="st">-      ],</span></span>
+<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a><span class="st">-    },</span></span>
+<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a><span class="st">-  });</span></span>
+<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a><span class="st">-  let response = &quot;&quot;;</span></span>
+<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a><span class="st">-  for await (const event of events) {</span></span>
+<span id="cb21-74"><a href="#cb21-74" aria-hidden="true" tabindex="-1"></a><span class="st">-    for (const choice of event.choices) {</span></span>
+<span id="cb21-75"><a href="#cb21-75" aria-hidden="true" tabindex="-1"></a><span class="st">-      const newText = choice.delta?.content;</span></span>
+<span id="cb21-76"><a href="#cb21-76" aria-hidden="true" tabindex="-1"></a><span class="st">-      if (!!newText) {</span></span>
+<span id="cb21-77"><a href="#cb21-77" aria-hidden="true" tabindex="-1"></a><span class="st">-        response += newText;</span></span>
+<span id="cb21-78"><a href="#cb21-78" aria-hidden="true" tabindex="-1"></a><span class="st">-        // To see streaming results as they arrive, uncomment line below</span></span>
+<span id="cb21-79"><a href="#cb21-79" aria-hidden="true" tabindex="-1"></a><span class="st">-        // console.log(newText);</span></span>
+<span id="cb21-80"><a href="#cb21-80" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [TypeScript](#tab/typescript)</span></span>
+<span id="cb21-81"><a href="#cb21-81" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-82"><a href="#cb21-82" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Open a command prompt where you want the new project, and create a new file named `ChatWithOwnData.ts`. Copy the following code into the `ChatWithOwnData.ts` file.</span></span>
+<span id="cb21-83"><a href="#cb21-83" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-84"><a href="#cb21-84" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```typescript</span></span>
+<span id="cb21-85"><a href="#cb21-85" aria-hidden="true" tabindex="-1"></a><span class="va">+    import &quot;dotenv/config&quot;;</span></span>
+<span id="cb21-86"><a href="#cb21-86" aria-hidden="true" tabindex="-1"></a><span class="va">+    import { AzureOpenAI } from &quot;openai&quot;;</span></span>
+<span id="cb21-87"><a href="#cb21-87" aria-hidden="true" tabindex="-1"></a><span class="va">+    import &quot;@azure/openai/types&quot;;</span></span>
+<span id="cb21-88"><a href="#cb21-88" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-89"><a href="#cb21-89" aria-hidden="true" tabindex="-1"></a><span class="va">+    // Set the Azure and AI Search values from environment variables</span></span>
+<span id="cb21-90"><a href="#cb21-90" aria-hidden="true" tabindex="-1"></a><span class="va">+    const endpoint = process.env[&quot;AZURE_OPENAI_ENDPOINT&quot;];</span></span>
+<span id="cb21-91"><a href="#cb21-91" aria-hidden="true" tabindex="-1"></a><span class="va">+    const apiKey = process.env[&quot;AZURE_OPENAI_API_KEY&quot;];</span></span>
+<span id="cb21-92"><a href="#cb21-92" aria-hidden="true" tabindex="-1"></a><span class="va">+    const searchEndpoint = process.env[&quot;AZURE_AI_SEARCH_ENDPOINT&quot;];</span></span>
+<span id="cb21-93"><a href="#cb21-93" aria-hidden="true" tabindex="-1"></a><span class="va">+    const searchKey = process.env[&quot;AZURE_AI_SEARCH_API_KEY&quot;];</span></span>
+<span id="cb21-94"><a href="#cb21-94" aria-hidden="true" tabindex="-1"></a><span class="va">+    const searchIndex = process.env[&quot;AZURE_AI_SEARCH_INDEX&quot;];</span></span>
+<span id="cb21-95"><a href="#cb21-95" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-96"><a href="#cb21-96" aria-hidden="true" tabindex="-1"></a><span class="va">+    // Required Azure OpenAI deployment name and API version</span></span>
+<span id="cb21-97"><a href="#cb21-97" aria-hidden="true" tabindex="-1"></a><span class="va">+    const deploymentName = &quot;gpt-4&quot;;</span></span>
+<span id="cb21-98"><a href="#cb21-98" aria-hidden="true" tabindex="-1"></a><span class="va">+    const apiVersion = &quot;2024-07-01-preview&quot;;</span></span>
+<span id="cb21-99"><a href="#cb21-99" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-100"><a href="#cb21-100" aria-hidden="true" tabindex="-1"></a><span class="va">+    function getClient(): AzureOpenAI {</span></span>
+<span id="cb21-101"><a href="#cb21-101" aria-hidden="true" tabindex="-1"></a><span class="va">+      return new AzureOpenAI({</span></span>
+<span id="cb21-102"><a href="#cb21-102" aria-hidden="true" tabindex="-1"></a><span class="va">+        endpoint,</span></span>
+<span id="cb21-103"><a href="#cb21-103" aria-hidden="true" tabindex="-1"></a><span class="va">+        apiKey,</span></span>
+<span id="cb21-104"><a href="#cb21-104" aria-hidden="true" tabindex="-1"></a><span class="va">+        deployment: deploymentName,</span></span>
+<span id="cb21-105"><a href="#cb21-105" aria-hidden="true" tabindex="-1"></a><span class="va">+        apiVersion,</span></span>
+<span id="cb21-106"><a href="#cb21-106" aria-hidden="true" tabindex="-1"></a><span class="va">+      });</span></span>
+<span id="cb21-107"><a href="#cb21-107" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb21-108"><a href="#cb21-108" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-109"><a href="#cb21-109" aria-hidden="true" tabindex="-1"></a><span class="va">+    async function main() {</span></span>
+<span id="cb21-110"><a href="#cb21-110" aria-hidden="true" tabindex="-1"></a><span class="va">+      const client = getClient();</span></span>
+<span id="cb21-111"><a href="#cb21-111" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-112"><a href="#cb21-112" aria-hidden="true" tabindex="-1"></a><span class="va">+      const messages = [</span></span>
+<span id="cb21-113"><a href="#cb21-113" aria-hidden="true" tabindex="-1"></a><span class="va">+        { role: &quot;user&quot;, content: &quot;What are my available health plans?&quot; },</span></span>
+<span id="cb21-114"><a href="#cb21-114" aria-hidden="true" tabindex="-1"></a><span class="va">+      ];</span></span>
+<span id="cb21-115"><a href="#cb21-115" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-116"><a href="#cb21-116" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.log(`Message: ${messages.map((m) =&gt; m.content).join(&quot;\n&quot;)}`);</span></span>
+<span id="cb21-117"><a href="#cb21-117" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-118"><a href="#cb21-118" aria-hidden="true" tabindex="-1"></a><span class="va">+      const events = await client.chat.completions.create({</span></span>
+<span id="cb21-119"><a href="#cb21-119" aria-hidden="true" tabindex="-1"></a><span class="va">+        stream: true,</span></span>
+<span id="cb21-120"><a href="#cb21-120" aria-hidden="true" tabindex="-1"></a><span class="va">+        messages: [</span></span>
+<span id="cb21-121"><a href="#cb21-121" aria-hidden="true" tabindex="-1"></a><span class="va">+          {</span></span>
+<span id="cb21-122"><a href="#cb21-122" aria-hidden="true" tabindex="-1"></a><span class="va">+            role: &quot;user&quot;,</span></span>
+<span id="cb21-123"><a href="#cb21-123" aria-hidden="true" tabindex="-1"></a><span class="va">+            content:</span></span>
+<span id="cb21-124"><a href="#cb21-124" aria-hidden="true" tabindex="-1"></a><span class="va">+              &quot;What&#39;s the most common feedback we received from our customers about the product?&quot;,</span></span>
+<span id="cb21-125"><a href="#cb21-125" aria-hidden="true" tabindex="-1"></a><span class="va">+          },</span></span>
+<span id="cb21-126"><a href="#cb21-126" aria-hidden="true" tabindex="-1"></a><span class="va">+        ],</span></span>
+<span id="cb21-127"><a href="#cb21-127" aria-hidden="true" tabindex="-1"></a><span class="va">+        max_tokens: 128,</span></span>
+<span id="cb21-128"><a href="#cb21-128" aria-hidden="true" tabindex="-1"></a><span class="va">+        model: &quot;&quot;,</span></span>
+<span id="cb21-129"><a href="#cb21-129" aria-hidden="true" tabindex="-1"></a><span class="va">+        data_sources: [</span></span>
+<span id="cb21-130"><a href="#cb21-130" aria-hidden="true" tabindex="-1"></a><span class="va">+          {</span></span>
+<span id="cb21-131"><a href="#cb21-131" aria-hidden="true" tabindex="-1"></a><span class="va">+            type: &quot;azure_search&quot;,</span></span>
+<span id="cb21-132"><a href="#cb21-132" aria-hidden="true" tabindex="-1"></a><span class="va">+            parameters: {</span></span>
+<span id="cb21-133"><a href="#cb21-133" aria-hidden="true" tabindex="-1"></a><span class="va">+              endpoint: searchEndpoint,</span></span>
+<span id="cb21-134"><a href="#cb21-134" aria-hidden="true" tabindex="-1"></a><span class="va">+              index_name: searchIndex,</span></span>
+<span id="cb21-135"><a href="#cb21-135" aria-hidden="true" tabindex="-1"></a><span class="va">+              authentication: {</span></span>
+<span id="cb21-136"><a href="#cb21-136" aria-hidden="true" tabindex="-1"></a><span class="va">+                type: &quot;api_key&quot;,</span></span>
+<span id="cb21-137"><a href="#cb21-137" aria-hidden="true" tabindex="-1"></a><span class="va">+                key: searchKey,</span></span>
+<span id="cb21-138"><a href="#cb21-138" aria-hidden="true" tabindex="-1"></a><span class="va">+              },</span></span>
+<span id="cb21-139"><a href="#cb21-139" aria-hidden="true" tabindex="-1"></a><span class="va">+            },</span></span>
+<span id="cb21-140"><a href="#cb21-140" aria-hidden="true" tabindex="-1"></a><span class="va">+          },</span></span>
+<span id="cb21-141"><a href="#cb21-141" aria-hidden="true" tabindex="-1"></a><span class="va">+        ],</span></span>
+<span id="cb21-142"><a href="#cb21-142" aria-hidden="true" tabindex="-1"></a><span class="va">+      });</span></span>
+<span id="cb21-143"><a href="#cb21-143" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-144"><a href="#cb21-144" aria-hidden="true" tabindex="-1"></a><span class="va">+      let response = &quot;&quot;;</span></span>
+<span id="cb21-145"><a href="#cb21-145" aria-hidden="true" tabindex="-1"></a><span class="va">+      for await (const event of events) {</span></span>
+<span id="cb21-146"><a href="#cb21-146" aria-hidden="true" tabindex="-1"></a><span class="va">+        for (const choice of event.choices) {</span></span>
+<span id="cb21-147"><a href="#cb21-147" aria-hidden="true" tabindex="-1"></a><span class="va">+          const newText = choice.delta?.content;</span></span>
+<span id="cb21-148"><a href="#cb21-148" aria-hidden="true" tabindex="-1"></a><span class="va">+          if (newText) {</span></span>
+<span id="cb21-149"><a href="#cb21-149" aria-hidden="true" tabindex="-1"></a><span class="va">+            response += newText;</span></span>
+<span id="cb21-150"><a href="#cb21-150" aria-hidden="true" tabindex="-1"></a><span class="va">+            // To see streaming results as they arrive, uncomment line below</span></span>
+<span id="cb21-151"><a href="#cb21-151" aria-hidden="true" tabindex="-1"></a><span class="va">+            // console.log(newText);</span></span>
+<span id="cb21-152"><a href="#cb21-152" aria-hidden="true" tabindex="-1"></a><span class="va">+          }</span></span>
+<span id="cb21-153"><a href="#cb21-153" aria-hidden="true" tabindex="-1"></a><span class="va">+        }</span></span>
+<span id="cb21-154"><a href="#cb21-154" aria-hidden="true" tabindex="-1"></a>       }</span>
+<span id="cb21-155"><a href="#cb21-155" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.log(response);</span></span>
+<span id="cb21-156"><a href="#cb21-156" aria-hidden="true" tabindex="-1"></a>     }</span>
+<span id="cb21-157"><a href="#cb21-157" aria-hidden="true" tabindex="-1"></a><span class="st">-  }</span></span>
+<span id="cb21-158"><a href="#cb21-158" aria-hidden="true" tabindex="-1"></a><span class="st">-  console.log(response);</span></span>
+<span id="cb21-159"><a href="#cb21-159" aria-hidden="true" tabindex="-1"></a><span class="st">-}</span></span>
+<span id="cb21-160"><a href="#cb21-160" aria-hidden="true" tabindex="-1"></a><span class="st">-</span></span>
+<span id="cb21-161"><a href="#cb21-161" aria-hidden="true" tabindex="-1"></a><span class="st">-main().catch((err) =&gt; {</span></span>
+<span id="cb21-162"><a href="#cb21-162" aria-hidden="true" tabindex="-1"></a><span class="st">-  console.error(&quot;The sample encountered an error:&quot;, err);</span></span>
+<span id="cb21-163"><a href="#cb21-163" aria-hidden="true" tabindex="-1"></a><span class="st">-});</span></span>
+<span id="cb21-164"><a href="#cb21-164" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-165"><a href="#cb21-165" aria-hidden="true" tabindex="-1"></a><span class="va">+    main().catch((err) =&gt; {</span></span>
+<span id="cb21-166"><a href="#cb21-166" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.error(&quot;The sample encountered an error:&quot;, err);</span></span>
+<span id="cb21-167"><a href="#cb21-167" aria-hidden="true" tabindex="-1"></a><span class="va">+    });</span></span>
+<span id="cb21-168"><a href="#cb21-168" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb21-169"><a href="#cb21-169" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-170"><a href="#cb21-170" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Build the application with the following command:</span></span>
+<span id="cb21-171"><a href="#cb21-171" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-172"><a href="#cb21-172" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```console</span></span>
+<span id="cb21-173"><a href="#cb21-173" aria-hidden="true" tabindex="-1"></a><span class="va">+    tsc</span></span>
+<span id="cb21-174"><a href="#cb21-174" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb21-175"><a href="#cb21-175" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-176"><a href="#cb21-176" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Run the application with the following command:</span></span>
+<span id="cb21-177"><a href="#cb21-177" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-178"><a href="#cb21-178" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```console</span></span>
+<span id="cb21-179"><a href="#cb21-179" aria-hidden="true" tabindex="-1"></a><span class="va">+    node ChatWithOwnData.js</span></span>
+<span id="cb21-180"><a href="#cb21-180" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb21-181"><a href="#cb21-181" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-182"><a href="#cb21-182" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [JavaScript](#tab/javascript)</span></span>
+<span id="cb21-183"><a href="#cb21-183" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb21-184"><a href="#cb21-184" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Open a command prompt where you want the new project, and create a new file named `ChatWithOwnData.js`. Copy the following code into the `ChatWithOwnData.js` file.</span></span>
+<span id="cb21-185"><a href="#cb21-185" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-186"><a href="#cb21-186" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```javascript</span></span>
+<span id="cb21-187"><a href="#cb21-187" aria-hidden="true" tabindex="-1"></a><span class="va">+    require(&quot;dotenv/config&quot;);</span></span>
+<span id="cb21-188"><a href="#cb21-188" aria-hidden="true" tabindex="-1"></a><span class="va">+    const { AzureOpenAI } = require(&quot;openai&quot;);</span></span>
+<span id="cb21-189"><a href="#cb21-189" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-190"><a href="#cb21-190" aria-hidden="true" tabindex="-1"></a><span class="va">+    // Set the Azure and AI Search values from environment variables</span></span>
+<span id="cb21-191"><a href="#cb21-191" aria-hidden="true" tabindex="-1"></a><span class="va">+    const endpoint = process.env[&quot;AZURE_OPENAI_ENDPOINT&quot;];</span></span>
+<span id="cb21-192"><a href="#cb21-192" aria-hidden="true" tabindex="-1"></a><span class="va">+    const apiKey = process.env[&quot;AZURE_OPENAI_API_KEY&quot;];</span></span>
+<span id="cb21-193"><a href="#cb21-193" aria-hidden="true" tabindex="-1"></a><span class="va">+    const searchEndpoint = process.env[&quot;AZURE_AI_SEARCH_ENDPOINT&quot;];</span></span>
+<span id="cb21-194"><a href="#cb21-194" aria-hidden="true" tabindex="-1"></a><span class="va">+    const searchKey = process.env[&quot;AZURE_AI_SEARCH_API_KEY&quot;];</span></span>
+<span id="cb21-195"><a href="#cb21-195" aria-hidden="true" tabindex="-1"></a><span class="va">+    const searchIndex = process.env[&quot;AZURE_AI_SEARCH_INDEX&quot;];</span></span>
+<span id="cb21-196"><a href="#cb21-196" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-197"><a href="#cb21-197" aria-hidden="true" tabindex="-1"></a><span class="va">+    // Required Azure OpenAI deployment name and API version</span></span>
+<span id="cb21-198"><a href="#cb21-198" aria-hidden="true" tabindex="-1"></a><span class="va">+    const deploymentName = &quot;gpt-4&quot;;</span></span>
+<span id="cb21-199"><a href="#cb21-199" aria-hidden="true" tabindex="-1"></a><span class="va">+    const apiVersion = &quot;2024-07-01-preview&quot;;</span></span>
+<span id="cb21-200"><a href="#cb21-200" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-201"><a href="#cb21-201" aria-hidden="true" tabindex="-1"></a><span class="va">+    function getClient() {</span></span>
+<span id="cb21-202"><a href="#cb21-202" aria-hidden="true" tabindex="-1"></a><span class="va">+      return new AzureOpenAI({</span></span>
+<span id="cb21-203"><a href="#cb21-203" aria-hidden="true" tabindex="-1"></a><span class="va">+        endpoint,</span></span>
+<span id="cb21-204"><a href="#cb21-204" aria-hidden="true" tabindex="-1"></a><span class="va">+        apiKey,</span></span>
+<span id="cb21-205"><a href="#cb21-205" aria-hidden="true" tabindex="-1"></a><span class="va">+        deployment: deploymentName,</span></span>
+<span id="cb21-206"><a href="#cb21-206" aria-hidden="true" tabindex="-1"></a><span class="va">+        apiVersion,</span></span>
+<span id="cb21-207"><a href="#cb21-207" aria-hidden="true" tabindex="-1"></a><span class="va">+      });</span></span>
+<span id="cb21-208"><a href="#cb21-208" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb21-209"><a href="#cb21-209" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-210"><a href="#cb21-210" aria-hidden="true" tabindex="-1"></a><span class="va">+    async function main() {</span></span>
+<span id="cb21-211"><a href="#cb21-211" aria-hidden="true" tabindex="-1"></a><span class="va">+      const client = getClient();</span></span>
+<span id="cb21-212"><a href="#cb21-212" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-213"><a href="#cb21-213" aria-hidden="true" tabindex="-1"></a><span class="va">+      const messages = [</span></span>
+<span id="cb21-214"><a href="#cb21-214" aria-hidden="true" tabindex="-1"></a><span class="va">+        { role: &quot;user&quot;, content: &quot;What are my available health plans?&quot; },</span></span>
+<span id="cb21-215"><a href="#cb21-215" aria-hidden="true" tabindex="-1"></a><span class="va">+      ];</span></span>
+<span id="cb21-216"><a href="#cb21-216" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-217"><a href="#cb21-217" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.log(`Message: ${messages.map((m) =&gt; m.content).join(&quot;\n&quot;)}`);</span></span>
+<span id="cb21-218"><a href="#cb21-218" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-219"><a href="#cb21-219" aria-hidden="true" tabindex="-1"></a><span class="va">+      const events = await client.chat.completions.create({</span></span>
+<span id="cb21-220"><a href="#cb21-220" aria-hidden="true" tabindex="-1"></a><span class="va">+        stream: true,</span></span>
+<span id="cb21-221"><a href="#cb21-221" aria-hidden="true" tabindex="-1"></a><span class="va">+        messages: [</span></span>
+<span id="cb21-222"><a href="#cb21-222" aria-hidden="true" tabindex="-1"></a><span class="va">+          {</span></span>
+<span id="cb21-223"><a href="#cb21-223" aria-hidden="true" tabindex="-1"></a><span class="va">+            role: &quot;user&quot;,</span></span>
+<span id="cb21-224"><a href="#cb21-224" aria-hidden="true" tabindex="-1"></a><span class="va">+            content:</span></span>
+<span id="cb21-225"><a href="#cb21-225" aria-hidden="true" tabindex="-1"></a><span class="va">+              &quot;What&#39;s the most common feedback we received from our customers about the product?&quot;,</span></span>
+<span id="cb21-226"><a href="#cb21-226" aria-hidden="true" tabindex="-1"></a><span class="va">+          },</span></span>
+<span id="cb21-227"><a href="#cb21-227" aria-hidden="true" tabindex="-1"></a><span class="va">+        ],</span></span>
+<span id="cb21-228"><a href="#cb21-228" aria-hidden="true" tabindex="-1"></a><span class="va">+        max_tokens: 128,</span></span>
+<span id="cb21-229"><a href="#cb21-229" aria-hidden="true" tabindex="-1"></a><span class="va">+        model: &quot;&quot;,</span></span>
+<span id="cb21-230"><a href="#cb21-230" aria-hidden="true" tabindex="-1"></a><span class="va">+        data_sources: [</span></span>
+<span id="cb21-231"><a href="#cb21-231" aria-hidden="true" tabindex="-1"></a><span class="va">+          {</span></span>
+<span id="cb21-232"><a href="#cb21-232" aria-hidden="true" tabindex="-1"></a><span class="va">+            type: &quot;azure_search&quot;,</span></span>
+<span id="cb21-233"><a href="#cb21-233" aria-hidden="true" tabindex="-1"></a><span class="va">+            parameters: {</span></span>
+<span id="cb21-234"><a href="#cb21-234" aria-hidden="true" tabindex="-1"></a><span class="va">+              endpoint: searchEndpoint,</span></span>
+<span id="cb21-235"><a href="#cb21-235" aria-hidden="true" tabindex="-1"></a><span class="va">+              index_name: searchIndex,</span></span>
+<span id="cb21-236"><a href="#cb21-236" aria-hidden="true" tabindex="-1"></a><span class="va">+              authentication: {</span></span>
+<span id="cb21-237"><a href="#cb21-237" aria-hidden="true" tabindex="-1"></a><span class="va">+                type: &quot;api_key&quot;,</span></span>
+<span id="cb21-238"><a href="#cb21-238" aria-hidden="true" tabindex="-1"></a><span class="va">+                key: searchKey,</span></span>
+<span id="cb21-239"><a href="#cb21-239" aria-hidden="true" tabindex="-1"></a><span class="va">+              },</span></span>
+<span id="cb21-240"><a href="#cb21-240" aria-hidden="true" tabindex="-1"></a><span class="va">+            },</span></span>
+<span id="cb21-241"><a href="#cb21-241" aria-hidden="true" tabindex="-1"></a><span class="va">+          },</span></span>
+<span id="cb21-242"><a href="#cb21-242" aria-hidden="true" tabindex="-1"></a><span class="va">+        ],</span></span>
+<span id="cb21-243"><a href="#cb21-243" aria-hidden="true" tabindex="-1"></a><span class="va">+      });</span></span>
+<span id="cb21-244"><a href="#cb21-244" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-245"><a href="#cb21-245" aria-hidden="true" tabindex="-1"></a><span class="va">+      let response = &quot;&quot;;</span></span>
+<span id="cb21-246"><a href="#cb21-246" aria-hidden="true" tabindex="-1"></a><span class="va">+      for await (const event of events) {</span></span>
+<span id="cb21-247"><a href="#cb21-247" aria-hidden="true" tabindex="-1"></a><span class="va">+        for (const choice of event.choices) {</span></span>
+<span id="cb21-248"><a href="#cb21-248" aria-hidden="true" tabindex="-1"></a><span class="va">+          const newText = choice.delta?.content;</span></span>
+<span id="cb21-249"><a href="#cb21-249" aria-hidden="true" tabindex="-1"></a><span class="va">+          if (newText) {</span></span>
+<span id="cb21-250"><a href="#cb21-250" aria-hidden="true" tabindex="-1"></a><span class="va">+            response += newText;</span></span>
+<span id="cb21-251"><a href="#cb21-251" aria-hidden="true" tabindex="-1"></a><span class="va">+            // To see streaming results as they arrive, uncomment line below</span></span>
+<span id="cb21-252"><a href="#cb21-252" aria-hidden="true" tabindex="-1"></a><span class="va">+            // console.log(newText);</span></span>
+<span id="cb21-253"><a href="#cb21-253" aria-hidden="true" tabindex="-1"></a><span class="va">+          }</span></span>
+<span id="cb21-254"><a href="#cb21-254" aria-hidden="true" tabindex="-1"></a><span class="va">+        }</span></span>
+<span id="cb21-255"><a href="#cb21-255" aria-hidden="true" tabindex="-1"></a><span class="va">+      }</span></span>
+<span id="cb21-256"><a href="#cb21-256" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.log(response);</span></span>
+<span id="cb21-257"><a href="#cb21-257" aria-hidden="true" tabindex="-1"></a><span class="va">+    }</span></span>
+<span id="cb21-258"><a href="#cb21-258" aria-hidden="true" tabindex="-1"></a><span class="va">+    </span></span>
+<span id="cb21-259"><a href="#cb21-259" aria-hidden="true" tabindex="-1"></a><span class="va">+    main().catch((err) =&gt; {</span></span>
+<span id="cb21-260"><a href="#cb21-260" aria-hidden="true" tabindex="-1"></a><span class="va">+      console.error(&quot;The sample encountered an error:&quot;, err);</span></span>
+<span id="cb21-261"><a href="#cb21-261" aria-hidden="true" tabindex="-1"></a><span class="va">+    });</span></span>
+<span id="cb21-262"><a href="#cb21-262" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb21-263"><a href="#cb21-263" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-264"><a href="#cb21-264" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Run the application with the following command:</span></span>
+<span id="cb21-265"><a href="#cb21-265" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-266"><a href="#cb21-266" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```console</span></span>
+<span id="cb21-267"><a href="#cb21-267" aria-hidden="true" tabindex="-1"></a><span class="va">+    node ChatWithOwnData.js</span></span>
+<span id="cb21-268"><a href="#cb21-268" aria-hidden="true" tabindex="-1"></a><span class="va">+    ```</span></span>
+<span id="cb21-269"><a href="#cb21-269" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-270"><a href="#cb21-270" aria-hidden="true" tabindex="-1"></a><span class="st">-module.exports = { main };</span></span>
+<span id="cb21-271"><a href="#cb21-271" aria-hidden="true" tabindex="-1"></a><span class="st">-```</span></span>
+<span id="cb21-272"><a href="#cb21-272" aria-hidden="true" tabindex="-1"></a><span class="va">+---</span></span>
+<span id="cb21-273"><a href="#cb21-273" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-274"><a href="#cb21-274" aria-hidden="true" tabindex="-1"></a> &gt; [!IMPORTANT]</span>
+<span id="cb21-275"><a href="#cb21-275" aria-hidden="true" tabindex="-1"></a> &gt; For production, use a secure way of storing and accessing your credentials like [Azure Key Vault](/azure/key-vault/general/overview). For more information about credential security, see the Azure AI services [security](../../security-features.md) article.</span>
+<span id="cb21-276"><a href="#cb21-276" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-277"><a href="#cb21-277" aria-hidden="true" tabindex="-1"></a><span class="st">-```cmd</span></span>
+<span id="cb21-278"><a href="#cb21-278" aria-hidden="true" tabindex="-1"></a><span class="st">-node.exe ChatWithOwnData.js</span></span>
+<span id="cb21-279"><a href="#cb21-279" aria-hidden="true" tabindex="-1"></a><span class="st">-```</span></span>
+<span id="cb21-280"><a href="#cb21-280" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb21-281"><a href="#cb21-281" aria-hidden="true" tabindex="-1"></a> ## Output</span>
+<span id="cb21-282"><a href="#cb21-282" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-10">Summary</h3>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;JavaScript SDKでのデータ活用ガイドの更新&quot;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-10">Explanation</h3>
+<p>この変更は、JavaScript
+SDKを使用してOpenAIのモデルにデータを活用する方法に関するガイドを更新したものです。具体的な内容は以下の通りです。</p>
+<ol class="incremental" type="1">
+<li><strong>日付の更新</strong>:
+<ul class="incremental">
+<li>ドキュメントの日付が03/04/2024から09/06/2024に変更され、情報が最新のものになっています。</li>
+</ul></li>
+<li><strong>依存関係の明確化</strong>:
+<ul class="incremental">
+<li><code>@azure/openai/types</code>の依存関係がTypeScript用のインポートとして追加され、<code>data_sources</code>プロパティの拡張が説明されています。これにより、ユーザーに必要なライブラリや依存関係がより分かりやすくなりました。</li>
+</ul></li>
+<li><strong>サンプルアプリケーションの作成手順</strong>:
+<ul class="incremental">
+<li>新しいファイル<code>ChatWithOwnData.ts</code>および<code>ChatWithOwnData.js</code>を使用してサンプルアプリケーションを作成する手順が明確に示されています。これにより、ユーザーは新しいプロジェクトを迅速に開始できるようになります。</li>
+</ul></li>
+<li><strong>コードの改善</strong>:
+<ul class="incremental">
+<li>サンプルコードが更新され、AzureのエンドポイントやAPIキーの設定が環境変数から取得されるようになっています。これにより、セキュリティと可搬性が向上しています。</li>
+<li>エラーハンドリングやメッセージの送信ロジックが改善され、ユーザビリティが向上しています。</li>
+</ul></li>
+<li><strong>実行方法の詳細</strong>:
+<ul class="incremental">
+<li>アプリケーションをビルドして実行する方法が詳細に説明されており、ユーザーは簡単にサンプルアプリケーションを稼働させることができるようにサポートされています。</li>
+</ul></li>
+<li><strong>セキュリティに関する重要なお知らせ</strong>:
+<ul class="incremental">
+<li>本番環境でのクレデンシャルの安全な保存方法としてAzure Key
+Vaultの利用が推奨される注意書きが追加されており、セキュリティ意識の向上に寄与しています。</li>
+</ul></li>
+</ol>
+<p>この更新により、ユーザーはJavaScript
+SDKを使用してOpenAIの機能を効果的に活用できるようになり、データをAPIで入力する際の流れがクリアに示されています。</p>
+<h2
+id="item-761d2a">articles/ai-services/openai/media/provisioned/confirm-pricing.png</h2>
+<h3 id="summary-11">Summary</h3>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;new feature&quot;</span><span class="fu">,</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;価格確認用の画像の追加&quot;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-11">Explanation</h3>
+<p>この変更では、OpenAIに関連するコンテンツに新しい画像ファイル<code>confirm-pricing.png</code>が追加されました。この画像は、料金確認や価格設定に関するガイドラインや情報を視覚的に説明するために使用されることが予想されます。</p>
+<ol class="incremental" type="1">
+<li><strong>画像の追加</strong>:
+<ul class="incremental">
+<li>新しい画像ファイルが追加され、ユーザーが特定のプロセスや機能を理解する際の補足情報として機能します。この視覚的サポートにより、文書の内容がより明確になり、ユーザー体験が向上します。</li>
+</ul></li>
+<li><strong>用途</strong>:
+<ul class="incremental">
+<li>この画像は、料金プランの確認やサブスクリプションの詳細についての情報を伝える一部として機能することが意図されています。実際の文書内での使用箇所やコンテキストによっては、設定や利用に関する詳細な視覚的アシストを提供するものです。</li>
+</ul></li>
+</ol>
+<p>新たに追加されたこの画像は、OpenAIサービスの利用や料金理解を助けるためのリソースの一部であり、ユーザーが必要な情報をより簡単に把握できるようになることを目的としています。</p>
+<h2
+id="item-5bc2ef">articles/ai-services/openai/media/provisioned/deployment-screen.png</h2>
+<h3 id="summary-12">Summary</h3>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;デプロイメント画面の画像の更新&quot;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-12">Explanation</h3>
+<p>この変更は、OpenAIのデプロイメント画面に関する画像ファイル<code>deployment-screen.png</code>の更新を含んでいます。この更新は、画像の内容が改善または最新化されたことを示しています。</p>
+<ol class="incremental" type="1">
+<li><strong>画像の更新</strong>:
+<ul class="incremental">
+<li>既存の画像が改訂され、よりわかりやすい視覚情報を提供するようになっています。この更新により、デプロイメントプロセスやそれに関連するインターフェースの理解を助けることを目指しています。</li>
+</ul></li>
+<li><strong>視覚的な明確さの向上</strong>:
+<ul class="incremental">
+<li>更新された画像は、ユーザーにとって、OpenAIサービスのデプロイメントに関連する手順や重要な要素を視覚的に明示し、より直感的に理解できるように設計されている可能性があります。</li>
+</ul></li>
+</ol>
+<p>この更新によって、ドキュメントの信頼性と有用性が向上し、ユーザーは必要な情報をスムーズに取得できるようになることが期待されます。</p>
+<h2
+id="item-52c1f4">articles/ai-services/openai/use-your-data-quickstart.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -5,7 +5,7 @@ description: Use this article to import and use your data in Azure OpenAI.</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a> #services: cognitive-services</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a> manager: nitinme</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a> ms.service: azure-ai-openai</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.custom: devx-track-dotnet, devx-track-extended-java, devx-track-js, devx-track-go, devx-track-python</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.custom: devx-track-dotnet, devx-track-extended-java, devx-track-js, devx-track-ts, devx-track-go, devx-track-python</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a> ms.topic: quickstart</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a> author: aahill</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a> ms.author: aahi</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -24,7 +24,7 @@ zone_pivot_groups: openai-use-your-data</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a> ::: zone pivot=&quot;programming-language-javascript&quot;</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="st">-[Reference](/javascript/api/@azure/openai) | [Source code](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai) | [Package (npm)](https://www.npmjs.com/package/@azure/openai) | [Samples](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/openai/Azure.AI.OpenAI/tests/Samples)</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="va">+[Reference documentation](https://platform.openai.com/docs/api-reference/chat) | [Source code](https://github.com/openai/openai-node) | [Package (npm)](https://www.npmjs.com/package/openai) | [Samples](https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/openai/openai/samples)</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a> ::: zone-end</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -46,16 +46,35 @@ In this quickstart, you can use your own data with Azure OpenAI models. Using Az</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a> ## Prerequisites</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [TypeScript](#tab/typescript)</span></span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a> - An Azure subscription - &lt;a href=&quot;https://azure.microsoft.com/free/cognitive-services&quot; target=&quot;_blank&quot;&gt;Create one for free&lt;/a&gt;.</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a><span class="va">+- [LTS versions of Node.js](https://github.com/nodejs/release#release-schedule)</span></span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a><span class="va">+- [TypeScript](https://www.typescriptlang.org/download/)</span></span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a> - An Azure OpenAI resource deployed in a [supported region and with a supported model](./concepts/use-your-data.md#regional-availability-and-model-support).</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a><span class="st">-- Be sure that you are assigned at least the [Cognitive Services Contributor](./how-to/role-based-access-control.md#cognitive-services-contributor) role for the Azure OpenAI resource.</span></span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a><span class="va">+- Be sure that you&#39;re assigned at least the [Cognitive Services Contributor](./how-to/role-based-access-control.md#cognitive-services-contributor) role for the Azure OpenAI resource.</span></span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a> - Download the example data from [GitHub](https://github.com/Azure-Samples/cognitive-services-sample-data-files/blob/master/openai/contoso_benefits_document_example.pdf) if you don&#39;t have your own data.</span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a><span class="va">+#### [JavaScript](#tab/javascript)</span></span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a><span class="va">+- An Azure subscription - &lt;a href=&quot;https://azure.microsoft.com/free/cognitive-services&quot; target=&quot;_blank&quot;&gt;Create one for free&lt;/a&gt;.</span></span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a><span class="va">+- [LTS versions of Node.js](https://github.com/nodejs/release#release-schedule)</span></span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a><span class="va">+- An Azure OpenAI resource deployed in a [supported region and with a supported model](./concepts/use-your-data.md#regional-availability-and-model-support).</span></span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a><span class="va">+- Be sure that you&#39;re assigned at least the [Cognitive Services Contributor](./how-to/role-based-access-control.md#cognitive-services-contributor) role for the Azure OpenAI resource.</span></span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a><span class="va">+- Download the example data from [GitHub](https://github.com/Azure-Samples/cognitive-services-sample-data-files/blob/master/openai/contoso_benefits_document_example.pdf) if you don&#39;t have your own data.</span></span>
+<span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a><span class="va">+---</span></span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a> ::: zone pivot=&quot;programming-language-javascript&quot;</span>
+<span id="cb25-50"><a href="#cb25-50" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-51"><a href="#cb25-51" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb25-52"><a href="#cb25-52" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb25-53"><a href="#cb25-53" aria-hidden="true" tabindex="-1"></a> - [Long Term Support (LTS) versions of Node.js](https://github.com/nodejs/release#release-schedule)</span>
+<span id="cb25-54"><a href="#cb25-54" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb25-55"><a href="#cb25-55" aria-hidden="true" tabindex="-1"></a> ::: zone-end</span></code></pre></div>
+</details>
+<h3 id="summary-13">Summary</h3>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;クイックスタートガイドの更新&quot;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-13">Explanation</h3>
+<p>この変更は、Azure
+OpenAIに関するクイックスタートガイド<code>use-your-data-quickstart.md</code>の内容を更新するもので、いくつかの重要な情報が追加され、既存の情報も見直されています。</p>
+<ol class="incremental" type="1">
+<li><strong>追加されたコンテンツ</strong>:
+<ul class="incremental">
+<li>TypeScriptに関する情報が新たに追加され、TypeScriptのLTSバージョンやそれに関するリンクが挿入されました。この変更により、ユーザーはTypeScriptを利用する際の前提条件を確認しやすくなっています。</li>
+</ul></li>
+<li><strong>参照情報の更新</strong>:
+<ul class="incremental">
+<li>参照ドキュメントやソースコードのリンクが更新され、最新のリソースやサンプルにアクセスできるようになっています。これにより、開発者が必要な情報を効率的に探しやすくなっています。</li>
+</ul></li>
+<li><strong>全体的なフォーマットの改善</strong>:
+<ul class="incremental">
+<li>一部の文章が明確化され、ガイドの利用がより直感的になります。具体的には、役割の確認やサンプルデータの取得に際しての指示が強調され、ユーザー体験の向上を目指しています。</li>
+</ul></li>
+</ol>
+<p>この変更により、Azure
+OpenAIを使用する際のプロセスがよりスムーズになり、特に新規ユーザーが必要な情報を容易に把握できるようになることが期待されます。</p>
+<h2 id="item-53303b">articles/ai-services/openai/whats-new.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -10,14 +10,57 @@ ms.custom:</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>   - ignite-2023</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>   - references_regions</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a> ms.topic: whats-new</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="st">-ms.date: 9/03/2024</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="va">+ms.date: 9/12/2024</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a> recommendations: false</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a> ---</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a> # What&#39;s new in Azure OpenAI Service</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a> This article provides a summary of the latest releases and major documentation updates for Azure OpenAI.</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a><span class="va">+## September 2024</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a><span class="va">+### NEW o1-preview and o1-mini models available for limited access</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a><span class="va">+The Azure OpenAI `o1-preview` and `o1-mini` models are specifically designed to tackle reasoning and problem-solving tasks with increased focus and capability. These models spend more time processing and understanding the user&#39;s request, making them exceptionally strong in areas like science, coding, and math compared to previous iterations.</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="va">+### Key capabilities of the o1 series</span></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="va">+- Complex Code Generation: Capable of generating algorithms and handling advanced coding tasks to support developers.</span></span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a><span class="va">+- Advanced Problem Solving: Ideal for comprehensive brainstorming sessions and addressing multifaceted challenges.</span></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="va">+- Complex Document Comparison: Perfect for analyzing contracts, case files, or legal documents to identify subtle differences.</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="va">+- Instruction Following and Workflow Management: Particularly effective for managing workflows requiring shorter contexts.</span></span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a><span class="va">+### Model variants</span></span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-29"><a href="#cb27-29" aria-hidden="true" tabindex="-1"></a><span class="va">+- `o1-preview`: `o1-preview` is the more capable of the `o1` series models.  </span></span>
+<span id="cb27-30"><a href="#cb27-30" aria-hidden="true" tabindex="-1"></a><span class="va">+- `o1-mini`: `o1-mini` is the faster and cheaper of the `o1` series models.</span></span>
+<span id="cb27-31"><a href="#cb27-31" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-32"><a href="#cb27-32" aria-hidden="true" tabindex="-1"></a><span class="va">+Model version: `2024-09-12`</span></span>
+<span id="cb27-33"><a href="#cb27-33" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-34"><a href="#cb27-34" aria-hidden="true" tabindex="-1"></a><span class="va">+Request access: [limited access model application](https://aka.ms/oai/modelaccess)</span></span>
+<span id="cb27-35"><a href="#cb27-35" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-36"><a href="#cb27-36" aria-hidden="true" tabindex="-1"></a><span class="va">+### Limitations</span></span>
+<span id="cb27-37"><a href="#cb27-37" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-38"><a href="#cb27-38" aria-hidden="true" tabindex="-1"></a><span class="va">+The `o1` series models are currently in preview and do not include some features available in other models, such as image understanding and structured outputs which are available in the latest GPT-4o model. For many tasks, the generally available GPT-4o models may still be more suitable.</span></span>
+<span id="cb27-39"><a href="#cb27-39" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-40"><a href="#cb27-40" aria-hidden="true" tabindex="-1"></a><span class="va">+### Safety</span></span>
+<span id="cb27-41"><a href="#cb27-41" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-42"><a href="#cb27-42" aria-hidden="true" tabindex="-1"></a><span class="va">+OpenAI has incorporated additional safety measures into the `o1` models, including new techniques to help the models refuse unsafe requests. These advancements make the `o1` series some of the most robust models available.</span></span>
+<span id="cb27-43"><a href="#cb27-43" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a><span class="va">+### Availability</span></span>
+<span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-46"><a href="#cb27-46" aria-hidden="true" tabindex="-1"></a><span class="va">+The `o1-preview` and `o1-mini` are available in the East US2 region for limited access through the [AI Studio](https://ai.azure.com) early access playground. Data processing for the `o1` models may occur in a different region than where they are available for use.</span></span>
+<span id="cb27-47"><a href="#cb27-47" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-48"><a href="#cb27-48" aria-hidden="true" tabindex="-1"></a><span class="va">+To try the `o1-preview` and `o1-mini` models in the early access playground **registration is required, and access will be granted based on Microsoft’s eligibility criteria.**</span></span>
+<span id="cb27-49"><a href="#cb27-49" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-50"><a href="#cb27-50" aria-hidden="true" tabindex="-1"></a><span class="va">+Request access: [limited access model application](https://aka.ms/oai/modelaccess)</span></span>
+<span id="cb27-51"><a href="#cb27-51" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-52"><a href="#cb27-52" aria-hidden="true" tabindex="-1"></a><span class="va">+Once access has been granted, you will need to:</span></span>
+<span id="cb27-53"><a href="#cb27-53" aria-hidden="true" tabindex="-1"></a><span class="va">+</span></span>
+<span id="cb27-54"><a href="#cb27-54" aria-hidden="true" tabindex="-1"></a><span class="va">+1. Navigate to https://ai.azure.com/resources and select a resource in the `eastus2` region. If you do not have an Azure OpenAI resource in this region you will need to [create one](https://portal.azure.com/#create/Microsoft.CognitiveServicesOpenAI).  </span></span>
+<span id="cb27-55"><a href="#cb27-55" aria-hidden="true" tabindex="-1"></a><span class="va">+2. Once the `eastus2` Azure OpenAI resource is selected, in the upper left-hand panel under **Playgrounds** select **Early access playground (preview)**.</span></span>
+<span id="cb27-56"><a href="#cb27-56" aria-hidden="true" tabindex="-1"></a><span class="va">+ </span></span>
+<span id="cb27-57"><a href="#cb27-57" aria-hidden="true" tabindex="-1"></a> ## August 2024</span>
+<span id="cb27-58"><a href="#cb27-58" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb27-59"><a href="#cb27-59" aria-hidden="true" tabindex="-1"></a> ### GPT-4o 2024-08-06 structured outputs</span></code></pre></div>
+</details>
+<h3 id="summary-14">Summary</h3>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;new feature&quot;</span><span class="fu">,</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;Azure OpenAIサービスの新機能に関する更新&quot;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-14">Explanation</h3>
+<p>この変更は、Azure OpenAIサービスに関する「What’s
+New」記事の更新で、特に2024年9月に発表される新機能について詳しく説明しています。</p>
+<ol class="incremental" type="1">
+<li><strong>新しいモデルの紹介</strong>:
+<ul class="incremental">
+<li><code>o1-preview</code>および<code>o1-mini</code>モデルが限定的にアクセス可能になり、ユーザーが高度な推論や問題解決タスクに対応するための新機能を備えています。これにより、科学、コーディング、数学の分野での能力が向上しています。</li>
+</ul></li>
+<li><strong>主要な機能</strong>:
+<ul class="incremental">
+<li>複雑なコード生成能力や高度な問題解決機能など、開発者やユーザーにとって便利な新機能が追加されました。また、文書の比較やワークフロー管理においても有用な機能が強化されています。</li>
+</ul></li>
+<li><strong>モデルのバリアント</strong>:
+<ul class="incremental">
+<li><code>o1-preview</code>モデルはより高性能であり、<code>o1-mini</code>モデルはより高速でコスト効率が良いと説明されています。これにより、ユーザーはニーズに応じたモデルを選択できます。</li>
+</ul></li>
+<li><strong>安全性の向上</strong>:
+<ul class="incremental">
+<li>OpenAIは、新しい安全対策を追加し、不適切なリクエストを拒否する能力を高めています。このため、<code>o1</code>シリーズモデルは特に安全性が強化されています。</li>
+</ul></li>
+<li><strong>利用可能性</strong>:
+<ul class="incremental">
+<li>これらのモデルはEast
+US2地域で利用可能であり、特定の条件を満たすユーザーが早期アクセスプレイグラウンドを通じて試すことができます。</li>
+</ul></li>
+</ol>
+<p>この更新により、ユーザーは新しい機能の利用を促進され、特に新しいモデルの性能と安全性に関する重要な情報を把握できるようになります。</p>
+</body>
+</html>
