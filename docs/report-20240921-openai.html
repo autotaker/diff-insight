@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="dcterms.date" content="2024-09-21" />
+  <title>Diff Insight Report - openai</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      background-color: #1a1a1a;
+      border: none;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Diff Insight Report - openai</h1>
+<p class="date">2024-09-21</p>
+</header>
+<p><a
+href="https://github.com/MicrosoftDocs/azure-ai-docs/compare/MicrosoftDocs:daa818e...MicrosoftDocs:bb3e91f"
+target="_blank">View Diff on GitHub</a></p>
+<h1 id="highlights">Highlights</h1>
+<p>今回のコード差分はAzure OpenAI
+Studioに関するドキュメントにおける一貫した画像更新を中心に、特にUIスクリーンショットを最新の状態に保つことが主な内容です。新機能や大きな破壊的変更はありませんが、ユーザー体験の向上を目指した小規模な更新が行われています。</p>
+<h2 id="new-features">New features</h2>
+<p>特に新しい機能は追加されておらず、全ての変更は既存画像の差し替えやファイル名の更新に留まっています。</p>
+<h2 id="breaking-changes">Breaking changes</h2>
+<p>破壊的変更はありません。</p>
+<h2 id="other-updates">Other updates</h2>
+<ul class="incremental">
+<li>各ドキュメントに含まれるスクリーンショットを最新のUIに合わせて更新。</li>
+<li>ファイル名の変更により、画像のバージョン管理や整理がしやすくなっています。</li>
+</ul>
+<h1 id="insights">Insights</h1>
+<p>今回の更新は、視覚的なコンテンツを最新の状態に保ち、ユーザーがAzure
+OpenAI
+Studioを利用する際に直感的に操作を理解できるようにするためのものです。以下に各変更の意図と影響を詳述します。</p>
+<h2 id="azure-openai-studioのuiスクリーンショットの更新">Azure OpenAI
+StudioのUIスクリーンショットの更新</h2>
+<p>全ての変更点で共通しているのは、Azure OpenAI
+Studio内の様々な機能に関するスクリーンショットが更新されたことです。これにより、ユーザーは最新のUIを確認しながら操作を進めることができます。例えば、新しいデプロイメントUIやダイナミッククォータ設定画面などが含まれます。</p>
+<h2 id="ファイル名の変更">ファイル名の変更</h2>
+<p>ファイル名がよりわかりやすく、新しいバージョンであることを明示する形に変更されました。これは、将来的にさらなる更新が行われた場合でも混乱を避け、ドキュメントの管理や参照がしやすくなることを目的としています。</p>
+<h2
+id="ユーザーエクスペリエンスの向上が狙い">ユーザーエクスペリエンスの向上が狙い</h2>
+<p>全体を通じて、今回の更新はユーザーエクスペリエンスの向上を目指したものです。視覚的な情報は直感的であり、最新のスクリーンショットはユーザーがドキュメントを理解しやすくします。また、ファイル名の一貫性と整理は管理運用のしやすさに寄与し、ドキュメントの全体的な品質を向上させます。</p>
+<p>これらの変更は大規模な機能追加や修正ではありませんが、ユーザーにとって日常的な操作をよりスムーズにするための重要な改善です。視覚的な情報が最新であることは信頼性を高め、ユーザーが迷わずに操作を進められることで、全体の利用体験が向上します。</p>
+<h1 id="summary-table">Summary Table</h1>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 23%" />
+<col style="width: 11%" />
+<col style="width: 25%" />
+<col style="width: 15%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+<col style="width: 7%" />
+</colgroup>
+<thead>
+<tr>
+<th>Filename</th>
+<th>Type</th>
+<th>Title</th>
+<th>Status</th>
+<th>A</th>
+<th>D</th>
+<th>M</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#item-210814">deployment-types.md</a></td>
+<td>minor update</td>
+<td>デプロイメントタイプ画像の更新</td>
+<td>modified</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><a href="#item-b774ca">dynamic-quota.md</a></td>
+<td>minor update</td>
+<td>ダイナミッククォータのUI画像の更新</td>
+<td>modified</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><a href="#item-9440c2">quota.md</a></td>
+<td>minor update</td>
+<td>クォータ管理UIの画像の更新</td>
+<td>modified</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td><a href="#item-7ec098">working-with-models.md</a></td>
+<td>minor update</td>
+<td>モデル管理UIの画像の更新</td>
+<td>modified</td>
+<td>3</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr>
+<td><a href="#item-ab43f3">chatgpt-studio.md</a></td>
+<td>minor update</td>
+<td>Chat Playground UIの画像の更新</td>
+<td>modified</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+</tr>
+<tr>
+<td><a href="#item-c34da8">connect-your-data-studio.md</a></td>
+<td>minor update</td>
+<td>データを追加するためのUIの画像の更新</td>
+<td>modified</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><a href="#item-439729">dall-e-studio.md</a></td>
+<td>minor update</td>
+<td>DALL-E Studioの画像の更新</td>
+<td>modified</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><a href="#item-439f1e">fine-tuning-studio.md</a></td>
+<td>minor update</td>
+<td>ファインチューニングスタジオの画像の更新</td>
+<td>modified</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><a href="#item-eeeaff">studio.md</a></td>
+<td>minor update</td>
+<td>Azure OpenAI Studioの画像の更新</td>
+<td>modified</td>
+<td>3</td>
+<td>3</td>
+<td>6</td>
+</tr>
+<tr>
+<td><a href="#item-705daf">use-your-data-studio.md</a></td>
+<td>minor update</td>
+<td>チャットプレイグラウンドの画像の更新</td>
+<td>modified</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+</tr>
+<tr>
+<td><a href="#item-eb7e89">deploy-models-new.png</a></td>
+<td>minor update</td>
+<td>画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-968200">dynamic-quota-new.png</a></td>
+<td>minor update</td>
+<td>動的クォータ画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-23a410">deployments-new.png</a></td>
+<td>minor update</td>
+<td>モデルのデプロイに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-c99209">update-policy-new.png</a></td>
+<td>minor update</td>
+<td>モデルの更新ポリシーに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-20f3ab">auto-update-new.png</a></td>
+<td>minor update</td>
+<td>モデルの自動更新に関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-5228fa">deployments-new.png</a></td>
+<td>minor update</td>
+<td>モデルのデプロイメントに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-25a376">chat-playground-new.png</a></td>
+<td>minor update</td>
+<td>チャットプレイグラウンドに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-8ad889">chatgpt-playground-load-new.png</a></td>
+<td>minor update</td>
+<td>ChatGPTプレイグラウンドに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-504fe7">chatgpt-playground-new.png</a></td>
+<td>minor update</td>
+<td>ChatGPTプレイグラウンドに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-136e43">dall-e-studio-new.png</a></td>
+<td>minor update</td>
+<td>DALL·Eスタジオに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-9023ae">playground-load-new.png</a></td>
+<td>minor update</td>
+<td>プレイグラウンドの読み込みに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-1372d0">studio-start-new.png</a></td>
+<td>minor update</td>
+<td>スタジオの開始に関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-112898">summarize-text-new.png</a></td>
+<td>minor update</td>
+<td>テキスト要約に関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-487332">deployment-new.png</a></td>
+<td>minor update</td>
+<td>デプロイメントに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-9f797f">quota-new.png</a></td>
+<td>minor update</td>
+<td>クォータに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td><a href="#item-51ff29">bring-your-data-card-new.png</a></td>
+<td>minor update</td>
+<td>データカードに関する画像ファイル名の変更</td>
+<td>renamed</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<h1 id="modified-contents">Modified Contents</h1>
+<h2
+id="item-210814">articles/ai-services/openai/how-to/deployment-types.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -119,7 +119,7 @@ You can use the following policy to disable access to Azure OpenAI global standa</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a> ## Deploy models</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/deployment-types/deploy-models.png&quot; alt-text=&quot;Screenshot that shows the model deployment dialog in Azure OpenAI Studio with three deployment types highlighted.&quot; lightbox=&quot;../media/deployment-types/deploy-models.png&quot;:::</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/deployment-types/deploy-models-new.png&quot; alt-text=&quot;Screenshot that shows the model deployment dialog in Azure OpenAI Studio with three deployment types highlighted.&quot; lightbox=&quot;../media/deployment-types/deploy-models-new.png&quot;:::</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a> To learn about creating resources and deploying models refer to the [resource creation guide](./create-resource.md).</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary">Summary</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;デプロイメントタイプ画像の更新&quot;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation">Explanation</h3>
+<p>この変更は、Azure OpenAI
+Studio内でのモデルデプロイメントのダイアログに関連する画像を更新することを目的としています。具体的には、元の画像（<code>deploy-models.png</code>）を新しい画像（<code>deploy-models-new.png</code>）に置き換えました。画像の変更は、コンテンツの視覚的表現を最新の状態に保つためのものであり、利用者が認識しやすく、正確な情報を提供するのに貢献します。その他のテキストには変更はなく、関連するリソース作成ガイドへのリンクはそのまま維持されています。</p>
+<h2
+id="item-b774ca">articles/ai-services/openai/how-to/dynamic-quota.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -56,7 +56,7 @@ To use dynamic quota, you must:</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a> To activate dynamic quota for your deployment, you can go to the advanced properties in the resource configuration, and switch it on:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/how-to/dynamic-quota/dynamic-quota.png&quot; alt-text=&quot;Screenshot of advanced configuration UI for deployments.&quot; lightbox=&quot;../media/how-to/dynamic-quota/dynamic-quota.png&quot;:::</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/how-to/dynamic-quota/dynamic-quota-new.png&quot; alt-text=&quot;Screenshot of advanced configuration UI for deployments.&quot; lightbox=&quot;../media/how-to/dynamic-quota/dynamic-quota-new.png&quot;:::</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a> Alternatively, you can enable it programmatically with Azure CLI&#39;s [`az rest`](/cli/azure/reference-index?view=azure-cli-latest#az-rest&amp;preserve-view=true):</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-1">Summary</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;ダイナミッククォータのUI画像の更新&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-1">Explanation</h3>
+<p>この変更は、ダイナミッククォータ機能に関するセクションの画像を更新することを目的としています。具体的には、リソース設定の高度な構成UIのスクリーンショットを新しい画像（<code>dynamic-quota-new.png</code>）に置き換えました。これにより、ユーザーは最新のインターフェイスを視覚的に理解できるようになります。元の画像は削除され、新しい画像が追加されましたが、その他の内容やテキストには変更はありません。この更新は、ユーザーがダイナミッククォータの設定を行う際に役立つ情報を提供することを意図しています。</p>
+<h2 id="item-9440c2">articles/ai-services/openai/how-to/quota.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -46,7 +46,7 @@ When you create a model deployment, you have the option to assign Tokens-Per-Min</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a> To create a new deployment from within the Azure AI Studio under **Shared Resources** select **Deployments** &gt; **Deploy model** &gt; **Deploy base model** &gt; **Select Model** &gt; **Confirm**.</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/quota/deployment.png&quot; alt-text=&quot;Screenshot of the deployment UI of Azure AI Studio&quot; lightbox=&quot;../media/quota/deployment.png&quot;:::</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/quota/deployment-new.png&quot; alt-text=&quot;Screenshot of the deployment UI of Azure AI Studio&quot; lightbox=&quot;../media/quota/deployment-new.png&quot;:::</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a> Post deployment you can adjust your TPM allocation by selecting **Edit** under **Shared resources** &gt; **Deployments** in Azure OpenAI Studio. You can also modify this selection within the new quota management experience under **Management** &gt; **Quotas**.</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -66,7 +66,7 @@ All other model classes have a common max TPM value.</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a> For an all up view of your quota allocations across deployments in a given region, select **Management** &gt; **Quota** in Azure AI Studio:</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/quota/quota.png&quot; alt-text=&quot;Screenshot of the quota UI of Azure AI Studio&quot; lightbox=&quot;../media/quota/quota.png&quot;:::</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/quota/quota-new.png&quot; alt-text=&quot;Screenshot of the quota UI of Azure AI Studio&quot; lightbox=&quot;../media/quota/quota-new.png&quot;:::</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a> - **Deployment**: Model deployments divided by model class.</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a> - **Quota type**: There&#39;s one quota value per region for each model type. The quota covers all versions of that model.  </span></code></pre></div>
+</details>
+<h3 id="summary-2">Summary</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;クォータ管理UIの画像の更新&quot;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-2">Explanation</h3>
+<p>この変更は、クォータに関するセクションの内容を更新することを目的としています。具体的には、Azure
+AI
+StudioのデプロイメントUIとクォータUIのスクリーンショットを新しい画像（<code>deployment-new.png</code>および<code>quota-new.png</code>）に置き換えました。これによって、ユーザーに最新のインターフェイスを視覚的に提供し、設定手順をより分かりやすくします。他の内容や説明に変更はなく、元の画像は削除され、新しい画像が追加される形となっています。これにより、ユーザーはクォータの管理やデプロイメントの設定に関してより良い体験を得られることが期待されます。</p>
+<h2
+id="item-7ec098">articles/ai-services/openai/how-to/working-with-models.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -22,7 +22,7 @@ You can get a list of models that are available for both inference and fine-tuni</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a> Azure OpenAI now supports automatic updates for select model deployments. On models where automatic update support is available, a model version drop-down is visible in Azure OpenAI Studio under **Deployments** and **Edit**:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/models/auto-update.png&quot; alt-text=&quot;Screenshot of the deploy model UI of Azure OpenAI Studio.&quot; lightbox=&quot;../media/models/auto-update.png&quot;:::</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/models/auto-update-new.png&quot; alt-text=&quot;Screenshot of the deploy model UI of Azure OpenAI Studio.&quot; lightbox=&quot;../media/models/auto-update-new.png&quot;:::</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a> You can learn more about Azure OpenAI model versions and how they work in the [Azure OpenAI model versions](../concepts/model-versions.md) article.</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -42,15 +42,15 @@ When you select a specific model version for a deployment, this version remains</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a> For currently deployed models, from Azure OpenAI Studio select **Deployments**:</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/models/deployments.png&quot; alt-text=&quot;Screenshot of the deployment UI of Azure OpenAI Studio.&quot; lightbox=&quot;../media/models/deployments.png&quot;:::</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/models/deployments-new.png&quot; alt-text=&quot;Screenshot of the deployment UI of Azure OpenAI Studio.&quot; lightbox=&quot;../media/models/deployments-new.png&quot;:::</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a> ## Model deployment upgrade configuration</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a> You can check what model upgrade options are set for previously deployed models in [Azure OpenAI Studio](https://oai.azure.com). Select **Deployments** &gt; Under the deployment name column select one of the deployment names that are highlighted in blue.</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a> Selecting a deployment name opens the **Properties** for the model deployment. You can view what upgrade options are set for your deployment under **Version update policy**:</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/how-to/working-with-models/update-policy.png&quot; alt-text=&quot;Screenshot of the model deployments property UI.&quot; lightbox=&quot;../media/how-to/working-with-models/update-policy.png&quot;:::</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/how-to/working-with-models/update-policy-new.png&quot; alt-text=&quot;Screenshot of the model deployments property UI.&quot; lightbox=&quot;../media/how-to/working-with-models/update-policy-new.png&quot;:::</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a> The corresponding property can also be accessed via [REST](../how-to/working-with-models.md#model-deployment-upgrade-configuration), [Azure PowerShell](/powershell/module/az.cognitiveservices/get-azcognitiveservicesaccountdeployment), and [Azure CLI](/cli/azure/cognitiveservices/account/deployment#az-cognitiveservices-account-deployment-show).</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-3">Summary</h3>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;モデル管理UIの画像の更新&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-3">Explanation</h3>
+<p>この変更は、モデルに関するドキュメントの内容を更新することを目的としています。主な修正内容は、Azure
+OpenAI
+StudioのデプロイモデルUI、デプロイメントUI、及びモデルデプロイメントのプロパティUIのスクリーンショットを、新しい画像（<code>auto-update-new.png</code>、<code>deployments-new.png</code>、<code>update-policy-new.png</code>）に置き換えることです。これにより、ユーザーは最新のインターフェイスを確認できるようになり、操作手順がより直感的に理解できることを目的としています。元の画像は削除され、新しい画像が追加されていますが、その他のコンテンツは変更されていません。この更新は、ユーザーがAzure
+OpenAIモデル管理のさまざまな機能を利用する際の助けとなることが期待されます。</p>
+<h2
+id="item-ab43f3">articles/ai-services/openai/includes/chatgpt-studio.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -20,13 +20,13 @@ Navigate to Azure OpenAI Studio at [https://oai.azure.com/](https://oai.azure.co</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> From the Azure OpenAI Studio landing page, select **Chat playground**.</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/quickstarts/chatgpt-playground.png&quot; alt-text=&quot;Screenshot of the Azure OpenAI Studio landing page with Chat playground highlighted.&quot; lightbox=&quot;../media/quickstarts/chatgpt-playground.png&quot;:::</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/quickstarts/chatgpt-playground-new.png&quot; alt-text=&quot;Screenshot of the Azure OpenAI Studio landing page with Chat playground highlighted.&quot; lightbox=&quot;../media/quickstarts/chatgpt-playground-new.png&quot;:::</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a> ## Playground</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a> Start exploring OpenAI capabilities with a no-code approach through the Azure OpenAI Studio Chat playground. From this page, you can quickly iterate and experiment with the capabilities.</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/quickstarts/chatgpt-playground-load.png&quot; alt-text=&quot;Screenshot of the Chat playground page.&quot; lightbox=&quot;../media/quickstarts/chatgpt-playground-load.png&quot;:::</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/quickstarts/chatgpt-playground-load-new.png&quot; alt-text=&quot;Screenshot of the Chat playground page.&quot; lightbox=&quot;../media/quickstarts/chatgpt-playground-load-new.png&quot;:::</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a> ### Setup</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-4">Summary</h3>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;Chat Playground UIの画像の更新&quot;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-4">Explanation</h3>
+<p>この変更は、Azure OpenAI Studioの「Chat
+Playground」に関するドキュメントの更新を目的としています。主に、Azure
+OpenAI StudioのランディングページおよびChat
+Playgroundページのスクリーンショットを新しい画像（<code>chatgpt-playground-new.png</code>および<code>chatgpt-playground-load-new.png</code>）に置き換えました。これにより、ユーザーは最新のインターフェイスを視覚的に確認でき、より良い体験を得ることが期待されます。元の画像は削除され、新しい画像が追加されているため、ユーザーにとって操作方法がより明確になりますが、その他のコンテンツは変更されていません。この更新は、OpenAIの機能を簡単に試すためのサポートとなるでしょう。</p>
+<h2
+id="item-c34da8">articles/ai-services/openai/includes/connect-your-data-studio.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -19,7 +19,7 @@ Navigate to [Azure OpenAI Studio](https://oai.azure.com/) and sign-in with crede</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a> 1. Select the **Bring your own data** tile</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="st">-    :::image type=&quot;content&quot; source=&quot;../media/use-your-data/bring-your-data-card.png&quot; alt-text=&quot;A screenshot of the Azure OpenAI Studio landing page.&quot; lightbox=&quot;../media/use-your-data/bring-your-data-card.png&quot;:::</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="va">+    :::image type=&quot;content&quot; source=&quot;../media/use-your-data/bring-your-data-card-new.png&quot; alt-text=&quot;A screenshot of the Azure OpenAI Studio landing page.&quot; lightbox=&quot;../media/use-your-data/bring-your-data-card-new.png&quot;:::</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a> 1. In the **Chat playground**, Select **Add your data** and then **Add a data source**</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-5">Summary</h3>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;データを追加するためのUIの画像の更新&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-5">Explanation</h3>
+<p>この変更は、Azure OpenAI
+Studioにおける「データを接続する」手順に関するドキュメントの更新を目的としています。具体的には、Azure
+OpenAI Studioのランディングページにおける「Bring your own
+data」タイルのスクリーンショットを新しい画像（<code>bring-your-data-card-new.png</code>）に置き換えました。この更新により、ユーザーは最新のインターフェイスを視覚的に確認でき、手順の理解が深まることが期待されます。元の画像は削除され、新しい画像が追加されていますが、その他の内容は変更されていません。この更新は、ユーザーがデータソースを追加する際のガイダンスの質を向上させるでしょう。</p>
+<h2
+id="item-439729">articles/ai-services/openai/includes/dall-e-studio.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -50,7 +50,7 @@ Start exploring Azure OpenAI capabilities with a no-code approach through the **</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a> &gt; [!NOTE]</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a> &gt; The image generation APIs come with a content moderation filter. If Azure OpenAI recognizes your prompt as harmful content, it doesn&#39;t return a generated image. For more information, see [Content filtering](../concepts/content-filter.md).</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/quickstarts/dall-e-studio.png&quot; alt-text=&quot;Screenshot of the Azure OpenAI Studio landing page showing the DALL-E playground (Preview) with generated images of polar bears.&quot; lightbox=&quot;../media/quickstarts/dall-e-studio.png&quot;:::</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/quickstarts/dall-e-studio-new.png&quot; alt-text=&quot;Screenshot of the Azure OpenAI Studio landing page showing the DALL-E playground (Preview) with generated images of polar bears.&quot; lightbox=&quot;../media/quickstarts/dall-e-studio-new.png&quot;:::</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a> In the **Images playground**, you can also view Python and cURL code samples, which are prefilled according to your settings. Select **View code** near the top of the page. You can use this code to write an application that completes the same task.</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-6">Summary</h3>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;DALL-E Studioの画像の更新&quot;</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-6">Explanation</h3>
+<p>この変更は、Azure OpenAI Studioの「DALL-E
+Studio」に関連するドキュメントの更新を目的としています。具体的には、DALL-Eプレイグラウンドを表示するランディングページのスクリーンショットを新しい画像（<code>dall-e-studio-new.png</code>）に置き換えました。この更新により、ユーザーは最新のインターフェイスを確認でき、DALL-Eの機能をより理解しやすくなることが期待されます。古い画像は削除され、新しい画像が追加されていますが、ドキュメント内の他の内容は変更されていません。この変更は、運用の質を向上させるための重要なステップとなります。</p>
+<h2
+id="item-439f1e">articles/ai-services/openai/includes/fine-tuning-studio.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -360,7 +360,7 @@ Cross subscription/region deployment can be accomplished via [Python](/azure/ai-</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a> After your custom model deploys, you can use it like any other deployed model. You can use the **Playgrounds** in [Azure OpenAI Studio](https://oai.azure.com) to experiment with your new deployment. You can continue to use the same parameters with your custom model, such as `temperature` and `max_tokens`, as you can with other deployed models. For fine-tuned `babbage-002` and `davinci-002` models you will use the Completions playground and the Completions API. For fine-tuned `gpt-35-turbo-0613` models you will use the Chat playground and the Chat completion API.</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/quickstarts/playground-load.png&quot; alt-text=&quot;Screenshot of the Playground pane in Azure OpenAI Studio, with sections highlighted.&quot; lightbox=&quot;../media/quickstarts/playground-load.png&quot;:::</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/quickstarts/playground-load-new.png&quot; alt-text=&quot;Screenshot of the Playground pane in Azure OpenAI Studio, with sections highlighted.&quot; lightbox=&quot;../media/quickstarts/playground-load-new.png&quot;:::</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a> ## Analyze your custom model</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-7">Summary</h3>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;ファインチューニングスタジオの画像の更新&quot;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-7">Explanation</h3>
+<p>この変更は、Azure OpenAI
+Studioのファインチューニングスタジオに関連するドキュメントの画像を更新することを目的としています。具体的には、Playgroundペインのスクリーンショットを新しい画像（<code>playground-load-new.png</code>）に置き換えました。この更新により、ユーザーは最新のインターフェイスを視覚的に確認でき、ファインチューニングモデルを使用する際の理解が容易になることが期待されます。古い画像は削除され、新しい画像が追加されていますが、その他の文書内容は変更されていません。このような更新は、ドキュメントの有用性を高め、ユーザーエクスペリエンスの向上につながるでしょう。</p>
+<h2 id="item-eeeaff">articles/ai-services/openai/includes/studio.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -19,13 +19,13 @@ Navigate to Azure OpenAI Studio at &lt;a href=&quot;https://oai.azure.com/&quot; target=&quot;_bla</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a> From the Azure OpenAI Studio landing page navigate further to explore examples for prompt completion, manage your deployments and models, and find learning resources such as documentation and community forums. </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/quickstarts/studio-start.png&quot; alt-text=&quot;Screenshot of the Azure OpenAI Studio landing page.&quot; lightbox=&quot;../media/quickstarts/studio-start.png&quot;:::</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/quickstarts/studio-start-new.png&quot; alt-text=&quot;Screenshot of the Azure OpenAI Studio landing page.&quot; lightbox=&quot;../media/quickstarts/studio-start-new.png&quot;:::</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a> ## Playground</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a> Start exploring Azure OpenAI capabilities with a no-code approach through the GPT-3 Playground. It&#39;s simply a text box where you can submit a prompt to generate a completion. From this page, you can quickly iterate and experiment with the capabilities. </span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/quickstarts/playground-load.png&quot; alt-text=&quot;Screenshot of the playground page of the Azure OpenAI Studio with sections highlighted.&quot; lightbox=&quot;../media/quickstarts/playground-load.png&quot;:::</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/quickstarts/playground-load-new.png&quot; alt-text=&quot;Screenshot of the playground page of the Azure OpenAI Studio with sections highlighted.&quot; lightbox=&quot;../media/quickstarts/playground-load-new.png&quot;:::</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a> You can select a deployment and choose from a few pre-loaded examples to get started. If your resource doesn&#39;t have a deployment, select **Create a deployment** and follow the instructions provided by the wizard. For more information about model deployment, see the [resource deployment guide](../how-to/create-resource.md).</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -49,7 +49,7 @@ To use the Azure OpenAI for text summarization in the Completions playground, fo</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a> 1. Select your deployment from the **Deployments** dropdown. If your resource doesn&#39;t have a deployment, select **Create a deployment** and then revisit this step.</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a> 1. Enter a prompt for the model.</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="st">-    :::image type=&quot;content&quot; source=&quot;../media/quickstarts/summarize-text.png&quot; alt-text=&quot;Screenshot of the playground page of the Azure OpenAI Studio with a text summarization example.&quot; lightbox=&quot;../media/quickstarts/summarize-text.png&quot;:::</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="va">+    :::image type=&quot;content&quot; source=&quot;../media/quickstarts/summarize-text-new.png&quot; alt-text=&quot;Screenshot of the playground page of the Azure OpenAI Studio with a text summarization example.&quot; lightbox=&quot;../media/quickstarts/summarize-text-new.png&quot;:::</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a> 1. Select `Generate`. Azure OpenAI will attempt to capture the context of text and rephrase it succinctly. You should get a result that resembles the following text:</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-8">Summary</h3>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;Azure OpenAI Studioの画像の更新&quot;</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-8">Explanation</h3>
+<p>この変更は、Azure OpenAI
+Studioに関するドキュメント内の画像を更新することを目的としています。具体的には、スタジオのランディングページやプレイグラウンドのページ、テキスト要約の例を示すスクリーンショットを新しい画像（それぞれ
+<code>studio-start-new.png</code>, <code>playground-load-new.png</code>,
+<code>summarize-text-new.png</code>）に差し替えました。この更新により、ユーザーは最新のインターフェイスを視覚的に確認でき、ファインチューニングされた操作の理解がしやすくなることが期待されます。古い画像は削除され、新しい画像が追加されていますが、ドキュメント内の他の内容に変更はありません。こうした更新は、ユーザーに対する情報提供の質を向上させ、より良い体験を提供することが目的です。</p>
+<h2
+id="item-705daf">articles/ai-services/openai/includes/use-your-data-studio.md</h2>
+<details>
+<summary>
+Diff
+</summary>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode diff"><code class="sourceCode diff"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dt">@@ -16,7 +16,7 @@ recommendations: false</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a> Start exploring Azure OpenAI capabilities with a no-code approach through the chat playground. It&#39;s simply a text box where you can submit a prompt to generate a completion. From this page, you can quickly iterate and experiment with the capabilities. </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="st">-:::image type=&quot;content&quot; source=&quot;../media/quickstarts/chat-playground.png&quot; alt-text=&quot;Screenshot of the playground page of the Azure OpenAI Studio with sections highlighted.&quot; lightbox=&quot;../media/quickstarts/chat-playground.png&quot;:::</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="va">+:::image type=&quot;content&quot; source=&quot;../media/quickstarts/chat-playground-new.png&quot; alt-text=&quot;Screenshot of the playground page of the Azure OpenAI Studio with sections highlighted.&quot; lightbox=&quot;../media/quickstarts/chat-playground-new.png&quot;:::</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a> The playground gives you options to tailor your chat experience. On the right, you can select **Deployment** to determine which model generates a response using the search results from your index. You choose the number of past messages to include as conversation history for future generated responses. [Conversation history](../concepts/use-your-data.md#conversation-history-for-better-results) gives context to generate related responses but also consumes [token usage](../concepts/use-your-data.md#token-usage-estimation-for-azure-openai-on-your-data). The input token progress indicator keeps track of the token count of the question you submit. </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a> </span></code></pre></div>
+</details>
+<h3 id="summary-9">Summary</h3>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;チャットプレイグラウンドの画像の更新&quot;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-9">Explanation</h3>
+<p>この変更は、Azure OpenAI
+Studio内のチャットプレイグラウンドに関するドキュメントで使用される画像を更新することを目的としています。具体的には、古いスクリーンショット（<code>chat-playground.png</code>）が新しい画像（<code>chat-playground-new.png</code>）に置き換えられています。この更新により、ユーザーは最新のUIを視覚的に確認でき、全体的な体験の向上が期待されます。新しい画像は、ユーザーがプレイグラウンドでの操作を行う際の理解を助け、より明確な情報提供に寄与するでしょう。他の文書内容には変更はなく、主に異なる画像を使用することによって、ユーザーの利便性を向上させる狙いがあります。</p>
+<h2
+id="item-eb7e89">articles/ai-services/openai/media/deployment-types/deploy-models-new.png</h2>
+<h3 id="summary-10">Summary</h3>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;画像ファイル名の変更&quot;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-10">Explanation</h3>
+<p>この変更は、Azure
+OpenAIのデプロイメントタイプに関連する画像ファイル名を変更することを目的としています。具体的には、元のファイル名
+<code>deploy-models.png</code> が新しいファイル名
+<code>deploy-models-new.png</code>
+に変更されました。この変更は主にファイルの整理やバージョン管理に関連しており、更新された内容や新しい画像をより明確に反映させるためのものと考えられます。実際の画像コンテンツには変更はなく、名前の変更のみが行われています。これにより、ユーザーがファイルを特定しやすくなることが期待されます。</p>
+<h2
+id="item-968200">articles/ai-services/openai/media/how-to/dynamic-quota/dynamic-quota-new.png</h2>
+<h3 id="summary-11">Summary</h3>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;動的クォータ画像ファイル名の変更&quot;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-11">Explanation</h3>
+<p>この変更は、動的クォータに関連する画像ファイル名の変更を目的としています。元のファイル名
+<code>dynamic-quota.png</code> が新しいファイル名
+<code>dynamic-quota-new.png</code>
+に変更されました。この変更は、ファイルの整理やバージョンの更新を反映させるためのものであり、実際の画像コンテンツには変更はありません。新しいファイル名によって、ユーザーが適切なファイルを簡単に見つけられるようになることが期待されます。これは、一貫性と明確さを向上させるための小さな改善です。</p>
+<h2
+id="item-23a410">articles/ai-services/openai/media/how-to/working-with-models/deployments-new.png</h2>
+<h3 id="summary-12">Summary</h3>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;モデルのデプロイに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-12">Explanation</h3>
+<p>この変更は、モデルのデプロイに関連する画像ファイル名を変更することを目的としています。元のファイル名
+<code>deployments.png</code> が新しいファイル名
+<code>deployments-new.png</code>
+に更新されました。この変更は、主にファイル管理の整理や、新しい情報やバージョンを反映させるためのものであり、実際の画像の内容には変化はありません。新しいファイル名により、ユーザーはより適切にファイルを識別できるようになり、情報の整然さや明確さが向上します。これは、ユーザー体験の向上を目指した小規模な改善です。</p>
+<h2
+id="item-c99209">articles/ai-services/openai/media/how-to/working-with-models/update-policy-new.png</h2>
+<h3 id="summary-13">Summary</h3>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;モデルの更新ポリシーに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-13">Explanation</h3>
+<p>この変更は、モデルの更新ポリシーに関連する画像ファイル名の変更を行っています。元のファイル名
+<code>update-policy.png</code> が新たに
+<code>update-policy-new.png</code>
+に変更されました。この変更は、ファイル整理や新しい情報、バージョンの更新を反映させるためのものです。実際の画像の内容に変更はなく、ファイル名を更新することでユーザーがより簡単に適切なファイルを特定できるようになります。これは、ドキュメントの明確さを向上させるための小さな改善といえます。</p>
+<h2
+id="item-20f3ab">articles/ai-services/openai/media/models/auto-update-new.png</h2>
+<h3 id="summary-14">Summary</h3>
+<div class="sourceCode" id="cb25"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;モデルの自動更新に関する画像ファイル名の変更&quot;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-14">Explanation</h3>
+<p>この変更は、モデルの自動更新に関連する画像ファイル名を変更しています。以前のファイル名
+<code>auto-update.png</code> が新たに <code>auto-update-new.png</code>
+に更新されました。この変更はファイルの整理や、より新しい情報の反映を目的としています。実際の画像の内容には影響がなく、ファイル名を変更することでユーザーが関連する資料を特定しやすくなるようになっています。このような小規模な改善は、ドキュメントの使いやすさ向上に寄与します。</p>
+<h2
+id="item-5228fa">articles/ai-services/openai/media/models/deployments-new.png</h2>
+<h3 id="summary-15">Summary</h3>
+<div class="sourceCode" id="cb26"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;モデルのデプロイメントに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-15">Explanation</h3>
+<p>この変更は、モデルのデプロイメントに関連する画像のファイル名を更新しています。以前のファイル名
+<code>deployments.png</code> が <code>deployments-new.png</code>
+に改名されました。この変更はファイルの整理や、最新情報の反映を目的としています。画像の中身には変更がなく、ファイル名を新しくすることで、ユーザーが関連する情報をより迅速に識別できるようにしています。このような小さな調整は、ドキュメント全体の可読性や使いやすさ向上に貢献します。</p>
+<h2
+id="item-25a376">articles/ai-services/openai/media/quickstarts/chat-playground-new.png</h2>
+<h3 id="summary-16">Summary</h3>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;チャットプレイグラウンドに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-16">Explanation</h3>
+<p>この変更は、チャットプレイグラウンドに関連する画像ファイルの名前を変更しています。以前のファイル名
+<code>chat-playground.png</code> が新しいファイル名
+<code>chat-playground-new.png</code>
+に更新されました。この変更は、ファイル名をより明確にすることや、最新の情報を反映させるために行われます。画像の内容には何の変更もなく、ファイル名の調整により、ユーザーが資料を見つけやすくなることを目的としています。このような小規模な改善は、ユーザー体験の向上に寄与します。</p>
+<h2
+id="item-8ad889">articles/ai-services/openai/media/quickstarts/chatgpt-playground-load-new.png</h2>
+<h3 id="summary-17">Summary</h3>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;ChatGPTプレイグラウンドに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-17">Explanation</h3>
+<p>この変更は、ChatGPTプレイグラウンドに関連する画像ファイルの名前を更新しています。以前のファイル名
+<code>chatgpt-playground-load.png</code> が
+<code>chatgpt-playground-load-new.png</code>
+に改名されました。この改名は、ファイル名をより現行の内容にそぐうようにすることを目的としています。内容自体に変更はなく、ファイル名の変更によって、ユーザーが関連情報を見つけやすくなるように工夫されています。このような小さな改善は、ドキュメントの整合性や可用性を向上させる助けとなります。</p>
+<h2
+id="item-504fe7">articles/ai-services/openai/media/quickstarts/chatgpt-playground-new.png</h2>
+<h3 id="summary-18">Summary</h3>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;ChatGPTプレイグラウンドに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-18">Explanation</h3>
+<p>この変更は、ChatGPTプレイグラウンドに関連する画像ファイルの名前を変更しています。旧ファイル名
+<code>chatgpt-playground.png</code> が新ファイル名
+<code>chatgpt-playground-new.png</code>
+に改名されました。この変更は、ファイル名をより分かりやすくするために行われており、内容には一切の追加や削除がありません。目的は、ユーザーが関連する資料を見つけやすくし、ドキュメントの整合性を高めることです。小規模なアップデートですが、全体の使用感に寄与する重要な改善です。</p>
+<h2
+id="item-136e43">articles/ai-services/openai/media/quickstarts/dall-e-studio-new.png</h2>
+<h3 id="summary-19">Summary</h3>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;DALL·Eスタジオに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-19">Explanation</h3>
+<p>この変更は、DALL·Eスタジオに関連する画像ファイル名の更新を示しています。旧ファイル名
+<code>dall-e-studio.png</code> が新ファイル名
+<code>dall-e-studio-new.png</code>
+に改名されました。この変更は、ファイルの内容には影響を与えず、ファイル名をより適切なものにする目的で行われました。これにより、使用者が資料を特定しやすくし、ドキュメントの明確さを向上させることが期待されています。全体として、このような小規模な更新は、整合性を保ちながらも、ユーザー体験の向上に寄与する重要なステップです。</p>
+<h2
+id="item-9023ae">articles/ai-services/openai/media/quickstarts/playground-load-new.png</h2>
+<h3 id="summary-20">Summary</h3>
+<div class="sourceCode" id="cb31"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;プレイグラウンドの読み込みに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-20">Explanation</h3>
+<p>この変更は、プレイグラウンドに関連する読み込み画像のファイル名が更新されたことを示しています。古いファイル名
+<code>playground-load.png</code> が新しいファイル名
+<code>playground-load-new.png</code>
+に変更されました。この変更に伴う追加や削除はなく、ファイルの内容はそのままとなっています。ファイル名の変更は、ユーザーが資料を特定しやすくし、ドキュメントの整合性を向上させるために行われました。このような小規模な更新は、全体的なユーザー体験に貢献する重要な要素です。</p>
+<h2
+id="item-1372d0">articles/ai-services/openai/media/quickstarts/studio-start-new.png</h2>
+<h3 id="summary-21">Summary</h3>
+<div class="sourceCode" id="cb32"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;スタジオの開始に関する画像ファイル名の変更&quot;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-21">Explanation</h3>
+<p>この変更は、スタジオの開始に関連する画像ファイルのファイル名が更新されたことを示しています。旧ファイル名
+<code>studio-start.png</code> が新ファイル名
+<code>studio-start-new.png</code>
+に変更されました。この変更は、ファイルの内容や構造に影響を与えることはなく、単に名前の変更に留まっています。ファイル名の更新は、ドキュメントの明確さを高め、ユーザーが関連する資料を見つけやすくすることを目的としています。こうした小規模な更新は、全体的なユーザー体験の向上に寄与する重要な部分です。</p>
+<h2
+id="item-112898">articles/ai-services/openai/media/quickstarts/summarize-text-new.png</h2>
+<h3 id="summary-22">Summary</h3>
+<div class="sourceCode" id="cb33"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;テキスト要約に関する画像ファイル名の変更&quot;</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-22">Explanation</h3>
+<p>この変更は、テキスト要約に関連する画像ファイルの名前が更新されたことを示しています。古いファイル名
+<code>summarize-text.png</code> が新しいファイル名
+<code>summarize-text-new.png</code>
+に変更されました。この変更は、ファイルの内容や構造には影響を与えず、単にファイル名の更新だけが行われています。ファイル名の変更は、ドキュメントの一貫性を高め、ユーザーが必要な情報をより簡単に特定できるようにするためのものです。こうした小さな更新は、ユーザーエクスペリエンスの向上につながる重要な要素です。</p>
+<h2
+id="item-487332">articles/ai-services/openai/media/quota/deployment-new.png</h2>
+<h3 id="summary-23">Summary</h3>
+<div class="sourceCode" id="cb34"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;デプロイメントに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-23">Explanation</h3>
+<p>この変更は、デプロイメントに関連する画像ファイルのファイル名が更新されたことを示しています。以前のファイル名
+<code>deployment.png</code> から新しいファイル名
+<code>deployment-new.png</code>
+に変更されました。この変更は、ファイルの内容や構造には影響を及ぼすことなく、単に名前の変更にとどまっています。ファイル名を更新することで、文書の整合性が保たれ、ユーザーが関連情報を見つけやすくなることを意図しています。このような小規模な変更は、全体的なユーザーエクスペリエンスの向上に繋がる重要なステップとなります。</p>
+<h2
+id="item-9f797f">articles/ai-services/openai/media/quota/quota-new.png</h2>
+<h3 id="summary-24">Summary</h3>
+<div class="sourceCode" id="cb35"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;クォータに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-24">Explanation</h3>
+<p>この変更は、クォータに関連する画像ファイルについて、ファイル名が更新されたことを示しています。元のファイル名
+<code>quota.png</code> から新しいファイル名 <code>quota-new.png</code>
+に変更されました。この更新は、ファイルの内容や構造に変更はなく、単に名前を変更しただけです。ファイル名の変更は、文書内での視認性や識別性を向上させるために行われ、ユーザーが関連する情報を効果的に見つけられるようにする目的があります。このようなマイナーな更新は、全体的なユーザーエクスペリエンスの向上に寄与する重要な要素です。</p>
+<h2
+id="item-51ff29">articles/ai-services/openai/media/use-your-data/bring-your-data-card-new.png</h2>
+<h3 id="summary-25">Summary</h3>
+<div class="sourceCode" id="cb36"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_type&quot;</span><span class="fu">:</span> <span class="st">&quot;minor update&quot;</span><span class="fu">,</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;modification_title&quot;</span><span class="fu">:</span> <span class="st">&quot;データカードに関する画像ファイル名の変更&quot;</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<h3 id="explanation-25">Explanation</h3>
+<p>この変更は、「データを持ち込む」セクションに関連する画像ファイルのファイル名が更新されたことを示しています。以前のファイル名
+<code>bring-your-data-card.png</code> から、現在のファイル名
+<code>bring-your-data-card-new.png</code>
+に変更されました。変更に伴い、ファイルの内容には一切の変更がなく、ただ名前が変更されたのみです。この変更は、ユーザーが文書内で容易に関連情報を見つけられるようにするためのものであり、ファイル名を更新することで、より明確な識別を可能にし、情報の整合性を向上させることを目的としています。このようなマイナーな更新は、全体的なユーザーエクスペリエンスの改善に貢献します。</p>
+</body>
+</html>
