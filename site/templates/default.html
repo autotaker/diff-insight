@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Diff insight report – $title$</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <link rel="stylesheet" href="/css/syntax.css">
+</head>
+<body>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="/">
+                <strong>Diff insight report</strong>
+            </a>
+        </div>
+    </nav>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">$title$</h1>
+            $if(subtitle)$
+            <h2 class="subtitle">$subtitle$</h2>
+            $endif$
+            $if(date)$
+            <p class="date">$date$</p>
+            $endif$
+            $body$
+        </div>
+    </section>
+</body>
+</html>

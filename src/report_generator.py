@@ -1,8 +1,26 @@
 # src/report_generator.py
 
 from datetime import date
+import os
 from typing import Any, List, Dict
 import yaml
+
+
+# Define a custom representer for multi-line strings
+def str_presenter(dumper, data):
+    if "\n" in data:
+        # Use block style for multi-line strings
+        return dumper.represent_scalar("tag:yaml.org,2002:str", data, style="|")
+    return dumper.represent_scalar("tag:yaml.org,2002:str", data)
+
+
+# Create a custom Dumper class
+class CustomDumper(yaml.SafeDumper):
+    pass
+
+
+# Register the custom representer with the custom Dumper
+CustomDumper.add_representer(str, str_presenter)
 
 
 class ReportGenerator:
@@ -32,7 +50,12 @@ class ReportGenerator:
 
         report_lines = [
             "---",
-            yaml.dump(metadata, allow_unicode=True, default_flow_style=False),
+            yaml.dump(
+                metadata,
+                allow_unicode=True,
+                default_flow_style=False,
+                Dumper=CustomDumper,
+            ),
             "---",
             "",
             f'[View Diff on GitHub]({permalink}){{target="_blank"}}',
@@ -47,5 +70,9 @@ class ReportGenerator:
         :param report: The generated Markdown report as a string
         :param filename: The filename to save the report to
         """
+        if not os.path.exists(os.path.dirname(filename)):
+            # Create the directory if it doesn't exist
+            os.makedirs(os.path.dirname(filename))
+
         with open(filename, "w") as file:
             file.write(report)

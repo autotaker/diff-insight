@@ -17,20 +17,12 @@ ORG=MicrosoftDocs
 REPO=azure-ai-docs
 pipenv run python src/main.py fetch-commit "${ORG}" "${REPO}" main work/head.json
 HEAD_SHA=$(jq -r '.sha' work/head.json)
-TODAY=$(date +%Y%m%d)
-
-function run_pandoc_in_docker() {
-  docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/data" pandoc/core "$@"
-}
+MONTH=$(date +%Y%m)
 
 if [ "$LAST_SHA" != "$HEAD_SHA" ]; then
-  pipenv run python src/main.py generate-report "${ORG}" "${REPO}" "${LAST_SHA}" "${HEAD_SHA}" work/report-{date}-{category}.md
-  for file in work/report-*.md; do
-    if [ -f "$file" ]; then
-      # pandoc -i "$file" -o "docs/$(basename "$file" .md).html" -f markdown+hard_line_breaks --template template.html
-      run_pandoc_in_docker -i "$file" -o "docs/$(basename "$file" .md).html" -f markdown+hard_line_breaks --template template.html
-    fi
-  done
+  pipenv run python src/main.py generate-report \
+    "${ORG}" "${REPO}" "${LAST_SHA}" "${HEAD_SHA}" \
+    site/posts/%Y%m/report-%Y%m%d-{category}.md
   echo "HEAD_SHA: $HEAD_SHA"
   echo $HEAD_SHA > last-commit.sha
 fi
