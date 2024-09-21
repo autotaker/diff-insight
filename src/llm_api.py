@@ -123,6 +123,7 @@ class LLMAPI:
             - Summary: Provide a brief summary of the modification.
             - Overview: Provide an overview of the modification.
             - Detailed: Provide a detailed explanation of the modification.
+
             """
         )
         loc = locale.getlocale()[0]
@@ -133,6 +134,8 @@ class LLMAPI:
             <document>
             {explanation}
             </document>
+
+            Your response must written in plain text format, not in markdown.
             """
             ).format(style=style, explanation=explanation, loc=loc)
 
