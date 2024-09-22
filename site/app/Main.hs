@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
-import           Control.Monad            (forM)
+import           Control.Monad            (forM, forM_)
 import           Data.Function            (on, (&))
 import           Data.List                (groupBy, sortBy, sortOn)
 import           Data.Maybe               (fromMaybe)
@@ -54,6 +54,29 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/index.html" indexCtx
                 >>= loadAndApplyTemplate "templates/default.html" indexCtx
                 >>= relativizeUrls
+    forM_ ["openai", "search", "misc"] $ \category -> do
+        create [fromFilePath $ "categories/" ++ category ++ ".html"] $ do
+            route idRoute
+            compile $ do
+                posts <- loadAll (fromGlob $ "posts/**/*-" ++ category ++ ".md")
+                    >>= recentFirst
+                let compilePosts = do
+                        forM posts $ \item -> do
+                            Down date <- getDate item
+                            let context = listField "posts" defaultContext (pure [item]) <>
+                                          constField "date" date <>
+                                          defaultContext
+                            makeItem ""
+                                >>= loadAndApplyTemplate "templates/post-list-by-date.html" context
+                                >>= relativizeUrls
+                let categoryCtx = listField "posts" defaultContext compilePosts <>
+                                  constField "title" (category ++ " posts") <>
+                                  constField "category" category <>
+                                  defaultContext
+                makeItem ""
+                    >>= loadAndApplyTemplate "templates/category.html" categoryCtx
+                    >>= loadAndApplyTemplate "templates/default.html" categoryCtx
+                    >>= relativizeUrls
     match "posts/**.md" $ do
         route $ setExtension "html"
         let ropts = defaultHakyllReaderOptions {
