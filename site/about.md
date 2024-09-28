@@ -1,5 +1,6 @@
 ---
 title: このサイトについて
+date: "2024-09-29"
 ---
 
 このサイトは、[MicrosoftDocs/azure-ai-docs](https://github.com/MicrosoftDocs/azure-ai-docs) の日次更新内容を生成 AI を使って自動的に翻訳および要約したものを提供しています。
