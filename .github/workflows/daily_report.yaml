@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write # トリガーするためにactions権限を追加
 
 jobs:
   generate_report:
@@ -38,6 +39,12 @@ jobs:
           git config --global user.email "autotaker@gmail.com"
           git config --global user.name "autotaker"
       - name: Commit and push changes
+        id: commit_and_push
         run: |
           git add .
           git diff-index --quiet HEAD || git commit -m "Generate daily report" && git push
+      - name: Trigger gh_pages workflow
+        if: steps.commit_and_push.outcome == 'success'
+        run: gh workflow run gh_pages.yaml
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

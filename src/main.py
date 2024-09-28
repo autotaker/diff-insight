@@ -89,7 +89,11 @@ def generate_report(owner: str, repo: str, base: str, head: str, output: str):
     categories = classifier.classify_diff(diff_data)
     llm_api = LLMAPI(api_key)
     report_generator = ReportGenerator()
-    date = datetime.today().date()
+    today_str = os.getenv("TODAY")
+    if today_str is None:
+        today = datetime.today().date()
+    else:
+        today = datetime.strptime(today_str, "%Y-%m-%d").date()
 
     if not categories:
         typer.echo("No patches maching the categories.")
@@ -107,9 +111,9 @@ def generate_report(owner: str, repo: str, base: str, head: str, output: str):
 
         title = f"Diff Insight Report - {category}"
         report = report_generator.generate_markdown_report(
-            title, date, permalink, summary, explanation
+            title, today, permalink, summary, explanation
         )
-        output_path = date.strftime(output).format(category=category)
+        output_path = today.strftime(output).format(category=category)
         report_generator.save_report_to_file(report, output_path)
         typer.echo(f"Report saved to {output_path}")
 

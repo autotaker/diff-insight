@@ -1,60 +1,341 @@
 ---
 date: '2024-09-20'
-permalink: https://github.com/MicrosoftDocs/azure-ai-docs/compare/MicrosoftDocs:e496207...MicrosoftDocs:655e817
-summary: |-
-  ## 概要
-  今回のコード変更では、文書の内容がより理解しやすく、利用しやすくなるようにマイナーなアップデートが行われました。主な新機能としては、`model-catalog-overview.md`の表現の一貫性の強化や、`toc.yml`の目次の再構成を含みます。また、重要な変更点には用語の統一があり、他にもAPIやネットワーク設定の強化や新しいセクションの追加が行われました。全体として、Azure AI Studioのユーザー体験が向上しています。
+permalink: https://github.com/MicrosoftDocs/azure-ai-docs/compare/MicrosoftDocs:e496207...MicrosoftDocs:daa818e
+summary: この差分では、新しい機能の追加とドキュメントの微修正が行われました。特に、Azure AIスタジオとLlamaIndexを利用したアプリケーション開発に関する新しい文書が追加され、全体のドキュメント構造がより整理され、使いやすくなりました。新しい機能には、LlamaIndexとAzure
+  AIスタジオに関する文書、およびサーバーレスエンドポイントのURLキーに関する画像が含まれています。破壊的変更はなく、その他の更新としては、Azure AI SDKにLlamaIndexを追加し、モデルカタログのテキストの微修正やAPIリクエストのパラメータ追加が行われました。全体的に、開発者がAzure
+  AIスタジオをより活用しやすくなる内容です。
 title: Diff Insight Report - misc
 
 ---
 
-[View Diff on GitHub](https://github.com/MicrosoftDocs/azure-ai-docs/compare/MicrosoftDocs:e496207...MicrosoftDocs:655e817){target="_blank"}
+[View Diff on GitHub](https://github.com/MicrosoftDocs/azure-ai-docs/compare/MicrosoftDocs:e496207...MicrosoftDocs:daa818e){target="_blank"}
 
 # ハイライト
-今回のコード変更において、主な新機能および重要な変更点をまとめます。
+この差分の全体的なハイライトは、新しい機能の追加と既存ドキュメントの微修正です。特に、Azure AIスタジオとLlamaIndexを使用したアプリケーション開発に関する新しいドキュメントが追加され、全体のドキュメント構造がより整理され、使いやすくなった点が注目されます。
 
 ## 新機能
-1. `model-catalog-overview.md`の内容が更新され、表現の一貫性が強化されました。
-2. `toc.yml`の目次が再構成され、新しいセクションや項目が追加されました。
+- LlamaIndexとAzure AIスタジオを使ったアプリケーション開発に関する新しい文書の追加
+- サーバーレスエンドポイントのURLキーに関する新しい画像の追加
 
-## 重要な変更点
-1. `managed online endpoints`の表記が`managed compute`に変更されました。
+## 破壊的変更
+- なし
 
 ## その他の更新
-1. APIやネットワーク設定に関するセクションが強化されました。
-2. 新たに「Connect to external resources」セクションが追加されました。
+- Azure AI SDKの概要にLlamaIndexを追加
+- モデルカタログの概要におけるテキストの微修正
+- チャット補完リクエストと埋め込みリクエストにモデル名のパラメータを追加
+- AI Studioの案内目次の更新
 
 # インサイト
-このコードの変更は、文書の内容をより理解しやすく、利用しやすくするためのマイナーアップデートです。具体的な変更点に注目しながら、その背景と意図を以下に詳述します。
+今回の差分により、Azure AIスタジオのドキュメントが大幅に改善され、特にLlamaIndexを利用したアプリケーション開発が容易になりました。以下は差分の詳細とその背景についての技術的な見解です。
 
-## 文書の統一と専門用語の修正
-今回の`model-catalog-overview.md`の更新では、特に以下の変更が目立ちます。
+## LlamaIndexとAzure AIスタジオを使ったアプリケーション開発
+新しい文書が追加されることにより、Azure AIスタジオを利用する開発者はLlamaIndexを活用した高度な知能アプリケーションを迅速に構築できるようになりました。この文書は、前提条件から具体的なコードサンプルまでを網羅しており、特に以下の点が強調されています：
 
-1. **表現の一貫性**:
-    - 以前の文書では「managed online endpoints」という用語が用いられていましたが、これが「managed compute」に統一されました。この変更は、用語の一貫性を図るためです。同じコンセプトや機能について異なる用語が使われると、読者が混乱する可能性が高まります。したがって、特定の概念に対して一つの用語を統一して使うことは、理解しやすさを向上させるために重要です。
+- **前提条件**: Azureのサブスクリプションやモデルのデプロイ、Python環境設定、LlamaIndexのインストール
+- **API利用方法**: モデル推論APIおよびプロバイダー特有のAPI
+- **具体的なコードサンプル**: 環境変数の設定からクライアント作成、推論パラメーターの設定方法
 
-2. **APIやネットワーク設定セクションの強化**:
-    - 文書の具体的な指示が強化され、読者にとってわかりやすい内容になりました。特に、Azureでのモデルのデプロイメントに関する詳細な指示が追加されており、ユーザーが具体的な手順を踏む際の道しるべとなっています。
+これにより、開発者は理論から実践まで一貫して進めることができ、Azure AIスタジオを使った開発のハードルが大きく下がります。
 
-## 目次の組織化と新規追加
-`toc.yml`の更新では、目次の構造が見直され、新たなセクションが追加されました。特に注目すべき点を以下に示します。
+## Azure AI SDKの概要にLlamaIndexを追加
+この更新により、LlamaIndexがAzure AIスタジオ内で提供される生成AIアプリケーションの一つとして位置づけられ、より多様な選択肢が開発者に提供されます。これにより、開発者は自分のニーズに最も適したフレームワークを選択しやすくなります。
 
-1. **項目の明確化**:
-    - 「AI Studio or AML: Which should I choose?」が「AI Studio versus AML studio」に変更されました。この表現変更により、ユーザーは異なるスタジオの比較がより簡単に行えます。文書タイトルは、その内容が一目でわかるようにすることが重要です。
+## モデルカタログの概要におけるテキストの微修正
+用語の一貫性や説明の明確さが向上することで、読者はモデルのデプロイメントオプションについてより正確な理解を得ることができます。また、「managed compute」や「public network access flag」といった用語の変更により、技術文書としての信頼性が向上しています。
 
-2. **新セクションの追加**:
-    - 「Connect to external resources」という新しいセクションが追加され、複数のサブ項目が新設されました。このセクションは、サービスやリソースとの接続方法に関する情報を提供します。これにより、ユーザーは必要な情報に迅速にアクセスでき、サービスの利用が容易になります。
+## サーバーレスエンドポイントURLキーの画像追加
+新しい画像の追加は、視覚的な情報提示による理解促進を目的としています。特に、設定や管理が複雑になる可能性のあるサーバーレスエンドポイントにおいて、具体的なビジュアルガイドは非常に有用です。これにより、ユーザーはよりスムーズに設定を行うことができます。
 
-今回の変更は、一貫性とユーザビリティを向上させるためのものであり、結果としてAzure AI Studioのユーザー体験が大幅に改善されています。最新の情報と整理された目次により、Azure AI Studioを最大限に活用するための資料がさらに充実しました。
+## チャット補完リクエストと埋め込みリクエストにモデル名のパラメータを追加
+APIリクエストにおける「model」パラメータの追加は、ユーザーが異なるモデルを指定してより柔軟にリクエストを行えるようにするための重要な変更です。特定のモデルを指定できることで、APIの利用シーンが広がり、開発者にとっても便利です。
+
+## AI Studioの案内目次の更新
+目次（toc.yml）の更新によって、ドキュメント全体の構造が整理され、必要な
 
 # Summary Table
 |  Filename  | Type |    Title    | Status | A  | D  | M  |
 |------------|------|-------------|--------|----|----|----|
-| [model-catalog-overview.md](#item-278001) | minor update | モデルカタログの概要の文書修正 | modified | 11 | 11 | 22 | 
-| [toc.yml](#item-2745cd) | minor update | AIスタジオの目次更新 | modified | 44 | 44 | 88 | 
+| [llama-index.md](#item-613372) | new feature | LlamaIndexとAzure AIスタジオを使ったアプリケーション開発 | added | 202 | 0 | 202 | 
+| [sdk-overview.md](#item-d3ab19) | minor update | Azure AI SDKの概要にLlamaIndexを追加 | modified | 4 | 1 | 5 | 
+| [model-catalog-overview.md](#item-278001) | minor update | モデルカタログの概要におけるテキストの微修正 | modified | 11 | 11 | 22 | 
+| [serverless-endpoint-url-keys.png](#item-015560) | new feature | サーバーレスエンドポイントURLキーの画像を追加 | added | 0 | 0 | 0 | 
+| [reference-model-inference-chat-completions.md](#item-e09823) | minor update | チャット補完リクエストにモデル名のパラメータを追加 | modified | 1 | 0 | 1 | 
+| [reference-model-inference-embeddings.md](#item-5e9064) | minor update | 埋め込みリクエストにモデル名のパラメータを追加 | modified | 1 | 0 | 1 | 
+| [toc.yml](#item-2745cd) | minor update | AI Studioの案内目次の更新 | modified | 46 | 44 | 90 | 
 
 
 # Modified Contents
+## articles/ai-studio/how-to/develop/llama-index.md{#item-613372}
+
+<details>
+<summary>Diff</summary>
+````diff
+@@ -0,0 +1,202 @@
++---
++title: Develop application with LlamaIndex and Azure AI studio
++titleSuffix: Azure AI Studio
++description: This article explains how to use LlamaIndex with models deployed in Azure AI studio to build advance intelligent applications.
++manager: nitinme
++ms.service: azure-ai-studio
++ms.topic: how-to
++ms.date: 9/14/2024
++ms.reviewer: fasantia
++ms.author: eur
++author: eric-urban
++---
++
++# Develop applications with LlamaIndex and Azure AI studio
++
++In this article, you learn how to use [LlamaIndex](https://github.com/run-llama/llama_index) with models deployed from the Azure AI model catalog deployed to Azure AI studio.
++
++Models deployed to Azure AI studio can be used with LlamaIndex in two ways:
++
++- **Using the Azure AI model inference API:** All models deployed to Azure AI studio support the [Azure AI model inference API](../../reference/reference-model-inference-api.md), which offers a common set of functionalities that can be used for most of the models in the catalog. The benefit of this API is that, since it's the same for all the models, changing from one to another is as simple as changing the model deployment being use. No further changes are required in the code. When working with LlamaIndex, install the extensions `llama-index-llms-azure-inference` and `llama-index-embeddings-azure-inference`.
++
++- **Using the model's provider specific API:** Some models, like OpenAI, Cohere, or Mistral, offer their own set of APIs and extensions for LlamaIndex. Those extensions may include specific functionalities that the model support and hence are suitable if you want to exploit them. When working with `llama-index`, install the extension specific for the model you want to use, like `llama-index-llms-openai` or `llama-index-llms-cohere`.
++
++In this example, we are working with the **Azure AI model inference API**.
++
++## Prerequisites
++
++To run this tutorial, you need:
++
++1. An [Azure subscription](https://azure.microsoft.com).
++2. An Azure AI hub resource as explained at [How to create and manage an Azure AI Studio hub](../create-azure-ai-resource.md).
++3. A model supporting the [Azure AI model inference API](https://aka.ms/azureai/modelinference) deployed. In this example, we use a `Mistral-Large` deployment, but use any model of your preference. For using embeddings capabilities in LlamaIndex, you need an embedding model like `cohere-embed-v3-multilingual`. 
++
++    * You can follow the instructions at [Deploy models as serverless APIs](../deploy-models-serverless.md).
++
++4. Python 3.8 or later installed, including pip.
++5. LlamaIndex installed. You can do it with:
++
++    ```bash
++    pip install llama-index
++    ```
++
++6. In this example, we are working with the Azure AI model inference API, hence we install the following packages:
++
++    ```bash
++    pip install -U llama-index-llms-azure-inference
++    pip install -U llama-index-embeddings-azure-inference
++    ``` 
++
++## Configure the environment
++
++To use LLMs deployed in Azure AI studio, you need the endpoint and credentials to connect to it. The parameter `model_name` is not required for endpoints serving a single model, like Managed Online Endpoints. Follow these steps to get the information you need from the model you want to use:
++
++1. Go to the [Azure AI studio](https://ai.azure.com/).
++2. Go to deployments and select the model you deployed as indicated in the prerequisites.
++3. Copy the endpoint URL and the key.
++
++    :::image type="content" source="../../media/how-to/inference/serverless-endpoint-url-keys.png" alt-text="Screenshot of the option to copy endpoint URI and keys from an endpoint." lightbox="../../media/how-to/inference/serverless-endpoint-url-keys.png":::
++    
++    > [!TIP]
++    > If your model was deployed with Microsoft Entra ID support, you don't need a key.
++
++In this scenario, we placed both the endpoint URL and key in the following environment variables:
++
++```bash
++export AZURE_INFERENCE_ENDPOINT="<your-model-endpoint-goes-here>"
++export AZURE_INFERENCE_CREDENTIAL="<your-key-goes-here>"
++```
++
++Once configured, create a client to connect to the endpoint:
++
++```python
++import os
++from llama_index.llms.azure_inference import AzureAICompletionsModel
++
++llm = AzureAICompletionsModel(
++    endpoint=os.environ["AZURE_INFERENCE_ENDPOINT"],
++    credential=os.environ["AZURE_INFERENCE_CREDENTIAL"],
++)
++```
++
++Alternatively, if your endpoint support Microsoft Entra ID, you can use the following code to create the client:
++
++```python
++from azure.identity import DefaultAzureCredential
++
++llm = AzureAICompletionsModel(
++    endpoint=os.environ["AZURE_INFERENCE_ENDPOINT"],
++    credential=DefaultAzureCredential(),
++)
++```
++
++> [!NOTE]
++> > Note: When using Microsoft Entra ID, make sure that the endpoint was deployed with that authentication method and that you have the required permissions to invoke it.
++
++If you are planning to use asynchronous calling, it's a best practice to use the asynchronous version for the credentials:
++
++```python
++from azure.identity.aio import (
++    DefaultAzureCredential as DefaultAzureCredentialAsync,
++)
++
++llm = AzureAICompletionsModel(
++    endpoint=os.environ["AZURE_INFERENCE_ENDPOINT"],
++    credential=DefaultAzureCredentialAsync(),
++)
++```
++
++### Inference parameters
++
++You can configure how inference in performed for all the operations that are using this client by setting extra parameters. This helps avoid indicating them on each call you make to the model.
++
++```python
++llm = AzureAICompletionsModel(
++    endpoint=os.environ["AZURE_INFERENCE_ENDPOINT"],
++    credential=os.environ["AZURE_INFERENCE_CREDENTIAL"],
++    temperature=0.0,
++    model_kwargs={"top_p": 1.0},
++)
++```
++
++Parameters not supported in the Azure AI model inference API ([reference](../../reference/reference-model-inference-chat-completions.md)) but available in the underlying model, you can use the `model_extras` argument. In the following example, the parameter `safe_prompt`, only available for Mistral models, is being passed.
++
++```python
++llm = AzureAICompletionsModel(
++    endpoint=os.environ["AZURE_INFERENCE_ENDPOINT"],
++    credential=os.environ["AZURE_INFERENCE_CREDENTIAL"],
++    temperature=0.0,
++    model_kwargs={"model_extras": {"safe_prompt": True}},
++)
++```
++
++## Use LLMs models
++
++Use the `chat` endpoint for chat instruction models. The `complete` method is still available for model of type `chat-completions`. On those cases, your input text is converted to a message with `role="user"`.
++
++```python
++from llama_index.core.llms import ChatMessage
++
++messages = [
++    ChatMessage(
++        role="system", content="You are a pirate with colorful personality."
++    ),
++    ChatMessage(role="user", content="Hello"),
++]
++
++response = llm.chat(messages)
++print(response)
++```
++
++You can stream the outputs also:
++
++```python
++response = llm.stream_chat(messages)
++for r in response:
++    print(r.delta, end="")
++```
++
++## Use embeddings models
++
++In the same way you create an LLM client, you can connect to an embedding model. In the following example, we are setting again the environment variable to now point to an embeddings model:
++
++```bash
++export AZURE_INFERENCE_ENDPOINT="<your-model-endpoint-goes-here>"
++export AZURE_INFERENCE_CREDENTIAL="<your-key-goes-here>"
++```
++
++Then create the client:
++
++```python
++from llama_index.embeddings.azure_inference import AzureAIEmbeddingsModel
++
++embed_model = AzureAIEmbeddingsModel(
++    endpoint=os.environ["AZURE_INFERENCE_ENDPOINT"],
++    credential=os.environ['AZURE_INFERENCE_CREDENTIAL'],
++)
++```
++
++## Configure the models used by your code
++
++You can use the LLM or embeddings model client individually in the code you develop with LlamaIndex or you can configure the entire session using the `Settings` options. Configuring the session has the advantage of all your code using the same models for all the operations.
++
++```python
++from llama_index.core import Settings
++
++Settings.llm = llm
++Settings.embed_model = embed_model
++```
++
++However, there are scenarios where you want to use a general model for most of the operations but a specific one for a given task. On those cases, it's useful to set the LLM or embedding model you are using for each LlamaIndex construct. In the following example, we set a specific model:
++
++```python
++from llama_index.core.evaluation import RelevancyEvaluator
++
++relevancy_evaluator = RelevancyEvaluator(llm=llm)
++```
++
++In general, you use a combination of both strategies.
++
++## Related content
++
++* [How to get started with Azure AI SDKs](sdk-overview.md)
+````
+</details>
+
+### Summary
+
+```json
+{
+    "modification_type": "new feature",
+    "modification_title": "LlamaIndexとAzure AIスタジオを使ったアプリケーション開発"
+}
+```
+
+### Explanation
+この修正では、Azure AIスタジオとLlamaIndexを使用してアプリケーションを開発する方法を説明する新しい文書が追加されました。この文書では、Azure AIスタジオにデプロイされたモデルを利用して、知能アプリケーションを構築するための手順が詳述されています。
+
+文書は、LlamaIndexを使用するための前提条件として、Azureのサブスクリプション、モデルのデプロイ、Python環境設定、LlamaIndexのインストールなどを挙げています。また、モデル推論APIを使用する方法と、モデルのプロバイダー特有のAPIを使用する方法も説明しています。
+
+さらに、環境変数を設定する手順、クライアントを作成するためのPythonコード、推論パラメーターの設定方法など、具体的なコードサンプルも提供されています。この新しい追加により、Azure AIスタジオを利用した開発者は、LlamaIndexと連携して効率的にアプリケーションを構築できるようになります。
+
+## articles/ai-studio/how-to/develop/sdk-overview.md{#item-d3ab19}
+
+<details>
+<summary>Diff</summary>
+````diff
+@@ -15,7 +15,7 @@ author: eric-urban
+ 
+ # Overview of the Azure AI SDKs
+ 
+-Microsoft offers a variety of packages that you can use for building generative AI applications in the cloud. In most applications, you need to use a combination of packages to manage and use various Azure services that provide AI functionality. We also offer integrations with open-source libraries like LangChain and mlflow for use with Azure. In this article we'll give an overview of the main services and SDKs you can use with Azure AI Studio.
++Microsoft offers a variety of packages that you can use for building generative AI applications in the cloud. In most applications, you need to use a combination of packages to manage and use various Azure services that provide AI functionality. We also offer integrations with open-source libraries like LangChain and MLflow for use with Azure. In this article we'll give an overview of the main services and SDKs you can use with Azure AI Studio.
+ 
+ For building generative AI applications, we recommend using the following services and SDKs:
+  * [Azure Machine Learning](/azure/machine-learning/overview-what-is-azure-machine-learning) for the hub and project infrastructure used in AI Studio to organize your work into projects, manage project artifacts (data, evaluation runs, traces), fine-tune & deploy models, and connect to external services and resources.
+@@ -54,6 +54,9 @@ Azure AI services
+ Prompt flow
+  * [Prompt flow SDK](https://microsoft.github.io/promptflow/how-to-guides/quick-start.html)
+ 
++Agentic frameworks:
++* [LlamaIndex](llama-index.md)
++
+ ## Related content
+ 
+ - [Get started building a chat app using the prompt flow SDK](../../quickstarts/get-started-code.md)
+````
+</details>
+
+### Summary
+
+```json
+{
+    "modification_type": "minor update",
+    "modification_title": "Azure AI SDKの概要にLlamaIndexを追加"
+}
+```
+
+### Explanation
+この修正では、Azure AI SDKの概要にLlamaIndexを追加し、更新を行いました。具体的には、エージェント系のフレームワークとしてLlamaIndexが紹介され、Azure AIスタジオでの生成AIアプリケーションの構築に役立つサービスとSDKのリストに加えられました。
+
+文書の内容は、Azureで生成AIアプリケーションを構築するためのパッケージやサービスの概要を提供しており、その中でLlamaIndexの重要性が強調されています。これにより、開発者はより多様な選択肢を持つことになり、Azure AIスタジオでのアプリケーション開発がよりスムーズになることが期待されます。
+
+全体としては、Azure AI SDKの概要がわかりやすく、関連する重要な情報が収集されていることが進化した点となります。
+
 ## articles/ai-studio/how-to/model-catalog-overview.md{#item-278001}
 
 <details>
@@ -132,12 +413,100 @@ title: Diff Insight Report - misc
 ```json
 {
     "modification_type": "minor update",
-    "modification_title": "モデルカタログの概要の文書修正"
+    "modification_title": "モデルカタログの概要におけるテキストの微修正"
 }
 ```
 
 ### Explanation
-この変更は、"model-catalog-overview.md"の文書に対するマイナーな更新を示しています。主に、表現の統一と専門用語の修正が行われました。具体的には、"managed online endpoints"の表記が"managed compute"に変更され、記述内容もそれに合わせて調整されています。さらに、APIやネットワークの設定に関するセクションが強化され、より明確な指示と情報が提供されています。この更新によって、読み手がAzureでのモデルのデプロイメントオプションをより理解しやすくなることを目指しています。全体として、文書の一貫性と正確性が高まり、ユーザーに対する利便性が向上しました。
+この修正では、モデルカタログの概要に関する文書が微修正されました。具体的には、「Managed compute」と「Serverless API」に関する部分の文言がより明確に整理され、表現の一貫性が向上しました。
+
+主な変更点は、次の通りです：
+- 「Managed compute」と「Serverless API」の説明において、「managed online endpoints」が「managed compute」へと適切に変更され、用語の一貫性が取られました。
+- ネットワーク隔離における説明でも、用語が整理され、より明確な表現になりました。特に、「PNAフラグ」に関する説明が「public network access flag」に置き換えられ、認識が容易になっています。
+
+これにより、読者はAzure AIスタジオにおけるモデルのDeploymentオプションと機能を理解するのが容易となり、正確な情報を得ることができます。この更新は、全体として文書の質の向上に寄与しています。
+
+## articles/ai-studio/media/how-to/inference/serverless-endpoint-url-keys.png{#item-015560}
+
+### Summary
+
+```json
+{
+    "modification_type": "new feature",
+    "modification_title": "サーバーレスエンドポイントURLキーの画像を追加"
+}
+```
+
+### Explanation
+この修正では、サーバーレスエンドポイントに関連する新しい画像が文書に追加されました。この画像は「serverless-endpoint-url-keys.png」として名付けられており、サーバーレスエンドポイントのURLキーに関する情報を視覚的に示すためのものです。
+
+画像を追加することで、ユーザーはサーバーレスエンドポイントの設定や管理方法をより理解しやすくなることが期待されます。ビジュアルコンテンツが文書に加わることで、テキストだけでは伝わりにくい情報が明確にされ、読者の理解を深める役割を果たします。このような追加は、ユーザー体験を向上させる重要なステップと言えます。
+
+## articles/ai-studio/reference/reference-model-inference-chat-completions.md{#item-e09823}
+
+<details>
+<summary>Diff</summary>
+````diff
+@@ -42,6 +42,7 @@ POST /chat/completions?api-version=2024-04-01-preview
+ 
+ | Name | Required | Type | Description |
+ | --- | --- | --- | --- |
++| model |      | string | The model name. This parameter is ignored if the endpoint serves only one model. |
+ | messages | True | [ChatCompletionRequestMessage](#chatcompletionrequestmessage) | A list of messages comprising the conversation so far. Returns a 422 error if at least some of the messages can't be understood by the model. |
+ | frequency\_penalty |     | number | Helps prevent word repetitions by reducing the chance of a word being selected if it has already been used. The higher the frequency penalty, the less likely the model is to repeat the same words in its output. Return a 422 error if value or parameter is not supported by model. |
+ | max\_tokens |     | integer | The maximum number of tokens that can be generated in the chat completion.<br><br>The total length of input tokens and generated tokens is limited by the model's context length. Passing null causes the model to use its max context length. |
+````
+</details>
+
+### Summary
+
+```json
+{
+    "modification_type": "minor update",
+    "modification_title": "チャット補完リクエストにモデル名のパラメータを追加"
+}
+```
+
+### Explanation
+この修正では、チャット補完に関するリファレンス文書において、新しいパラメータ「model」が追加されました。この変更により、APIリクエストの形式が更新され、モデル名が指定できるようになりました。
+
+具体的には、以下の情報が新たに追加されました：
+- **model**: このパラメータはストリング型で、モデル名を指定する役割を果たします。特に、エンドポイントが単一のモデルだけを提供する場合、このパラメータは無視されることが明記されています。
+
+この変更は、ユーザーが異なるモデルを使用する際に、より柔軟性を持ってAPIを利用できるようにするためのものです。また、文書にこの情報を加えることで、利用者に対してリクエスト形式の理解を深め、正確なAPI使用を促進します。
+
+## articles/ai-studio/reference/reference-model-inference-embeddings.md{#item-5e9064}
+
+<details>
+<summary>Diff</summary>
+````diff
+@@ -42,6 +42,7 @@ POST /embeddings?api-version=2024-04-01-preview
+ 
+ | Name            | Required | Type                                                | Description                                                                                                                                                             |
+ | --------------- | -------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
++| model |      | string | The model name. This parameter is ignored if the endpoint serves only one model. |
+ | input           | True     | string[]                                            | Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays.           |
+ | dimensions      |          | integer                                             | The number of dimensions the resulting output embeddings should have. Returns a 422 error if the model doesn't support the value or parameter.                          |
+ | encoding_format |          | [EmbeddingEncodingFormat](#embeddingencodingformat) | The format to return the embeddings in. Either base64, float, int8, uint8, binary, or ubinary. Returns a 422 error if the model doesn't support the value or parameter. |
+````
+</details>
+
+### Summary
+
+```json
+{
+    "modification_type": "minor update",
+    "modification_title": "埋め込みリクエストにモデル名のパラメータを追加"
+}
+```
+
+### Explanation
+この修正では、埋め込みに関するリファレンス文書に新たなパラメータ「model」が追加されました。この変更により、埋め込みAPIリクエストを行う際に、使用するモデル名を指定できるようになりました。
+
+具体的には、以下の情報が新たに記載されています：
+- **model**: このパラメータはストリング型で、モデル名を指定するためのものです。エンドポイントが単一のモデルのみを提供する場合は、このパラメータは無視されることが明記されています。
+
+この追加により、ユーザーは異なるモデルを使って埋め込みリクエストをより柔軟に行えるようになります。また、埋め込みの作成に関する文書を通じて、モデルの選択が明確になり、APIの使用が向上します。このような更新は、開発者やユーザーにとって利便性を高める重要な変更です。
 
 ## articles/ai-studio/toc.yml{#item-2745cd}
 
@@ -213,7 +582,16 @@ title: Diff Insight Report - misc
    - name: Select and deploy AI models
      items:
      - name: Model catalog
-@@ -261,40 +295,6 @@ items:
+@@ -218,6 +252,8 @@ items:
+         href: how-to/develop/vscode.md
+       - name: Start with an AI template
+         href: how-to/develop/ai-template-get-started.md
++      - name: Develop with LlamaIndex and Azure AI studio
++        href: how-to/develop/llama-index.md
+       - name: Trace your application with prompt flow
+         href: how-to/develop/trace-local-sdk.md
+         displayName: code,sdk
+@@ -261,40 +297,6 @@ items:
        href: how-to/monitor-quality-safety.md
      - name: Troubleshoot deployments and monitoring
        href: how-to/troubleshoot-deploy-and-monitor.md
@@ -262,13 +640,19 @@ title: Diff Insight Report - misc
 ```json
 {
     "modification_type": "minor update",
-    "modification_title": "AIスタジオの目次更新"
+    "modification_title": "AI Studioの案内目次の更新"
 }
 ```
 
 ### Explanation
-この変更は、"toc.yml"ファイルの内容を修正したもので、目次の項目がいくつか再構成され、新しい項目が追加されました。特に、「AI Studio or AML: Which should I choose?」の項目が「AI Studio versus AML studio」という形に変更され、より明確な表現になっています。
+この修正では、AI Studioに関連する案内目次（toc.yml）が更新されました。主に、新しい項目の追加や既存項目の名称変更が行われており、全体の構成も整理されています。
 
-また、"Connect to external resources"のセクションが新たに追加され、その中に複数のサブ項目が新設されました。この更新により、サービスやリソースとの接続に関する情報がより分かり易くなり、具体的な手順や関連情報へのリンクが明確に示されています。全体として、目次の組織が改善され、ユーザーが必要な情報に迅速にアクセスできるようになっています。これにより、Azure AI Studioの利用者に対するナビゲーションの利便性が向上しました。
+具体的な変更点は以下の通りです：
+- **項目名の変更**: 例えば、「AI Studio or AML: Which should I choose?」が「AI Studio versus AML studio」に変更されました。
+- **新規項目の追加**: 「Connect to services and resources」という新しいセクションが追加され、その中に複数の関連サブトピックが設けられました。これには、接続の概要や接続の作成手順などが含まれています。
+- **削除された項目**: 一部のセクションが再構成され、重複する内容が削除されました。これにより、情報が整理され、利用者が必要な情報にスムーズにアクセスできるようになっています。
+- **AIサービスに関する詳細の追加**: Azure OpenAIやAIコンテンツの安全性、音声認識など、具体的なサービスに関する新しい項目が追加され、より詳細な情報が提供されています。
+
+これにより、AI Studioのドキュメントがより包括的に、かつ最新の情報を反映する形に更新され、利用者がサービスをより理解しやすくなることを目的としています。
 
 
