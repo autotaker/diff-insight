@@ -6,6 +6,15 @@
   <title>Diff insight report – $title$</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
   <link rel="stylesheet" href="/css/syntax.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-J9SD3YPCBH"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-J9SD3YPCBH');
+  </script>
 </head>
 <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
@@ -16,6 +25,7 @@
         </div>
         <div class="navbar-menu">
             <div class="navbar-start">
+                <a class="navbar-item" href="/about.html">About</a>
                 <div class="navbar-item has-dropdown is-hoverable">
                     <a class="navbar-link">Categories</a>
                     <div class="navbar-dropdown">
@@ -24,6 +34,9 @@
                         <a class="navbar-item" href="/categories/misc.html">Misc</a>
                     </div>
                 </div>
+            </div>
+            <div class="navbar-end">
+                <a class="navbar-item" href="/privacy.html">Privacy</a>
             </div>
         </div>
     </nav>
@@ -39,5 +52,12 @@
             $body$
         </div>
     </section>
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                このサイトは<a href="https://github.com/autotaker">autotaker</a>が運営しています。
+                参考になりましたか？よろしければ<a href="https://ko-fi.com/autotaker">コーヒーを奢ってください！</a>
+            </p>
+    </footer>
 </body>
 </html>
