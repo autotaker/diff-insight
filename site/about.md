@@ -40,7 +40,9 @@ date: "2024-09-29"
 
 当サイトの日次ポストは Microsoft 社の Azure 公式ドキュメント ([CC BY 4.0 または MIT ライセンス](https://github.com/MicrosoftDocs/azure-ai-docs/blob/main/ThirdPartyNotices.md))をもとに翻案・要約した派生作品です。元の文書は [MicrosoftDocs/azure-ai-docs](https://github.com/MicrosoftDocs/azure-ai-docs) にホストされています。
 
-当サイト内で生成に使用しているコードやその他のコンテンツの著作権は、運営者に帰属し、[MIT ライセンス](https://opensource.org/license/mit) の条件に従って提供されています。
+当サイト内の日次のコンテンツの以外の著作権は、運営者に帰属します。ライセンスは [CC BY 4.0 (Attribution International)](https://creativecommons.org/licenses/by/4.0/) です。
+
+サイト生成に使われているコード等の著作権については [GitHub リポジトリ](https://github.com/autotaker/diff-insight) を参照してください。
 
 ## 商標について
 

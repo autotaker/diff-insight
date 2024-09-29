@@ -9,7 +9,7 @@ homepage:
 
 -- A URL where users can report bugs.
 -- bug-reports:
-license:            MIT
+license:            GPL-3.0-or-later
 license-file:       LICENSE
 author:             autotaker
 maintainer:         autotaker@gmail.com
